@@ -3,6 +3,7 @@ package startup
 import (
 	"context"
 	cfg "dislinkt/api_gateway/startup/config"
+	postPb "dislinkt/common/proto/post_service"
 	userPb "dislinkt/common/proto/user_service"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -33,6 +34,12 @@ func (server *Server) initHandlers() {
 	err := userPb.RegisterUserServiceHandlerFromEndpoint(context.TODO(), server.mux, userEndpoint, opts)
 	if err != nil {
 		panic(err)
+	}
+
+	postEndpoint := fmt.Sprintf("%s:%s", server.config.PostHost, server.config.PostPort)
+	errPost := postPb.RegisterPostServiceHandlerFromEndpoint(context.TODO(), server.mux, postEndpoint, opts)
+	if errPost != nil {
+		panic(errPost)
 	}
 }
 
