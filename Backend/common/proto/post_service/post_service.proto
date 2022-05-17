@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "dislinkt/common/profile";
+option go_package = "dislinkt/common/post";
 
-package profile;
+package post;
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";

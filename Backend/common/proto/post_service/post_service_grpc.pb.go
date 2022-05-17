@@ -4,7 +4,7 @@
 // - protoc             v3.20.1
 // source: post_service.proto
 
-package profile
+package post
 
 import (
 	context "context"
@@ -48,7 +48,7 @@ func NewPostServiceClient(cc grpc.ClientConnInterface) PostServiceClient {
 
 func (c *postServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
 	out := new(GetResponse)
-	err := c.cc.Invoke(ctx, "/profile.PostService/Get", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/Get", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (c *postServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grp
 
 func (c *postServiceClient) GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error) {
 	out := new(GetAllResponse)
-	err := c.cc.Invoke(ctx, "/profile.PostService/GetAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (c *postServiceClient) GetAll(ctx context.Context, in *GetAllRequest, opts 
 
 func (c *postServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, "/profile.PostService/Create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (c *postServiceClient) Create(ctx context.Context, in *CreateRequest, opts 
 
 func (c *postServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
 	out := new(UpdateResponse)
-	err := c.cc.Invoke(ctx, "/profile.PostService/Update", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/Update", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func (c *postServiceClient) Update(ctx context.Context, in *UpdateRequest, opts 
 
 func (c *postServiceClient) GetComment(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponseComment, error) {
 	out := new(GetResponseComment)
-	err := c.cc.Invoke(ctx, "/profile.PostService/GetComment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetComment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (c *postServiceClient) GetComment(ctx context.Context, in *GetRequest, opts
 
 func (c *postServiceClient) GetAllComments(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponseComment, error) {
 	out := new(GetAllResponseComment)
-	err := c.cc.Invoke(ctx, "/profile.PostService/GetAllComments", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetAllComments", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (c *postServiceClient) GetAllComments(ctx context.Context, in *GetAllReques
 
 func (c *postServiceClient) CreateComment(ctx context.Context, in *CreateRequestComment, opts ...grpc.CallOption) (*CreateResponseComment, error) {
 	out := new(CreateResponseComment)
-	err := c.cc.Invoke(ctx, "/profile.PostService/CreateComment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/CreateComment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (c *postServiceClient) CreateComment(ctx context.Context, in *CreateRequest
 
 func (c *postServiceClient) UpdateComment(ctx context.Context, in *UpdateRequestComment, opts ...grpc.CallOption) (*UpdateResponseComment, error) {
 	out := new(UpdateResponseComment)
-	err := c.cc.Invoke(ctx, "/profile.PostService/UpdateComment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/UpdateComment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (c *postServiceClient) UpdateComment(ctx context.Context, in *UpdateRequest
 
 func (c *postServiceClient) GetReaction(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponseReaction, error) {
 	out := new(GetResponseReaction)
-	err := c.cc.Invoke(ctx, "/profile.PostService/GetReaction", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetReaction", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (c *postServiceClient) GetReaction(ctx context.Context, in *GetRequest, opt
 
 func (c *postServiceClient) GetAllReactions(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponseReaction, error) {
 	out := new(GetAllResponseReaction)
-	err := c.cc.Invoke(ctx, "/profile.PostService/GetAllReactions", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetAllReactions", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +138,7 @@ func (c *postServiceClient) GetAllReactions(ctx context.Context, in *GetAllReque
 
 func (c *postServiceClient) CreateReaction(ctx context.Context, in *CreateRequestReaction, opts ...grpc.CallOption) (*CreateResponseReaction, error) {
 	out := new(CreateResponseReaction)
-	err := c.cc.Invoke(ctx, "/profile.PostService/CreateReaction", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/CreateReaction", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func (c *postServiceClient) CreateReaction(ctx context.Context, in *CreateReques
 
 func (c *postServiceClient) UpdateReaction(ctx context.Context, in *UpdateRequestReaction, opts ...grpc.CallOption) (*UpdateResponseReaction, error) {
 	out := new(UpdateResponseReaction)
-	err := c.cc.Invoke(ctx, "/profile.PostService/UpdateReaction", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/post.PostService/UpdateReaction", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -238,7 +238,7 @@ func _PostService_Get_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/Get",
+		FullMethod: "/post.PostService/Get",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).Get(ctx, req.(*GetRequest))
@@ -256,7 +256,7 @@ func _PostService_GetAll_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/GetAll",
+		FullMethod: "/post.PostService/GetAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).GetAll(ctx, req.(*GetAllRequest))
@@ -274,7 +274,7 @@ func _PostService_Create_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/Create",
+		FullMethod: "/post.PostService/Create",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).Create(ctx, req.(*CreateRequest))
@@ -292,7 +292,7 @@ func _PostService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/Update",
+		FullMethod: "/post.PostService/Update",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).Update(ctx, req.(*UpdateRequest))
@@ -310,7 +310,7 @@ func _PostService_GetComment_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/GetComment",
+		FullMethod: "/post.PostService/GetComment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).GetComment(ctx, req.(*GetRequest))
@@ -328,7 +328,7 @@ func _PostService_GetAllComments_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/GetAllComments",
+		FullMethod: "/post.PostService/GetAllComments",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).GetAllComments(ctx, req.(*GetAllRequest))
@@ -346,7 +346,7 @@ func _PostService_CreateComment_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/CreateComment",
+		FullMethod: "/post.PostService/CreateComment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).CreateComment(ctx, req.(*CreateRequestComment))
@@ -364,7 +364,7 @@ func _PostService_UpdateComment_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/UpdateComment",
+		FullMethod: "/post.PostService/UpdateComment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).UpdateComment(ctx, req.(*UpdateRequestComment))
@@ -382,7 +382,7 @@ func _PostService_GetReaction_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/GetReaction",
+		FullMethod: "/post.PostService/GetReaction",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).GetReaction(ctx, req.(*GetRequest))
@@ -400,7 +400,7 @@ func _PostService_GetAllReactions_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/GetAllReactions",
+		FullMethod: "/post.PostService/GetAllReactions",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).GetAllReactions(ctx, req.(*GetAllRequest))
@@ -418,7 +418,7 @@ func _PostService_CreateReaction_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/CreateReaction",
+		FullMethod: "/post.PostService/CreateReaction",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).CreateReaction(ctx, req.(*CreateRequestReaction))
@@ -436,7 +436,7 @@ func _PostService_UpdateReaction_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/profile.PostService/UpdateReaction",
+		FullMethod: "/post.PostService/UpdateReaction",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).UpdateReaction(ctx, req.(*UpdateRequestReaction))
@@ -448,7 +448,7 @@ func _PostService_UpdateReaction_Handler(srv interface{}, ctx context.Context, d
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PostService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "profile.PostService",
+	ServiceName: "post.PostService",
 	HandlerType: (*PostServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
