@@ -1,0 +1,2 @@
+protoc -I ./common/proto/user_service --go_out ./common/proto/user_service --go_opt paths=source_relative --go-grpc_out ./common/proto/user_service --go-grpc_op
+t paths=source_relative --grpc-gateway_out ./common/proto/user_service --grpc-gateway_opt paths=source_relative ./common/proto/user_service/user_service.proto
