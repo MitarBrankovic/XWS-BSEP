@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var profiles = []*domain.User{
+var users = []*domain.User{
 	{
 		Id:          getObjectId("61596r4u645d4db787e61fe9"),
 		Username:    "radisa",

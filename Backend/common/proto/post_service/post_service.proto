@@ -1,0 +1,199 @@
+syntax = "proto3";
+
+option go_package = "dislinkt/common/profile";
+
+package profile;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+
+service PostService{
+  rpc Get(GetRequest) returns(GetResponse) {
+    option (google.api.http) = {
+      get: "/post/{id}"
+    };
+  }
+  rpc GetAll(GetAllRequest) returns(GetAllResponse) {
+    option (google.api.http) = {
+      get: "/post"
+    };
+  }
+  rpc Create(CreateRequest) returns(CreateResponse) {
+    option (google.api.http) = {
+      post: "/post"
+      body: "post"
+    };
+  }
+  rpc Update(UpdateRequest) returns(UpdateResponse) {
+    option (google.api.http) = {
+      put: "/post/{id}"
+      body: "post"
+    };
+  }
+  //########################COMMENTS##################################
+  rpc GetComment(GetRequest) returns(GetResponseComment) {
+    option (google.api.http) = {
+      get: "/comment/{id}"
+    };
+  }
+  rpc GetAllComments(GetAllRequest) returns(GetAllResponseComment) {
+    option (google.api.http) = {
+      get: "/comment"
+    };
+  }
+  rpc CreateComment(CreateRequestComment) returns(CreateResponseComment) {
+    option (google.api.http) = {
+      post: "/comment"
+      body: "comment"
+    };
+  }
+  rpc UpdateComment(UpdateRequestComment) returns(UpdateResponseComment) {
+    option (google.api.http) = {
+      put: "/comment/{id}"
+      body: "comment"
+    };
+  }
+  //########################REACTIONS##################################
+  rpc GetReaction(GetRequest) returns(GetResponseReaction) {
+    option (google.api.http) = {
+      get: "/reaction/{id}"
+    };
+  }
+  rpc GetAllReactions(GetAllRequest) returns(GetAllResponseReaction) {
+    option (google.api.http) = {
+      get: "/reaction"
+    };
+  }
+  rpc CreateReaction(CreateRequestReaction) returns(CreateResponseReaction) {
+    option (google.api.http) = {
+      post: "/reaction"
+      body: "reaction"
+    };
+  }
+  rpc UpdateReaction(UpdateRequestReaction) returns(UpdateResponseReaction) {
+    option (google.api.http) = {
+      put: "/reaction/{id}"
+      body: "reaction"
+    };
+  }
+
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Post post = 1;
+}
+
+message GetAllRequest {
+}
+
+message GetAllResponse {
+  repeated Post posts = 1;
+}
+
+message CreateRequest {
+  Post post = 1;
+}
+
+message CreateResponse {
+  Post post = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+  Post post = 2;
+}
+
+message UpdateResponse {
+  Post post = 1;
+}
+
+//#########################COMMENTS#########################
+
+message GetResponseComment {
+  Comment comment = 1;
+}
+
+message GetAllResponseComment {
+  repeated Comment comments = 1;
+}
+
+message CreateRequestComment {
+  Comment comment = 1;
+}
+
+message CreateResponseComment {
+  Comment comment = 1;
+}
+
+message UpdateRequestComment {
+  string id = 1;
+  Comment comment = 2;
+}
+
+message UpdateResponseComment {
+  Comment comment = 1;
+}
+
+//#############################REACTIONS#########################
+
+message GetResponseReaction {
+  Reaction reaction = 1;
+}
+
+message GetAllResponseReaction {
+  repeated Reaction reactions = 1;
+}
+
+message CreateRequestReaction {
+  Reaction reaction = 1;
+}
+
+message CreateResponseReaction {
+  Reaction reaction = 1;
+}
+
+message UpdateRequestReaction {
+  string id = 1;
+  Reaction reaction = 2;
+}
+
+message UpdateResponseReaction {
+  Reaction reaction = 1;
+}
+
+
+//##############################OBJECTS###################
+
+
+message Post {
+  string id = 1;
+  string userId = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  Content content = 4;
+}
+
+message Comment {
+  string id = 1;
+  Content content = 2;
+  string userId = 3;
+  string postId = 4;
+  google.protobuf.Timestamp DateCreated = 5;
+}
+
+message Reaction {
+  string id = 1;
+  string userId = 2;
+  string postId = 3;
+  int64 type = 4;
+  google.protobuf.Timestamp createdAt = 5;
+}
+
+message Content {
+  string text = 1;
+  string image = 2;
+}

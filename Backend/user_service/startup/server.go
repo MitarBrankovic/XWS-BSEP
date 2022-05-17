@@ -46,8 +46,8 @@ func (server *Server) initUserStore(client *mongo.Client) domain.UserStore {
 	if err != nil {
 		return nil
 	}
-	for _, Profile := range profiles {
-		err := store.Create(Profile)
+	for _, User := range users {
+		err := store.Create(User)
 		if err != nil {
 			log.Fatal(err)
 		}
