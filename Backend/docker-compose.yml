@@ -9,6 +9,7 @@ services:
       dockerfile: ./user_service/Dockerfile
     restart: on-failure
     environment:
+      OS_ENV: docker
       USER_DB_HOST: ${USER_DB_HOST}
       USER_DB_PORT: ${USER_DB_PORT}
       USER_SERVICE_PORT: ${USER_SERVICE_PORT}
@@ -25,6 +26,7 @@ services:
       dockerfile: ./post_service/Dockerfile
     restart: on-failure
     environment:
+      OS_ENV: docker
       POST_DB_HOST: ${POST_DB_HOST}
       POST_DB_PORT: ${POST_DB_PORT}
       POST_SERVICE_PORT: ${POST_SERVICE_PORT}
@@ -41,6 +43,7 @@ services:
       dockerfile: ./connection_service/Dockerfile
     restart: on-failure
     environment:
+      OS_ENV: docker
       CONNECTION_DB_HOST: ${CONNECTION_DB_HOST}
       CONNECTION_DB_PORT: ${CONNECTION_DB_PORT}
       CONNECTION_SERVICE_PORT: ${CONNECTION_SERVICE_PORT}
@@ -59,6 +62,7 @@ services:
     ports:
       - ${GATEWAY_PORT}:${GATEWAY_PORT}
     environment:
+      OS_ENV: docker
       GATEWAY_PORT: ${GATEWAY_PORT}
       USER_SERVICE_HOST: ${USER_SERVICE_HOST}
       USER_SERVICE_PORT: ${USER_SERVICE_PORT}
