@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 )
@@ -84,7 +83,6 @@ func (server *Server) startGrpcServer(connectionHandler *api.ConnectionHandler) 
 		log.Fatalf("failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
-	reflection.Register(grpcServer)
 	connection.RegisterConnectionServiceServer(grpcServer, connectionHandler)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %s", err)
