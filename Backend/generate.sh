@@ -1,3 +1,5 @@
 protoc -I ./common/proto/user_service --go_out ./common/proto/user_service --go_opt paths=source_relative --go-grpc_out ./common/proto/user_service --go-grpc_opt paths=source_relative --grpc-gateway_out ./common/proto/user_service --grpc-gateway_opt paths=source_relative ./common/proto/user_service/user_service.proto
 
 protoc -I ./common/proto/post_service --go_out ./common/proto/post_service --go_opt paths=source_relative --go-grpc_out ./common/proto/post_service --go-grpc_opt paths=source_relative --grpc-gateway_out ./common/proto/post_service --grpc-gateway_opt paths=source_relative ./common/proto/post_service/post_service.proto
+
+protoc -I ./common/proto/connection_service --go_out ./common/proto/connection_service --go_opt paths=source_relative --go-grpc_out ./common/proto/connection_service --go-grpc_opt paths=source_relative --grpc-gateway_out ./common/proto/connection_service --grpc-gateway_opt paths=source_relative ./common/proto/connection_service/connection_service.proto

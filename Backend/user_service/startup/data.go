@@ -16,6 +16,15 @@ var users = []*domain.User{
 		DateOfBirth: time.Time{},
 		Email:       "radisamilovcevic@gmail.com",
 	},
+	{
+		Id:          getObjectId("78596r4u645d4db787e61fea"),
+		Username:    "Filip",
+		FirstName:   "Filip",
+		LastName:    "Pinjuh",
+		FullName:    "Filip Pinjuh",
+		DateOfBirth: time.Time{},
+		Email:       "pinjuh@gmail.com",
+	},
 }
 
 func getObjectId(id string) primitive.ObjectID {

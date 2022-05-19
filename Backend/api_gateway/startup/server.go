@@ -3,6 +3,7 @@ package startup
 import (
 	"context"
 	cfg "dislinkt/api_gateway/startup/config"
+	connectionPb "dislinkt/common/proto/connection_service"
 	postPb "dislinkt/common/proto/post_service"
 	userPb "dislinkt/common/proto/user_service"
 	"fmt"
@@ -40,6 +41,12 @@ func (server *Server) initHandlers() {
 	errPost := postPb.RegisterPostServiceHandlerFromEndpoint(context.TODO(), server.mux, postEndpoint, opts)
 	if errPost != nil {
 		panic(errPost)
+	}
+
+	connectionEndpoint := fmt.Sprintf("%s:%s", server.config.ConnectionHost, server.config.ConnectionPort)
+	errConnection := connectionPb.RegisterConnectionServiceHandlerFromEndpoint(context.TODO(), server.mux, connectionEndpoint, opts)
+	if errConnection != nil {
+		panic(errConnection)
 	}
 }
 
