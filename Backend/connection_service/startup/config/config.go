@@ -1,6 +1,8 @@
 package config
 
 import (
+	"github.com/joho/godotenv"
+	"log"
 	"os"
 )
 
@@ -17,6 +19,10 @@ type Config struct {
 }
 
 func NewConfig() *Config {
+	err := SetEnvironment()
+	if err != nil {
+		return nil
+	}
 	return &Config{
 		Port:             os.Getenv("CONNECTION_SERVICE_PORT"),
 		ConnectionDBHost: os.Getenv("CONNECTION_DB_HOST"),
@@ -28,4 +34,13 @@ func NewConfig() *Config {
 		NatsUser:         os.Getenv("NATS_USER"),
 		NatsPass:         os.Getenv("NATS_PASS"),
 	}
+}
+
+func SetEnvironment() error {
+	if os.Getenv("OS_ENV") != "docker" {
+		if err := godotenv.Load("../.env.dev"); err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
+	return nil
 }

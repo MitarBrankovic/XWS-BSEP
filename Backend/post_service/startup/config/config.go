@@ -1,6 +1,10 @@
 package config
 
-import "os"
+import (
+	"github.com/joho/godotenv"
+	"log"
+	"os"
+)
 
 type Config struct {
 	Port       string
@@ -16,6 +20,10 @@ type Config struct {
 }
 
 func NewConfig() *Config {
+	err := SetEnvironment()
+	if err != nil {
+		return nil
+	}
 	return &Config{
 		Port:       os.Getenv("POST_SERVICE_PORT"),
 		UserDBHost: os.Getenv("USER_DB_HOST"),
@@ -28,4 +36,13 @@ func NewConfig() *Config {
 		PostDBHost: os.Getenv("POST_DB_HOST"),
 		PostDBPort: os.Getenv("POST_DB_PORT"),
 	}
+}
+
+func SetEnvironment() error {
+	if os.Getenv("OS_ENV") != "docker" {
+		if err := godotenv.Load("../.env.dev"); err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
+	return nil
 }
