@@ -80,7 +80,7 @@ func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest
 }
 
 func (handler *UserHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
-	user, err := handler.service.Get(req.GetUsername())
+	user, err := handler.service.Find(req.GetUsername())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "cannot find user: %v", err)
 	}

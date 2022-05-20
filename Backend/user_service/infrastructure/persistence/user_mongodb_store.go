@@ -40,6 +40,7 @@ func (store *UserMongoDBStore) GetAll() ([]*domain.User, error) {
 }
 
 func (store *UserMongoDBStore) Create(user *domain.User) error {
+	user.Id = primitive.NewObjectID()
 	result, err := store.users.InsertOne(context.TODO(), user)
 	if err != nil {
 		return err
@@ -76,7 +77,7 @@ func (store *UserMongoDBStore) DeleteAll() error {
 }
 
 func (store *UserMongoDBStore) Find(username string) (*domain.User, error) {
-	filter := bson.M{"_username": username}
+	filter := bson.M{"username": username}
 	return store.filterOne(filter)
 }
 

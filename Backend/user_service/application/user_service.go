@@ -12,6 +12,10 @@ func NewUserService(store domain.UserStore) *UserService {
 	}
 }
 
+func (service *UserService) Find(username string) (*domain.User, error) {
+	return service.store.Find(username)
+}
+
 func (service *UserService) Get(userId string) (*domain.User, error) {
 	return service.store.Get(userId)
 }
