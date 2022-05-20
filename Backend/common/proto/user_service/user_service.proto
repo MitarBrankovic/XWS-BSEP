@@ -37,6 +37,13 @@ service UserService{
       body : "*"
     };
   };
+
+  rpc Register(RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post : "/register"
+      body : "user"
+    };
+  };
 }
 
 message GetRequest {
@@ -78,6 +85,14 @@ message LoginRequest {
 
 message LoginResponse {
   string access_token = 1;
+}
+
+message RegisterRequest {
+  User user = 1;
+}
+
+message RegisterResponse {
+  User user = 1;
 }
 
 message User {

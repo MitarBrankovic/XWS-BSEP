@@ -32,6 +32,9 @@ func mapPbToUser(pbUser *pb.User) *domain.User {
 		FullName:       pbUser.FirstName + " " + pbUser.LastName,
 		DateOfBirth:    pbUser.DateOfBirth.AsTime(),
 		Email:          pbUser.Email,
+		Role:           "user",
+		Private:        false,
+		Activated:      false,
 	}
 
 	return user

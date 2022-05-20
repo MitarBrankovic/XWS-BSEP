@@ -96,3 +96,20 @@ func (handler *UserHandler) Login(ctx context.Context, req *pb.LoginRequest) (*p
 
 	return &pb.LoginResponse{AccessToken: token}, nil
 }
+
+func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterRequest) (*pb.RegisterResponse, error) {
+	checkUser, err := handler.service.Find(request.User.Username)
+	if checkUser != nil {
+		return nil, status.Errorf(codes.Internal, "username already exists")
+	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
+	user := mapPbToUser(request.User)
+	user.HashedPassword = string(hashedPassword)
+	err = handler.service.Create(user)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.RegisterResponse{
+		User: mapUserToPb(user),
+	}, nil
+}

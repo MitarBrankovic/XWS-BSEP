@@ -16,6 +16,8 @@ type User struct {
 	FullName       string             `bson:"fullName"`
 	DateOfBirth    time.Time          `bson:"dateOfBirth"`
 	Email          string             `bson:"email"`
+	Activated      bool               `bson:"isActivated"`
+	Private        bool               `bson:"isPrivate"`
 }
 
 func (user *User) IsCorrectPassword(password string) bool {
