@@ -878,7 +878,7 @@ func RegisterPostServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn
 // RegisterPostServiceHandlerClient registers the http handlers for service PostService
 // to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "PostServiceClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "PostServiceClient"
-// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// doesn't go through the normal gRPC flow (creating a gRPC clients etc.) then it will be up to the passed in
 // "PostServiceClient" to call the correct interceptors.
 func RegisterPostServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client PostServiceClient) error {
 

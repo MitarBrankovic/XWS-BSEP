@@ -1,6 +1,7 @@
 package startup
 
 import (
+	"dislinkt/common/auth"
 	connection "dislinkt/common/proto/connection_service"
 	"dislinkt/connection_service/application"
 	"dislinkt/connection_service/domain"
@@ -10,8 +11,10 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
+	"time"
 )
 
 type Server struct {
@@ -28,7 +31,19 @@ const (
 	QueueGroup = "connection_service"
 )
 
+func accessibleRoles() map[string][]string {
+
+	const connectionServicePath = "/connection.ConnectionService/"
+
+	return map[string][]string{
+		connectionServicePath + "Get": {"user"},
+	}
+}
+
 func (server *Server) Start() {
+
+	jwtManager := auth.NewJWTManager("secretKey", 15*time.Minute)
+
 	mongoClient := server.initMongoClient()
 	connectionStore := server.initConnectionStore(mongoClient)
 
@@ -36,7 +51,7 @@ func (server *Server) Start() {
 
 	connectionHandler := server.initConnectionHandler(connectionService)
 
-	server.startGrpcServer(connectionHandler)
+	server.startGrpcServer(connectionHandler, jwtManager)
 }
 
 func (server *Server) initMongoClient() *mongo.Client {
@@ -76,13 +91,18 @@ func (server *Server) initConnectionHandler(service *application.ConnectionServi
 	return api.NewConnectionHandler(service)
 }
 
-func (server *Server) startGrpcServer(connectionHandler *api.ConnectionHandler) {
-
+func (server *Server) startGrpcServer(connectionHandler *api.ConnectionHandler, jwtManager *auth.JWTManager) {
+	interceptor := auth.NewAuthInterceptor(jwtManager, accessibleRoles())
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", server.config.Port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	grpcServer := grpc.NewServer()
+	serverOptions := []grpc.ServerOption{
+		grpc.UnaryInterceptor(interceptor.Unary()),
+		grpc.StreamInterceptor(interceptor.Stream()),
+	}
+	grpcServer := grpc.NewServer(serverOptions...)
+	reflection.Register(grpcServer)
 	connection.RegisterConnectionServiceServer(grpcServer, connectionHandler)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %s", err)

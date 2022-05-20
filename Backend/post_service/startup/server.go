@@ -1,6 +1,7 @@
 package startup
 
 import (
+	"dislinkt/common/auth"
 	post "dislinkt/common/proto/post_service"
 	"dislinkt/post_service/application"
 	"dislinkt/post_service/domain"
@@ -10,8 +11,10 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
+	"time"
 )
 
 type Server struct {
@@ -24,12 +27,22 @@ func NewServer(config *config.Config) *Server {
 	}
 }
 
+func accessibleRoles() map[string][]string {
+
+	const postServicePath = "/post.PostService/"
+
+	return map[string][]string{}
+}
+
 func (server *Server) Start() {
+
+	jwtManager := auth.NewJWTManager("secretKey", 15*time.Minute)
+
 	mongoClient := server.initMongoClient()
 	postStore := server.initPostStore(mongoClient)
 	postService := server.initPostService(postStore)
 	postHandler := server.initPostHandler(postService)
-	server.startGrpcServer(postHandler)
+	server.startGrpcServer(postHandler, jwtManager)
 }
 
 func (server *Server) initMongoClient() *mongo.Client {
@@ -63,12 +76,18 @@ func (server *Server) initPostHandler(service *application.PostService) *api.Pos
 	return api.NewPostHandler(service)
 }
 
-func (server *Server) startGrpcServer(postHandler *api.PostHandler) {
+func (server *Server) startGrpcServer(postHandler *api.PostHandler, jwtManager *auth.JWTManager) {
+	interceptor := auth.NewAuthInterceptor(jwtManager, accessibleRoles())
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", server.config.Port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	grpcServer := grpc.NewServer()
+	serverOptions := []grpc.ServerOption{
+		grpc.UnaryInterceptor(interceptor.Unary()),
+		grpc.StreamInterceptor(interceptor.Stream()),
+	}
+	grpcServer := grpc.NewServer(serverOptions...)
+	reflection.Register(grpcServer)
 	post.RegisterPostServiceServer(grpcServer, postHandler)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %s", err)
