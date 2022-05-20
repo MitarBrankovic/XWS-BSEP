@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"dislinkt/common/domain"
+	"dislinkt/user_service/domain"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"time"

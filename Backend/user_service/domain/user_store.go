@@ -6,4 +6,5 @@ type UserStore interface {
 	Create(user *User) error
 	Update(userId string, user *User) error
 	DeleteAll() error
+	Find(username string) (*User, error)
 }

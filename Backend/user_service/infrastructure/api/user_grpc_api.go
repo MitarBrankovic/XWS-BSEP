@@ -3,17 +3,26 @@ package api
 import (
 	"context"
 	pb "dislinkt/common/proto/user_service"
+	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/user_service/application"
+	"dislinkt/user_service/auth"
+	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type UserHandler struct {
 	pb.UnimplementedUserServiceServer
-	service *application.UserService
+	service    *application.UserService
+	jwtManager *auth.JWTManager
+	userClient pbUser.UserServiceClient
 }
 
-func NewUserHandler(service *application.UserService) *UserHandler {
+func NewUserHandler(service *application.UserService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient) *UserHandler {
 	return &UserHandler{
-		service: service,
+		service:    service,
+		jwtManager: jwtManager,
+		userClient: userClient,
 	}
 }
 
@@ -46,8 +55,10 @@ func (handler *UserHandler) GetAll(ctx context.Context, request *pb.GetAllReques
 }
 
 func (handler UserHandler) Create(ctx context.Context, request *pb.CreateRequest) (*pb.CreateResponse, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	user := mapPbToUser(request.User)
-	err := handler.service.Create(user)
+	user.HashedPassword = string(hashedPassword)
+	err = handler.service.Create(user)
 	if err != nil {
 		return nil, err
 	}
@@ -66,4 +77,22 @@ func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest
 	return &pb.UpdateResponse{
 		User: mapUserToPb(user),
 	}, nil
+}
+
+func (handler *UserHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
+	user, err := handler.service.Get(req.GetUsername())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot find user: %v", err)
+	}
+
+	if user == nil || !user.IsCorrectPassword(req.GetPassword()) {
+		return nil, status.Errorf(codes.NotFound, "incorrect username/password")
+	}
+
+	token, err := handler.jwtManager.Generate(user)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+	}
+
+	return &pb.LoginResponse{AccessToken: token}, nil
 }

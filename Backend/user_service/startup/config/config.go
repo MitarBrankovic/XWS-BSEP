@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	Port       string
+	Host       string
 	UserDBHost string
 	UserDBPort string
 	NatsHost   string
@@ -26,6 +27,7 @@ func NewConfig() *Config {
 	}
 	return &Config{
 		Port:       os.Getenv("USER_SERVICE_PORT"),
+		Host:       os.Getenv("USER_SERVICE_HOST"),
 		UserDBHost: os.Getenv("USER_DB_HOST"),
 		UserDBPort: os.Getenv("USER_DB_PORT"),
 		NatsHost:   os.Getenv("NATS_HOST"),

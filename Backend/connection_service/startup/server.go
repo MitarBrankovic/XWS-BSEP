@@ -1,13 +1,13 @@
 package startup
 
 import (
-	"dislinkt/common/auth"
 	connection "dislinkt/common/proto/connection_service"
 	"dislinkt/connection_service/application"
 	"dislinkt/connection_service/domain"
 	"dislinkt/connection_service/infrastructure/api"
 	"dislinkt/connection_service/infrastructure/persistence"
 	"dislinkt/connection_service/startup/config"
+	"dislinkt/user_service/auth"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"

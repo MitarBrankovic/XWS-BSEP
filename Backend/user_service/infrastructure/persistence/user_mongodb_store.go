@@ -75,6 +75,11 @@ func (store *UserMongoDBStore) DeleteAll() error {
 	return nil
 }
 
+func (store *UserMongoDBStore) Find(username string) (*domain.User, error) {
+	filter := bson.M{"_username": username}
+	return store.filterOne(filter)
+}
+
 func (store *UserMongoDBStore) filter(filter interface{}) ([]*domain.User, error) {
 	cursor, err := store.users.Find(context.TODO(), filter)
 	defer func(cursor *mongo.Cursor, ctx context.Context) {

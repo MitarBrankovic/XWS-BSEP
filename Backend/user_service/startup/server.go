@@ -1,9 +1,11 @@
 package startup
 
 import (
-	"dislinkt/common/auth"
-	user "dislinkt/common/proto/user_service"
+	"context"
+	"dislinkt/common/clients"
+	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/user_service/application"
+	"dislinkt/user_service/auth"
 	"dislinkt/user_service/domain"
 	"dislinkt/user_service/infrastructure/api"
 	"dislinkt/user_service/infrastructure/persistence"
@@ -11,14 +13,18 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/status"
 	"log"
 	"net"
 	"time"
 )
 
 type Server struct {
-	config *config.Config
+	config     *config.Config
+	userStore  domain.UserStore
+	jwtManager *auth.JWTManager
 }
 
 func NewServer(config *config.Config) *Server {
@@ -38,10 +44,15 @@ func (server *Server) Start() {
 
 	jwtManager := auth.NewJWTManager("secretKey", 15*time.Minute)
 
+	userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.Host, server.config.Port))
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	mongoClient := server.initMongoClient()
 	userStore := server.initUserStore(mongoClient)
 	userService := server.initUserService(userStore)
-	userHandler := server.initUserHandler(userService)
+	userHandler := server.initUserHandler(userService, jwtManager, userClient)
 	server.startGrpcServer(userHandler, jwtManager)
 }
 
@@ -72,11 +83,31 @@ func (server *Server) initUserService(store domain.UserStore) *application.UserS
 	return application.NewUserService(store)
 }
 
-func (server *Server) initUserHandler(service *application.UserService) *api.UserHandler {
-	return api.NewUserHandler(service)
+func (server *Server) initUserHandler(service *application.UserService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient) *api.UserHandler {
+	return api.NewUserHandler(service, jwtManager, userClient)
+}
+
+func (server *Server) Login(ctx context.Context, req *pbUser.LoginRequest) (*pbUser.LoginResponse, error) {
+	user, err := server.userStore.Find(req.GetUsername())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot find user: %v", err)
+	}
+
+	if user == nil || !user.IsCorrectPassword(req.GetPassword()) {
+		return nil, status.Errorf(codes.NotFound, "incorrect username/password")
+	}
+
+	token, err := server.jwtManager.Generate(user)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+	}
+
+	res := &pbUser.LoginResponse{AccessToken: token}
+	return res, nil
 }
 
 func (server *Server) startGrpcServer(userHandler *api.UserHandler, jwtManager *auth.JWTManager) {
+
 	interceptor := auth.NewAuthInterceptor(jwtManager, accessibleRoles())
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", server.config.Port))
 	if err != nil {
@@ -88,7 +119,7 @@ func (server *Server) startGrpcServer(userHandler *api.UserHandler, jwtManager *
 	}
 	grpcServer := grpc.NewServer(serverOptions...)
 	reflection.Register(grpcServer)
-	user.RegisterUserServiceServer(grpcServer, userHandler)
+	pbUser.RegisterUserServiceServer(grpcServer, userHandler)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %s", err)
 	}

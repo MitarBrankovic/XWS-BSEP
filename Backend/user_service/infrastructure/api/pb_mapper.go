@@ -4,6 +4,7 @@ import (
 	pb "dislinkt/common/proto/user_service"
 	"dislinkt/user_service/domain"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -21,14 +22,16 @@ func mapUserToPb(user *domain.User) *pb.User {
 }
 
 func mapPbToUser(pbUser *pb.User) *domain.User {
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(pbUser.Password), bcrypt.DefaultCost)
 	user := &domain.User{
-		Id:          getObjectId(pbUser.Id),
-		Username:    pbUser.Username,
-		FirstName:   pbUser.FirstName,
-		LastName:    pbUser.LastName,
-		FullName:    pbUser.FirstName + " " + pbUser.LastName,
-		DateOfBirth: pbUser.DateOfBirth.AsTime(),
-		Email:       pbUser.Email,
+		Id:             getObjectId(pbUser.Id),
+		Username:       pbUser.Username,
+		HashedPassword: string(hashedPassword),
+		FirstName:      pbUser.FirstName,
+		LastName:       pbUser.LastName,
+		FullName:       pbUser.FirstName + " " + pbUser.LastName,
+		DateOfBirth:    pbUser.DateOfBirth.AsTime(),
+		Email:          pbUser.Email,
 	}
 
 	return user
