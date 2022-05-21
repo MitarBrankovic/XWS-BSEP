@@ -88,7 +88,9 @@ func (handler *UserHandler) Login(ctx context.Context, req *pb.LoginRequest) (*p
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "cannot find user: %v", err)
 	}
-
+	if user.Activated == false {
+		return nil, status.Errorf(codes.Internal, "You need to activate account first!")
+	}
 	if user == nil || !user.IsCorrectPassword(req.GetPassword()) {
 		return nil, status.Errorf(codes.NotFound, "incorrect username/password")
 	}

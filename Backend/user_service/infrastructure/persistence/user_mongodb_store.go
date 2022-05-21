@@ -85,6 +85,7 @@ func (store *UserMongoDBStore) ActivateAccount(token string) *domain.User {
 	filter := bson.M{"token": token}
 	user, err := store.filterOne(filter)
 	user.Activated = true
+	user.Role = "user"
 	user.Token = ""
 	_, err = store.users.ReplaceOne(
 		context.TODO(),

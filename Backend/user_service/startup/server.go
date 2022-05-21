@@ -37,7 +37,10 @@ func accessibleRoles() map[string][]string {
 
 	const userServicePath = "/user.UserService/"
 
-	return map[string][]string{}
+	return map[string][]string{
+		userServicePath + "GetAll": {"admin"},
+		userServicePath + "Get":    {"user", "admin"},
+	}
 }
 
 func (server *Server) Start() {
