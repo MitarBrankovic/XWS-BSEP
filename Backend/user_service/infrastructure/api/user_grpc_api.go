@@ -13,16 +13,18 @@ import (
 
 type UserHandler struct {
 	pb.UnimplementedUserServiceServer
-	service    *application.UserService
-	jwtManager *auth.JWTManager
-	userClient pbUser.UserServiceClient
+	service     *application.UserService
+	mailService *application.MailService
+	jwtManager  *auth.JWTManager
+	userClient  pbUser.UserServiceClient
 }
 
-func NewUserHandler(service *application.UserService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient) *UserHandler {
+func NewUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient) *UserHandler {
 	return &UserHandler{
-		service:    service,
-		jwtManager: jwtManager,
-		userClient: userClient,
+		service:     service,
+		mailService: mailService,
+		jwtManager:  jwtManager,
+		userClient:  userClient,
 	}
 }
 
@@ -105,6 +107,7 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	user := mapPbToUser(request.User)
 	user.HashedPassword = string(hashedPassword)
+	handler.mailService.SendActivationEmail("nesto")
 	err = handler.service.Create(user)
 	if err != nil {
 		return nil, err

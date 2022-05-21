@@ -52,7 +52,8 @@ func (server *Server) Start() {
 	mongoClient := server.initMongoClient()
 	userStore := server.initUserStore(mongoClient)
 	userService := server.initUserService(userStore)
-	userHandler := server.initUserHandler(userService, jwtManager, userClient)
+	mailService := server.initMailService()
+	userHandler := server.initUserHandler(userService, mailService, jwtManager, userClient)
 	server.startGrpcServer(userHandler, jwtManager)
 }
 
@@ -83,8 +84,12 @@ func (server *Server) initUserService(store domain.UserStore) *application.UserS
 	return application.NewUserService(store)
 }
 
-func (server *Server) initUserHandler(service *application.UserService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient) *api.UserHandler {
-	return api.NewUserHandler(service, jwtManager, userClient)
+func (server *Server) initMailService() *application.MailService {
+	return application.NewMailService()
+}
+
+func (server *Server) initUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient) *api.UserHandler {
+	return api.NewUserHandler(service, mailService, jwtManager, userClient)
 }
 
 func (server *Server) Login(ctx context.Context, req *pbUser.LoginRequest) (*pbUser.LoginResponse, error) {
