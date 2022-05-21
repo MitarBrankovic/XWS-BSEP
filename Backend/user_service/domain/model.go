@@ -8,12 +8,12 @@ import (
 
 type User struct {
 	Id             primitive.ObjectID `bson:"_id"`
-	Username       string             `bson:"username"`
+	Username       string             `bson:"username" validate:"username"`
 	HashedPassword string             `bson:"hashedPassword"`
 	Role           string             `bson:"role"`
 	FirstName      string             `bson:"firstName"`
 	LastName       string             `bson:"lastName"`
-	FullName       string             `bson:"fullName"`
+	FullName       string             `bson:"fullName" validate:"name"`
 	DateOfBirth    time.Time          `bson:"dateOfBirth"`
 	Email          string             `bson:"email"`
 	Activated      bool               `bson:"isActivated"`

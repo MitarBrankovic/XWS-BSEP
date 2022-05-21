@@ -7,7 +7,9 @@ import (
 	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/user_service/application"
 	"dislinkt/user_service/auth"
+	"dislinkt/user_service/domain"
 	"encoding/hex"
+	"github.com/go-playground/validator"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -19,6 +21,7 @@ type UserHandler struct {
 	mailService *application.MailService
 	jwtManager  *auth.JWTManager
 	userClient  pbUser.UserServiceClient
+	validate    *validator.Validate
 }
 
 func NewUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient) *UserHandler {
@@ -27,6 +30,7 @@ func NewUserHandler(service *application.UserService, mailService *application.M
 		mailService: mailService,
 		jwtManager:  jwtManager,
 		userClient:  userClient,
+		validate:    domain.NewUserValidator(),
 	}
 }
 
@@ -62,6 +66,9 @@ func (handler UserHandler) Create(ctx context.Context, request *pb.CreateRequest
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	user := mapPbToUser(request.User)
 	user.HashedPassword = string(hashedPassword)
+	if err := handler.validate.Struct(user); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
+	}
 	err = handler.service.Create(user)
 	if err != nil {
 		return nil, err
@@ -74,6 +81,9 @@ func (handler UserHandler) Create(ctx context.Context, request *pb.CreateRequest
 func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest) (*pb.UpdateResponse, error) {
 	user := mapPbToUser(request.User)
 	userId := request.Id
+	if err := handler.validate.Struct(user); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
+	}
 	err := handler.service.Update(userId, user)
 	if err != nil {
 		return nil, err
@@ -113,6 +123,9 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	user.HashedPassword = string(hashedPassword)
 	user.Token = GenerateSecureToken(32)
 	handler.mailService.SendActivationEmail(user.Token, "http://localhost:8000/activate/")
+	if err := handler.validate.Struct(user); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
+	}
 	err = handler.service.Create(user)
 	if err != nil {
 		return nil, err
