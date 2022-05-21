@@ -40,8 +40,8 @@ func (service *MailService) SendActivationEmail(token string) {
 
 	from := mail.Address{"", "xwsclient@gmail.com"}
 	to := mail.Address{"", "xwsclient@gmail.com"}
-	subj := "This is the email subject"
-	body := "This is an example body.\n With two lines."
+	subj := "Activation mail"
+	body := "http://localhost:8000/activate/" + token
 
 	// Setup headers
 	headers := make(map[string]string)
@@ -77,7 +77,6 @@ func (service *MailService) SendActivationEmail(token string) {
 	if err != nil {
 		log.Panic(err)
 	}
-
 	c, err := smtp.NewClient(conn, host)
 	if err != nil {
 		log.Panic(err)

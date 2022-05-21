@@ -2,10 +2,12 @@ package api
 
 import (
 	"context"
+	"crypto/rand"
 	pb "dislinkt/common/proto/user_service"
 	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/user_service/application"
 	"dislinkt/user_service/auth"
+	"encoding/hex"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -107,7 +109,8 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	user := mapPbToUser(request.User)
 	user.HashedPassword = string(hashedPassword)
-	handler.mailService.SendActivationEmail("nesto")
+	user.Token = GenerateSecureToken(32)
+	handler.mailService.SendActivationEmail(user.Token)
 	err = handler.service.Create(user)
 	if err != nil {
 		return nil, err
@@ -115,4 +118,18 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	return &pb.RegisterResponse{
 		User: mapUserToPb(user),
 	}, nil
+}
+
+func (handler UserHandler) ActivateAccount(ctx context.Context, request *pb.ActivateRequest) (*pb.ActivateResponse, error) {
+	return &pb.ActivateResponse{
+		User: mapUserToPb(handler.service.ActivateAccount(request.Token)),
+	}, nil
+}
+
+func GenerateSecureToken(length int) string {
+	b := make([]byte, length)
+	if _, err := rand.Read(b); err != nil {
+		return ""
+	}
+	return hex.EncodeToString(b)
 }

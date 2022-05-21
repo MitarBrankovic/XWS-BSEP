@@ -31,3 +31,7 @@ func (service *UserService) Create(user *domain.User) error {
 func (service *UserService) Update(userId string, user *domain.User) error {
 	return service.store.Update(userId, user)
 }
+
+func (service *UserService) ActivateAccount(token string) *domain.User {
+	return service.store.ActivateAccount(token)
+}

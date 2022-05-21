@@ -44,6 +44,12 @@ service UserService{
       body : "user"
     };
   };
+
+  rpc ActivateAccount(ActivateRequest) returns (ActivateResponse) {
+    option (google.api.http) = {
+      get : "/activate/{token}"
+    };
+  };
 }
 
 message GetRequest {
@@ -92,6 +98,14 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
+  User user = 1;
+}
+
+message ActivateRequest {
+  string token = 1;
+}
+
+message ActivateResponse {
   User user = 1;
 }
 

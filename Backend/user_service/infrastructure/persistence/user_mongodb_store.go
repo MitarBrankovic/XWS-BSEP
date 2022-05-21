@@ -81,6 +81,22 @@ func (store *UserMongoDBStore) Find(username string) (*domain.User, error) {
 	return store.filterOne(filter)
 }
 
+func (store *UserMongoDBStore) ActivateAccount(token string) *domain.User {
+	filter := bson.M{"token": token}
+	user, err := store.filterOne(filter)
+	user.Activated = true
+	user.Token = ""
+	_, err = store.users.ReplaceOne(
+		context.TODO(),
+		bson.M{"_id": user.Id},
+		user,
+	)
+	if err != nil {
+		return user
+	}
+	return user
+}
+
 func (store *UserMongoDBStore) filter(filter interface{}) ([]*domain.User, error) {
 	cursor, err := store.users.Find(context.TODO(), filter)
 	defer func(cursor *mongo.Cursor, ctx context.Context) {
