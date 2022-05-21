@@ -8,4 +8,6 @@ type UserStore interface {
 	DeleteAll() error
 	Find(username string) (*User, error)
 	ActivateAccount(token string) *User
+	PasswordlessLoginDemand(username string) (*User, error)
+	PasswordlessLogin(token string) (*User, error)
 }

@@ -16,7 +16,7 @@ func NewMailService() *MailService {
 	return &MailService{}
 }
 
-func (service *MailService) SendActivationEmail(token string) {
+func (service *MailService) SendActivationEmail(token string, path string) {
 	/*from := "<xwsclient@gmail.com>"
 	password := "<XWSClient123.>"
 
@@ -41,7 +41,7 @@ func (service *MailService) SendActivationEmail(token string) {
 	from := mail.Address{"", "xwsclient@gmail.com"}
 	to := mail.Address{"", "xwsclient@gmail.com"}
 	subj := "Activation mail"
-	body := "http://localhost:8000/activate/" + token
+	body := path + token
 
 	// Setup headers
 	headers := make(map[string]string)

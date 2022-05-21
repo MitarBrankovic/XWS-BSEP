@@ -110,7 +110,7 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	user := mapPbToUser(request.User)
 	user.HashedPassword = string(hashedPassword)
 	user.Token = GenerateSecureToken(32)
-	handler.mailService.SendActivationEmail(user.Token)
+	handler.mailService.SendActivationEmail(user.Token, "http://localhost:8000/activate/")
 	err = handler.service.Create(user)
 	if err != nil {
 		return nil, err
@@ -124,6 +124,29 @@ func (handler UserHandler) ActivateAccount(ctx context.Context, request *pb.Acti
 	return &pb.ActivateResponse{
 		User: mapUserToPb(handler.service.ActivateAccount(request.Token)),
 	}, nil
+}
+
+func (handler UserHandler) PasswordlessLoginDemand(ctx context.Context, request *pb.PasswordlessLoginDemandRequest) (*pb.PasswordlessLoginDemandResponse, error) {
+	user, _ := handler.service.Find(request.Username)
+	user.PasswordToken = GenerateSecureToken(32)
+	handler.service.Update(user.Id.Hex(), user)
+	handler.mailService.SendActivationEmail(user.PasswordToken, "http://localhost:8000/login/")
+	return &pb.PasswordlessLoginDemandResponse{
+		Email: user.Email,
+	}, nil
+}
+
+func (handler UserHandler) PasswordlessLogin(ctx context.Context, request *pb.PasswordlesLoginRequest) (*pb.LoginResponse, error) {
+	user, _ := handler.service.PasswordlessLogin(request.Token)
+	token, err := handler.jwtManager.Generate(user)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+	}
+
+	user.PasswordToken = ""
+	handler.service.Update(user.Id.Hex(), user)
+
+	return &pb.LoginResponse{AccessToken: token}, nil
 }
 
 func GenerateSecureToken(length int) string {

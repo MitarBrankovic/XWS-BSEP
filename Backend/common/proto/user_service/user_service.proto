@@ -50,6 +50,18 @@ service UserService{
       get : "/activate/{token}"
     };
   };
+
+  rpc PasswordlessLoginDemand(PasswordlessLoginDemandRequest) returns (PasswordlessLoginDemandResponse) {
+    option (google.api.http) = {
+      get : "/loginDemand/{username}"
+    };
+  };
+
+  rpc PasswordlessLogin(PasswordlesLoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      get : "/login/{token}"
+    };
+  };
 }
 
 message GetRequest {
@@ -107,6 +119,18 @@ message ActivateRequest {
 
 message ActivateResponse {
   User user = 1;
+}
+
+message PasswordlessLoginDemandRequest{
+  string username = 1;
+}
+
+message PasswordlessLoginDemandResponse{
+  string email = 1;
+}
+
+message PasswordlesLoginRequest{
+  string token = 1;
 }
 
 message User {

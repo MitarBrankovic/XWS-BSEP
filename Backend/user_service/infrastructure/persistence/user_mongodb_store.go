@@ -97,6 +97,16 @@ func (store *UserMongoDBStore) ActivateAccount(token string) *domain.User {
 	return user
 }
 
+func (store *UserMongoDBStore) PasswordlessLoginDemand(username string) (*domain.User, error) {
+	filter := bson.M{"username": username}
+	return store.filterOne(filter)
+}
+
+func (store *UserMongoDBStore) PasswordlessLogin(token string) (*domain.User, error) {
+	filter := bson.M{"passwordToken": token}
+	return store.filterOne(filter)
+}
+
 func (store *UserMongoDBStore) filter(filter interface{}) ([]*domain.User, error) {
 	cursor, err := store.users.Find(context.TODO(), filter)
 	defer func(cursor *mongo.Cursor, ctx context.Context) {

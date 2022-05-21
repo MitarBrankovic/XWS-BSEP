@@ -35,3 +35,11 @@ func (service *UserService) Update(userId string, user *domain.User) error {
 func (service *UserService) ActivateAccount(token string) *domain.User {
 	return service.store.ActivateAccount(token)
 }
+
+func (service *UserService) PasswordlessLoginDemand(username string) (*domain.User, error) {
+	return service.store.PasswordlessLoginDemand(username)
+}
+
+func (service *UserService) PasswordlessLogin(token string) (*domain.User, error) {
+	return service.store.PasswordlessLogin(token)
+}
