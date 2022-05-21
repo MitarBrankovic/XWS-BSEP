@@ -153,6 +153,9 @@ func (handler UserHandler) PasswordlessLoginDemand(ctx context.Context, request 
 
 func (handler UserHandler) PasswordlessLogin(ctx context.Context, request *pb.PasswordlesLoginRequest) (*pb.LoginResponse, error) {
 	user, _ := handler.service.PasswordlessLogin(request.Token)
+	if user.PasswordToken == "" {
+		return nil, status.Errorf(codes.Internal, "Passwordless login request doesn't exist!")
+	}
 	token, err := handler.jwtManager.Generate(user)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "cannot generate access token")
