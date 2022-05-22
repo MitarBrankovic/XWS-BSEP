@@ -15,7 +15,7 @@ var users = []*domain.User{
 		LastName:       "Milovcevic",
 		FullName:       "Radisa Milovcevic",
 		DateOfBirth:    time.Time{},
-		Email:          "radisamilovcevic@gmail.com",
+		Email:          "xwsclient@gmail.com",
 		Role:           "user",
 		Activated:      true,
 		Private:        false,

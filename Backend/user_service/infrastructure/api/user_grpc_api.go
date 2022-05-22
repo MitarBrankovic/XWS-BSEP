@@ -201,7 +201,10 @@ func (handler UserHandler) PasswordlessLogin(ctx context.Context, request *pb.Pa
 }
 
 func (handler UserHandler) RecoverAccountDemand(ctx context.Context, request *pb.RecoverAccountDemandRequest) (*pb.RecoverAccountDemandResponse, error) {
-	user, _ := handler.service.FindByEmail(request.Email)
+	user, err := handler.service.FindByEmail(request.Email)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "no account with said email")
+	}
 	user.RecoveryToken = GenerateSecureToken(32)
 	handler.service.Update(user.Id.Hex(), user)
 	//TODO
