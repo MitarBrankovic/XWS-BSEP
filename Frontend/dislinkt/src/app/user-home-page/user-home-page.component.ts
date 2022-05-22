@@ -21,8 +21,9 @@ export class UserHomePageComponent implements OnInit {
     let token = localStorage.getItem('token')
     if (token === null) {
       token = ""
+      this.router.navigate(['/'])
     }
-    if(this.parseJwt(JSON.parse(token).accessToken).role !== "user"){
+    if(this.parseJwt(JSON.parse(token)?.accessToken)?.role !== "user"){
       this.router.navigate(['/'])
     }
   }
