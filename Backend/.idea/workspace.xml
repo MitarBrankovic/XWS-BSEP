@@ -52,7 +52,14 @@
       <recent name="C:\Users\Brankovic\Desktop\XWS-BSEP\Backend\common\proto\post_service\google\api" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Compound.xml">
+    <configuration name="xml" type="CompoundRunConfigurationType">
+      <toRun name="go build dislinkt/api_gateway" type="GoApplicationRunConfiguration" />
+      <toRun name="go build dislinkt/connection_service" type="GoApplicationRunConfiguration" />
+      <toRun name="go build dislinkt/post_service" type="GoApplicationRunConfiguration" />
+      <toRun name="go build dislinkt/user_service" type="GoApplicationRunConfiguration" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="Backend" />
       <working_directory value="$PROJECT_DIR$" />
@@ -60,6 +67,42 @@
       <package value="dislinkt/post_service" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build dislinkt/api_gateway" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="Backend" />
+      <working_directory value="$PROJECT_DIR$/api_gateway" />
+      <kind value="PACKAGE" />
+      <package value="dislinkt/api_gateway" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/api_gateway/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build dislinkt/connection_service" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="Backend" />
+      <working_directory value="$PROJECT_DIR$/connection_service" />
+      <kind value="PACKAGE" />
+      <package value="dislinkt/connection_service" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/connection_service/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build dislinkt/post_service" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="Backend" />
+      <working_directory value="$PROJECT_DIR$/post_service" />
+      <kind value="PACKAGE" />
+      <package value="dislinkt/post_service" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/post_service/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build dislinkt/user_service" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="Backend" />
+      <working_directory value="$PROJECT_DIR$/user_service" />
+      <kind value="PACKAGE" />
+      <package value="dislinkt/user_service" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/user_service/main.go" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
@@ -81,6 +124,14 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Compound.xml" />
+      <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      <item itemvalue="Go Build.go build dislinkt/api_gateway" />
+      <item itemvalue="Go Build.go build dislinkt/connection_service" />
+      <item itemvalue="Go Build.go build dislinkt/post_service" />
+      <item itemvalue="Go Build.go build dislinkt/user_service" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />

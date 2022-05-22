@@ -15,7 +15,7 @@ type User struct {
 	LastName       string             `bson:"lastName"`
 	FullName       string             `bson:"fullName" validate:"name"`
 	DateOfBirth    time.Time          `bson:"dateOfBirth"`
-	Email          string             `bson:"email"`
+	Email          string             `bson:"email" validate:"email"`
 	Activated      bool               `bson:"isActivated"`
 	Private        bool               `bson:"isPrivate"`
 	Token          string             `bson:"token"`

@@ -3,17 +3,20 @@ package api
 import (
 	"context"
 	pb "dislinkt/common/proto/post_service"
+	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/post_service/application"
 )
 
 type PostHandler struct {
 	pb.UnimplementedPostServiceServer
-	service *application.PostService
+	service    *application.PostService
+	userClient pbUser.UserServiceClient
 }
 
-func NewPostHandler(service *application.PostService) *PostHandler {
+func NewPostHandler(service *application.PostService, userClient pbUser.UserServiceClient) *PostHandler {
 	return &PostHandler{
-		service: service,
+		service:    service,
+		userClient: userClient,
 	}
 }
 

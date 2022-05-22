@@ -1,7 +1,9 @@
 package startup
 
 import (
+	"dislinkt/common/clients"
 	post "dislinkt/common/proto/post_service"
+	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/post_service/application"
 	"dislinkt/post_service/domain"
 	"dislinkt/post_service/infrastructure/api"
@@ -41,7 +43,13 @@ func (server *Server) Start() {
 	mongoClient := server.initMongoClient()
 	postStore := server.initPostStore(mongoClient)
 	postService := server.initPostService(postStore)
-	postHandler := server.initPostHandler(postService)
+
+	userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	postHandler := server.initPostHandler(postService, userClient)
 	server.startGrpcServer(postHandler, jwtManager)
 }
 
@@ -72,8 +80,8 @@ func (server *Server) initPostService(store domain.PostStore) *application.PostS
 	return application.NewPostService(store)
 }
 
-func (server *Server) initPostHandler(service *application.PostService) *api.PostHandler {
-	return api.NewPostHandler(service)
+func (server *Server) initPostHandler(service *application.PostService, userClient pbUser.UserServiceClient) *api.PostHandler {
+	return api.NewPostHandler(service, userClient)
 }
 
 func (server *Server) startGrpcServer(postHandler *api.PostHandler, jwtManager *auth.JWTManager) {

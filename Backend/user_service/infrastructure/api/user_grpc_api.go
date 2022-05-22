@@ -13,6 +13,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"time"
+	"unicode"
 )
 
 type UserHandler struct {
@@ -65,6 +67,15 @@ func (handler *UserHandler) GetAll(ctx context.Context, request *pb.GetAllReques
 func (handler UserHandler) Create(ctx context.Context, request *pb.CreateRequest) (*pb.CreateResponse, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	user := mapPbToUser(request.User)
+
+	if !isValid(request.User.Password) {
+		return nil, status.Errorf(codes.InvalidArgument, "password failed: %v", err)
+	}
+
+	if !user.DateOfBirth.Before(time.Now()) {
+		return nil, status.Errorf(codes.InvalidArgument, "date of birth failed: %v", err)
+	}
+
 	user.HashedPassword = string(hashedPassword)
 	if err := handler.validate.Struct(user); err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
@@ -120,6 +131,15 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	user := mapPbToUser(request.User)
+
+	if !isValid(request.User.Password) {
+		return nil, status.Errorf(codes.InvalidArgument, "password failed: %v", err)
+	}
+
+	if !user.DateOfBirth.Before(time.Now()) {
+		return nil, status.Errorf(codes.InvalidArgument, "date of birth failed: %v", err)
+	}
+
 	user.HashedPassword = string(hashedPassword)
 	user.Token = GenerateSecureToken(32)
 	handler.mailService.SendActivationEmail(user.Token, "http://localhost:8000/activate/")
@@ -173,4 +193,30 @@ func GenerateSecureToken(length int) string {
 		return ""
 	}
 	return hex.EncodeToString(b)
+}
+
+func isValid(s string) bool {
+	var (
+		hasMinLen  = false
+		hasUpper   = false
+		hasLower   = false
+		hasNumber  = false
+		hasSpecial = false
+	)
+	if len(s) >= 4 {
+		hasMinLen = true
+	}
+	for _, char := range s {
+		switch {
+		case unicode.IsUpper(char):
+			hasUpper = true
+		case unicode.IsLower(char):
+			hasLower = true
+		case unicode.IsNumber(char):
+			hasNumber = true
+		case unicode.IsPunct(char) || unicode.IsSymbol(char):
+			hasSpecial = true
+		}
+	}
+	return hasMinLen && hasUpper && hasLower && hasNumber && hasSpecial
 }
