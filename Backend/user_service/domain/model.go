@@ -20,6 +20,7 @@ type User struct {
 	Private        bool               `bson:"isPrivate"`
 	Token          string             `bson:"token"`
 	PasswordToken  string             `bson:"passwordToken"`
+	RecoveryToken  string             `bson:"recoveryToken"`
 }
 
 func (user *User) IsCorrectPassword(password string) bool {

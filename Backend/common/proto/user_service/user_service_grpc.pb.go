@@ -31,6 +31,8 @@ type UserServiceClient interface {
 	ActivateAccount(ctx context.Context, in *ActivateRequest, opts ...grpc.CallOption) (*ActivateResponse, error)
 	PasswordlessLoginDemand(ctx context.Context, in *PasswordlessLoginDemandRequest, opts ...grpc.CallOption) (*PasswordlessLoginDemandResponse, error)
 	PasswordlessLogin(ctx context.Context, in *PasswordlesLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	RecoverAccountDemand(ctx context.Context, in *RecoverAccountDemandRequest, opts ...grpc.CallOption) (*RecoverAccountDemandResponse, error)
+	RecoverAccount(ctx context.Context, in *RecoverAccountRequest, opts ...grpc.CallOption) (*RecoverAccountResponse, error)
 }
 
 type userServiceClient struct {
@@ -122,6 +124,24 @@ func (c *userServiceClient) PasswordlessLogin(ctx context.Context, in *Passwordl
 	return out, nil
 }
 
+func (c *userServiceClient) RecoverAccountDemand(ctx context.Context, in *RecoverAccountDemandRequest, opts ...grpc.CallOption) (*RecoverAccountDemandResponse, error) {
+	out := new(RecoverAccountDemandResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/RecoverAccountDemand", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) RecoverAccount(ctx context.Context, in *RecoverAccountRequest, opts ...grpc.CallOption) (*RecoverAccountResponse, error) {
+	out := new(RecoverAccountResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/RecoverAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -135,6 +155,8 @@ type UserServiceServer interface {
 	ActivateAccount(context.Context, *ActivateRequest) (*ActivateResponse, error)
 	PasswordlessLoginDemand(context.Context, *PasswordlessLoginDemandRequest) (*PasswordlessLoginDemandResponse, error)
 	PasswordlessLogin(context.Context, *PasswordlesLoginRequest) (*LoginResponse, error)
+	RecoverAccountDemand(context.Context, *RecoverAccountDemandRequest) (*RecoverAccountDemandResponse, error)
+	RecoverAccount(context.Context, *RecoverAccountRequest) (*RecoverAccountResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -168,6 +190,12 @@ func (UnimplementedUserServiceServer) PasswordlessLoginDemand(context.Context, *
 }
 func (UnimplementedUserServiceServer) PasswordlessLogin(context.Context, *PasswordlesLoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PasswordlessLogin not implemented")
+}
+func (UnimplementedUserServiceServer) RecoverAccountDemand(context.Context, *RecoverAccountDemandRequest) (*RecoverAccountDemandResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecoverAccountDemand not implemented")
+}
+func (UnimplementedUserServiceServer) RecoverAccount(context.Context, *RecoverAccountRequest) (*RecoverAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecoverAccount not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -344,6 +372,42 @@ func _UserService_PasswordlessLogin_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_RecoverAccountDemand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecoverAccountDemandRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RecoverAccountDemand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/RecoverAccountDemand",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RecoverAccountDemand(ctx, req.(*RecoverAccountDemandRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_RecoverAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecoverAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RecoverAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/RecoverAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RecoverAccount(ctx, req.(*RecoverAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -386,6 +450,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PasswordlessLogin",
 			Handler:    _UserService_PasswordlessLogin_Handler,
+		},
+		{
+			MethodName: "RecoverAccountDemand",
+			Handler:    _UserService_RecoverAccountDemand_Handler,
+		},
+		{
+			MethodName: "RecoverAccount",
+			Handler:    _UserService_RecoverAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

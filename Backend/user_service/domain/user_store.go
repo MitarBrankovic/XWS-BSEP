@@ -7,7 +7,9 @@ type UserStore interface {
 	Update(userId string, user *User) error
 	DeleteAll() error
 	Find(username string) (*User, error)
+	FindByEmail(email string) (*User, error)
 	ActivateAccount(token string) *User
 	PasswordlessLoginDemand(username string) (*User, error)
 	PasswordlessLogin(token string) (*User, error)
+	RecoverAccount(token string, newPassword string) (*User, error)
 }

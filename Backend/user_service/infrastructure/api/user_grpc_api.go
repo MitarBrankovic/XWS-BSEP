@@ -187,6 +187,24 @@ func (handler UserHandler) PasswordlessLogin(ctx context.Context, request *pb.Pa
 	return &pb.LoginResponse{AccessToken: token}, nil
 }
 
+func (handler UserHandler) RecoverAccountDemand(ctx context.Context, request *pb.RecoverAccountDemandRequest) (*pb.RecoverAccountDemandResponse, error) {
+	user, _ := handler.service.FindByEmail(request.Email)
+	user.RecoveryToken = GenerateSecureToken(32)
+	handler.service.Update(user.Id.Hex(), user)
+	//TODO
+	//front da se pogodi
+	handler.mailService.SendActivationEmail(user.RecoveryToken, "http://localhost:8000/recover/")
+	return &pb.RecoverAccountDemandResponse{}, nil
+}
+
+func (handler UserHandler) RecoverAccount(ctx context.Context, request *pb.RecoverAccountRequest) (*pb.RecoverAccountResponse, error) {
+	_, err := handler.service.RecoverAccount(request.Token, request.NewPassword)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "recovery account error")
+	}
+	return &pb.RecoverAccountResponse{}, nil
+}
+
 func GenerateSecureToken(length int) string {
 	b := make([]byte, length)
 	if _, err := rand.Read(b); err != nil {
