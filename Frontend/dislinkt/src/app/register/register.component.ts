@@ -16,7 +16,12 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  formatTime(){ 
+    this.newUser.dateOfBirth = `${this.newUser.dateOfBirth}T00:00:00.000Z` 
+  }
+
   createAccount() {
+    this.formatTime();
     this.userService.register(this.newUser).subscribe();
   }
 
