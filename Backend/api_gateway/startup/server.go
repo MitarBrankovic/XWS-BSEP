@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type Server struct {
@@ -26,6 +27,45 @@ func NewServer(config *cfg.Config) *Server {
 	}
 	server.initHandlers()
 	return server
+}
+
+func cors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		h := w.Header()
+
+		h.Set("Access-Control-Allow-Origin", "https://localhost:4200")
+
+		if r.Method == http.MethodOptions {
+			h.Set("Access-Control-Allow-Methods", strings.Join(
+				[]string{
+					http.MethodOptions,
+					http.MethodGet,
+					http.MethodPut,
+					http.MethodHead,
+					http.MethodPost,
+					http.MethodDelete,
+					http.MethodPatch,
+					http.MethodTrace,
+				}, ", ",
+			))
+
+			h.Set("Access-Control-Allow-Headers", strings.Join(
+				[]string{
+					"Access-Control-Allow-Headers",
+					"Origin",
+					"X-Requested-With",
+					"Content-Type",
+					"Accept",
+					"Authorization",
+					"Location",
+				}, ", ",
+			))
+
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
 
 func (server *Server) initHandlers() {
@@ -51,5 +91,5 @@ func (server *Server) initHandlers() {
 }
 
 func (server *Server) Start() {
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), server.mux))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), cors(server.mux)))
 }

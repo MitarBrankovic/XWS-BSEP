@@ -4,23 +4,23 @@ import { Router } from "@angular/router";
 import { User } from "../model/user.model";
 
 @Injectable({
-    providedIn: 'root',
-  })
-  export class UserService {
-    private _url = 'http://localhost:8000';
-  
-    constructor(private http: HttpClient, private router: Router) {}
+  providedIn: 'root',
+})
+export class UserService {
+  private _url = 'http://localhost:8000';
 
-    public login(user: User) {
-      return this.http.post(this._url + '/login', user);
-    }
+  constructor(private http: HttpClient, private router: Router) { }
 
-    public register(user: User) {
-    	return this.http.post(this._url + '/register', user);
-    }
-
-		public passwordlessLogin(username: string) {
-			return this.http.get(this._url + '/loginDemand');
-		}
-
+  public login(user: User) {
+    return this.http.post(this._url + '/login', user);
   }
+
+  public register(user: User) {
+    return this.http.post(this._url + '/register', user);
+  }
+
+  public passwordlessLogin(username: string) {
+    return this.http.get(this._url + '/loginDemand');
+  }
+
+}

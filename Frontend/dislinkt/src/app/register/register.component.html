@@ -1,1 +1,26 @@
-<p>register works!</p>
+<section class="hero is-fullheight is-light">
+    <div class="hero-body has-text-centered">
+        <div class="container">
+            <div class="box">
+                <label>Username:</label>
+                <input id="usernameField" class="input" type="text" [(ngModel)]="newUser.username"> <br>
+
+                <label>Password:</label>
+                <input id="passwordField" class="input" type="text" [(ngModel)]="newUser.password"><br>
+
+                <label>First name:</label>
+                <input id="usernameField" class="input" type="text" [(ngModel)]="newUser.firstName"> <br>
+
+                <label>Last name:</label>
+                <input id="passwordField" class="input" type="text" [(ngModel)]="newUser.lastName"><br>
+
+                <label>Date of birth:</label>
+                <input id="usernameField" class="input" type="date" [(ngModel)]="newUser.dateOfBirth"> <br>
+
+                <label>Email:</label>
+                <input id="passwordField" class="input" type="text" [(ngModel)]="newUser.email"><br>
+                <button class="button is-dark mt-5" (click)="createAccount()">Create account</button>
+            </div>
+        </div>
+    </div>
+</section>
