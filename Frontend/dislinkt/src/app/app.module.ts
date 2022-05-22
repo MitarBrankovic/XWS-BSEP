@@ -8,13 +8,15 @@ import { RegisterComponent } from './register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    UserHomePageComponent
+    UserHomePageComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

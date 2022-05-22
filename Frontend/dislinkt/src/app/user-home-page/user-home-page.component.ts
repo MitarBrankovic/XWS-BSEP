@@ -1,4 +1,7 @@
+import { getMissingNgModuleMetadataErrorData } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -8,18 +11,22 @@ import { UserService } from '../services/user.service';
 })
 export class UserHomePageComponent implements OnInit {
 
-  oldPassword: string = ''
-  newPassword: string = ''
-  loggedUser: any
+  user: any
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private Router: Router) { }
 
   ngOnInit(): void {
-    this.loggedUser = localStorage.getItem('username')
+    this.getUserbyUsername() 
   }
 
-  changePassword() {
-    this.userService.changePassword(this.loggedUser, this.oldPassword, this.newPassword).subscribe()
+  changePasswordRedirect() {
+    this.Router.navigate(['/changePassword'])
+  }
+
+  getUserbyUsername(){
+    this.userService.getUserByUsername().subscribe(user => {
+      this.user = user
+    })
   }
 
 }

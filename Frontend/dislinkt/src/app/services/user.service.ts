@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { User } from "../model/user.model";
@@ -28,7 +28,23 @@ export class UserService {
       oldPassword: oldPassword,
       newPassword: newPassword
     }
-    return this.http.put(this._url + '/changePassword/' + username, body);
+
+    let token = localStorage.getItem('token')
+    if (token === null) {
+      token = ""
+    } 
+    let header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+    return this.http.put(this._url + '/changePassword/' + username, body, { headers: header });
+  }
+
+  public getUserByUsername() {
+    let username = localStorage.getItem('username')
+    let token = localStorage.getItem('token')
+    if (token === null) {
+      token = ""
+    } 
+    let header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+    return this.http.get(this._url + '/user/' + username, { headers: header });
   }
 
 }

@@ -11,6 +11,7 @@ import { UserService } from '../services/user.service';
 export class LoginComponent implements OnInit {
 
   user: User = new User;
+  passwordless: boolean = false;
 
 
   constructor(private userService: UserService,
@@ -30,12 +31,15 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  loginPasswordless() {
+  }
+
   register() {
     this.router.navigate(['/register']);
   }
 
   recoverPassword() {
-
   }
+
 
 }
