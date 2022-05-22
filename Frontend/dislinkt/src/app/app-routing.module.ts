@@ -9,13 +9,14 @@ import { RegisterComponent } from './register/register.component';
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
 
 const routes: Routes = [
-  { path: "", component: LoginComponent },
+  { path: "", redirectTo: '/login', pathMatch: 'full'  },
+  { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "userHomePage", component: UserHomePageComponent },
   { path: "changePassword", component: ChangePasswordComponent },
   { path: "recovery", component: RecoveryEmailComponent },
   { path: "recover/:token", component: RecoveryPasswordComponent},
-  { path: "redirect/:token", component: RedirectComponent}
+  { path: "redirect/:token", component: RedirectComponent},
 ];
 
 @NgModule({
