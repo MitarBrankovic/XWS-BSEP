@@ -31,7 +31,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  loginPasswordless() {
+  loginPasswordlessDemand() {
+    this.userService.loginPaswordlessDemand(this.user.username).subscribe()
   }
 
   register() {

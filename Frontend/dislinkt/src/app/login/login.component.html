@@ -10,7 +10,7 @@
 
         <button class="button is-dark mt-5 mr-5" (click)="register()">Register</button>
         <button class="button is-light mt-5" *ngIf="!passwordless" (click)="login()">Login</button>
-        <button class="button is-light mt-5" *ngIf="passwordless" (click)="loginPasswordless()">Passwordless</button> <br> <br>
+        <button class="button is-light mt-5" *ngIf="passwordless" (click)="loginPasswordlessDemand()">Passwordless</button> <br> <br>
         <label class="checkbox">
           <input type="checkbox" [(ngModel)]="passwordless">
           Passwordless ?

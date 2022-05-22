@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { RecoveryEmailComponent } from './recovery-email/recovery-email.component';
+import { RecoveryPasswordComponent } from './recovery-password/recovery-password.component';
+import { RedirectComponent } from './redirect/redirect.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { RecoveryEmailComponent } from './recovery-email/recovery-email.componen
     RegisterComponent,
     UserHomePageComponent,
     ChangePasswordComponent,
-    RecoveryEmailComponent
+    RecoveryEmailComponent,
+    RecoveryPasswordComponent,
+    RedirectComponent
   ],
   imports: [
     BrowserModule,
