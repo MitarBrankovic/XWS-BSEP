@@ -178,7 +178,7 @@ func (handler UserHandler) PasswordlessLoginDemand(ctx context.Context, request 
 	user, _ := handler.service.Find(request.Username)
 	user.PasswordToken = GenerateSecureToken(32)
 	handler.service.Update(user.Id.Hex(), user)
-	handler.mailService.SendActivationEmail(user.PasswordToken, "http://localhost:8000/login/")
+	handler.mailService.SendActivationEmail(user.PasswordToken, "http://localhost:4200/redirect/")
 	return &pb.PasswordlessLoginDemandResponse{
 		Email: user.Email,
 	}, nil
@@ -209,7 +209,7 @@ func (handler UserHandler) RecoverAccountDemand(ctx context.Context, request *pb
 	handler.service.Update(user.Id.Hex(), user)
 	//TODO
 	//front da se pogodi
-	handler.mailService.SendActivationEmail(user.RecoveryToken, "http://localhost:8000/recover/")
+	handler.mailService.SendActivationEmail(user.RecoveryToken, "http://localhost:4200/recover/")
 	return &pb.RecoverAccountDemandResponse{}, nil
 }
 

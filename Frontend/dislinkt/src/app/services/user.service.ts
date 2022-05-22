@@ -15,13 +15,18 @@ export class UserService {
     return this.http.post(this._url + '/login', user);
   }
 
+  public loginPaswordlessDemand(username: string) {
+    return this.http.get(this._url + '/loginDemand/' + username);
+  } 
+
+  public loginPaswrodless(token: string) {
+    return this.http.get(this._url + '/login/' + token);
+  }
+
   public register(user: User) {
     return this.http.post(this._url + '/register', user);
   }
 
-  public passwordlessLogin(username: string) {
-    return this.http.get(this._url + '/loginDemand');
-  }
 
   public changePassword(username: string, oldPassword: string, newPassword: string) {
     let body = {
@@ -38,7 +43,17 @@ export class UserService {
   }
 
   public sendRecoveryMessage(email: string) {
-    return this.http.post(this._url + '/recover/', email);
+    let body = {
+      email: email
+    }
+    return this.http.post(this._url + '/recover', body);
+  }
+
+  public recoveryPassword(token:string, newPassword: string){
+    let body = {
+      newPassword: newPassword
+    }
+    return this.http.put(this._url + '/recover/' + token, body);
   }
 
   public getUserByUsername() {
