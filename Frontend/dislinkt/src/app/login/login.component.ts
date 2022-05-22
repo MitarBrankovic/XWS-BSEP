@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
 
   user: User = new User;
 
+
   constructor(private userService: UserService,
     private router: Router) { }
 
@@ -19,11 +20,22 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.userService.login(this.user).subscribe();
+    this.userService.login(this.user).subscribe((token) => {
+
+      localStorage.setItem('token', JSON.stringify(token))
+
+      localStorage.setItem('username', this.user.username)
+
+      this.router.navigate(['/userHomePage']);
+    });
   }
 
   register() {
     this.router.navigate(['/register']);
+  }
+
+  recoverPassword() {
+
   }
 
 }

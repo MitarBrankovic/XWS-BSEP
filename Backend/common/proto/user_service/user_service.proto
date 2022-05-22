@@ -9,6 +9,13 @@ import "google/protobuf/timestamp.proto";
 
 
 service UserService{
+
+  rpc FindByUsername(FindByUsernameRequest) returns(FindByUsernameResponse) {
+    option (google.api.http) = {
+      get: "/user/{username}"
+    };
+  }
+
   rpc Get(GetRequest) returns(GetResponse) {
     option (google.api.http) = {
       get: "/user/{id}"
@@ -84,6 +91,14 @@ service UserService{
     };
   };
 
+}
+
+message FindByUsernameRequest {
+  string username = 1;
+}
+
+message FindByUsernameResponse{
+  User user = 1;
 }
 
 message GetRequest {

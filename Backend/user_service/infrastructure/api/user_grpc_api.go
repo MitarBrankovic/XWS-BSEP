@@ -36,6 +36,19 @@ func NewUserHandler(service *application.UserService, mailService *application.M
 	}
 }
 
+func (handler *UserHandler) FindByUsername(ctx context.Context, request *pb.FindByUsernameRequest) (*pb.FindByUsernameResponse, error) {
+
+	User, err := handler.service.Find(request.Username)
+	if err != nil {
+		return nil, err
+	}
+	UserPb := mapUserToPb(User)
+	response := &pb.FindByUsernameResponse{
+		User: UserPb,
+	}
+	return response, nil
+}
+
 func (handler *UserHandler) Get(ctx context.Context, request *pb.GetRequest) (*pb.GetResponse, error) {
 	userId := request.Id
 	User, err := handler.service.Get(userId)

@@ -6,20 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/common/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/common/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connection_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/startup/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/user_service/user_service.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/user_service/user_service.pb.gw.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/user_service/user_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/user_service/user_service.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/user_service/user_service_grpc.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_service/infrastructure/api/user_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/infrastructure/api/user_grpc_api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/app-routing.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/app.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/login/login.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/login/login.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/user.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,6 +153,17 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

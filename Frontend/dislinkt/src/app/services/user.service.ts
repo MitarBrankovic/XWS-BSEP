@@ -23,4 +23,12 @@ export class UserService {
     return this.http.get(this._url + '/loginDemand');
   }
 
+  public changePassword(username: string, oldPassword: string, newPassword: string) {
+    let body = {
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    }
+    return this.http.put(this._url + '/changePassword/' + username, body);
+  }
+
 }
