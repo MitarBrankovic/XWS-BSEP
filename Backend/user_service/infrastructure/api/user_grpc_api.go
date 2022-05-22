@@ -205,6 +205,14 @@ func (handler UserHandler) RecoverAccount(ctx context.Context, request *pb.Recov
 	return &pb.RecoverAccountResponse{}, nil
 }
 
+func (handler UserHandler) ChangePassword(ctx context.Context, request *pb.ChangePasswordRequest) (*pb.ChangePasswordResponse, error) {
+	if !isValid(request.NewPassword) {
+		return nil, status.Errorf(codes.InvalidArgument, "new password inadequate")
+	}
+	err := handler.service.ChangePassword(request.Username, request.NewPassword, request.OldPassword)
+	return &pb.ChangePasswordResponse{}, err
+}
+
 func GenerateSecureToken(length int) string {
 	b := make([]byte, length)
 	if _, err := rand.Read(b); err != nil {

@@ -77,6 +77,13 @@ service UserService{
     };
   };
 
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {
+    option (google.api.http) = {
+      put : "/changePassword/{username}"
+      body : "*"
+    };
+  };
+
 }
 
 message GetRequest {
@@ -160,6 +167,14 @@ message PasswordlessLoginDemandResponse{
 message PasswordlesLoginRequest{
   string token = 1;
 }
+
+message ChangePasswordRequest{
+  string username = 1;
+  string oldPassword = 2;
+  string newPassword = 3;
+}
+
+message ChangePasswordResponse {}
 
 message User {
   string id = 1;

@@ -51,3 +51,7 @@ func (service *UserService) PasswordlessLogin(token string) (*domain.User, error
 func (service *UserService) RecoverAccount(token string, newPassword string) (*domain.User, error) {
 	return service.store.RecoverAccount(token, newPassword)
 }
+
+func (service *UserService) ChangePassword(username string, newPassword string, oldPassword string) error {
+	return service.store.ChangePassword(username, newPassword, oldPassword)
+}

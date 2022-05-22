@@ -33,6 +33,7 @@ type UserServiceClient interface {
 	PasswordlessLogin(ctx context.Context, in *PasswordlesLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	RecoverAccountDemand(ctx context.Context, in *RecoverAccountDemandRequest, opts ...grpc.CallOption) (*RecoverAccountDemandResponse, error)
 	RecoverAccount(ctx context.Context, in *RecoverAccountRequest, opts ...grpc.CallOption) (*RecoverAccountResponse, error)
+	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error)
 }
 
 type userServiceClient struct {
@@ -142,6 +143,15 @@ func (c *userServiceClient) RecoverAccount(ctx context.Context, in *RecoverAccou
 	return out, nil
 }
 
+func (c *userServiceClient) ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error) {
+	out := new(ChangePasswordResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/ChangePassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -157,6 +167,7 @@ type UserServiceServer interface {
 	PasswordlessLogin(context.Context, *PasswordlesLoginRequest) (*LoginResponse, error)
 	RecoverAccountDemand(context.Context, *RecoverAccountDemandRequest) (*RecoverAccountDemandResponse, error)
 	RecoverAccount(context.Context, *RecoverAccountRequest) (*RecoverAccountResponse, error)
+	ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -196,6 +207,9 @@ func (UnimplementedUserServiceServer) RecoverAccountDemand(context.Context, *Rec
 }
 func (UnimplementedUserServiceServer) RecoverAccount(context.Context, *RecoverAccountRequest) (*RecoverAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RecoverAccount not implemented")
+}
+func (UnimplementedUserServiceServer) ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangePassword not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -408,6 +422,24 @@ func _UserService_RecoverAccount_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ChangePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangePasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ChangePassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/ChangePassword",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ChangePassword(ctx, req.(*ChangePasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -458,6 +490,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RecoverAccount",
 			Handler:    _UserService_RecoverAccount_Handler,
+		},
+		{
+			MethodName: "ChangePassword",
+			Handler:    _UserService_ChangePassword_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

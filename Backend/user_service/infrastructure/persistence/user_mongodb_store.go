@@ -134,6 +134,33 @@ func (store *UserMongoDBStore) PasswordlessLogin(token string) (*domain.User, er
 	return store.filterOne(filter)
 }
 
+func (store *UserMongoDBStore) ChangePassword(username string, newPassword string, oldPassword string) error {
+	filter := bson.M{"username": username}
+	user, err := store.filterOne(filter)
+	if err != nil {
+		return err
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(oldPassword))
+	if err != nil {
+		return err
+	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	user.HashedPassword = string(hashedPassword)
+	if err != nil {
+		return err
+	}
+	_, err = store.users.ReplaceOne(
+		context.TODO(),
+		bson.M{"_id": user.Id},
+		user,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (store *UserMongoDBStore) filter(filter interface{}) ([]*domain.User, error) {
 	cursor, err := store.users.Find(context.TODO(), filter)
 	defer func(cursor *mongo.Cursor, ctx context.Context) {
