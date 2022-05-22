@@ -62,6 +62,21 @@ service UserService{
       get : "/login/{token}"
     };
   };
+
+  rpc RecoverAccountDemand(RecoverAccountDemandRequest) returns (RecoverAccountDemandResponse) {
+    option (google.api.http) = {
+      post : "/recover"
+      body : "*"
+    };
+  };
+
+  rpc RecoverAccount(RecoverAccountRequest) returns (RecoverAccountResponse) {
+    option (google.api.http) = {
+      put : "/recover/{token}"
+      body : "*"
+    };
+  };
+
 }
 
 message GetRequest {
@@ -120,6 +135,19 @@ message ActivateRequest {
 message ActivateResponse {
   User user = 1;
 }
+
+message RecoverAccountDemandRequest {
+  string email = 1;
+}
+
+message RecoverAccountDemandResponse {}
+
+message RecoverAccountRequest {
+  string token = 1;
+  string newPassword = 2;
+}
+
+message RecoverAccountResponse {}
 
 message PasswordlessLoginDemandRequest{
   string username = 1;

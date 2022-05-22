@@ -16,6 +16,10 @@ func (service *UserService) Find(username string) (*domain.User, error) {
 	return service.store.Find(username)
 }
 
+func (service *UserService) FindByEmail(email string) (*domain.User, error) {
+	return service.store.FindByEmail(email)
+}
+
 func (service *UserService) Get(userId string) (*domain.User, error) {
 	return service.store.Get(userId)
 }
@@ -42,4 +46,8 @@ func (service *UserService) PasswordlessLoginDemand(username string) (*domain.Us
 
 func (service *UserService) PasswordlessLogin(token string) (*domain.User, error) {
 	return service.store.PasswordlessLogin(token)
+}
+
+func (service *UserService) RecoverAccount(token string, newPassword string) (*domain.User, error) {
+	return service.store.RecoverAccount(token, newPassword)
 }

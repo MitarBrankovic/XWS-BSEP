@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -81,6 +82,11 @@ func (store *UserMongoDBStore) Find(username string) (*domain.User, error) {
 	return store.filterOne(filter)
 }
 
+func (store *UserMongoDBStore) FindByEmail(email string) (*domain.User, error) {
+	filter := bson.M{"email": email}
+	return store.filterOne(filter)
+}
+
 func (store *UserMongoDBStore) ActivateAccount(token string) *domain.User {
 	filter := bson.M{"token": token}
 	user, err := store.filterOne(filter)
@@ -96,6 +102,26 @@ func (store *UserMongoDBStore) ActivateAccount(token string) *domain.User {
 		return user
 	}
 	return user
+}
+
+func (store *UserMongoDBStore) RecoverAccount(token string, newPassword string) (*domain.User, error) {
+	filter := bson.M{"recoveryToken": token}
+	user, err := store.filterOne(filter)
+	user.RecoveryToken = ""
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	user.HashedPassword = string(hashedPassword)
+	if err != nil {
+		return user, err
+	}
+	_, err = store.users.ReplaceOne(
+		context.TODO(),
+		bson.M{"_id": user.Id},
+		user,
+	)
+	if err != nil {
+		return user, err
+	}
+	return user, err
 }
 
 func (store *UserMongoDBStore) PasswordlessLoginDemand(username string) (*domain.User, error) {
