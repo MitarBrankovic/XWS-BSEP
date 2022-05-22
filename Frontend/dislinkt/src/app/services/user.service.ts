@@ -32,19 +32,23 @@ export class UserService {
     let token = localStorage.getItem('token')
     if (token === null) {
       token = ""
-    } 
+    }
     let header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
     return this.http.put(this._url + '/changePassword/' + username, body, { headers: header });
   }
 
+  public sendRecoveryMessage(email: string) {
+    return this.http.post(this._url + '/recover/', email);
+  }
+
   public getUserByUsername() {
-    let username = localStorage.getItem('username')
+    /*let username = localStorage.getItem('username')
     let token = localStorage.getItem('token')
     if (token === null) {
       token = ""
-    } 
+    }
     let header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
-    return this.http.get(this._url + '/user/' + username, { headers: header });
+    return this.http.get(this._url + '/user/' + username, { headers: header });*/
   }
 
 }

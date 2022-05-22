@@ -8,16 +8,15 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./change-password.component.css']
 })
 export class ChangePasswordComponent implements OnInit {
-  
+
   oldPassword: string = ''
   newPassword: string = ''
   username: any
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.username = localStorage.getItem('username')
-    alert(this.username)
   }
 
   changePassword() {

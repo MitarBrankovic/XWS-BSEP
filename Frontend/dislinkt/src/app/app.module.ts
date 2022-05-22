@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { RecoveryEmailComponent } from './recovery-email/recovery-email.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     LoginComponent,
     RegisterComponent,
     UserHomePageComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    RecoveryEmailComponent
   ],
   imports: [
     BrowserModule,

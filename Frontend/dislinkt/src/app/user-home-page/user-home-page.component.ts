@@ -16,17 +16,17 @@ export class UserHomePageComponent implements OnInit {
   constructor(private userService: UserService, private Router: Router) { }
 
   ngOnInit(): void {
-    this.getUserbyUsername() 
+    //this.getUserbyUsername() 
   }
 
   changePasswordRedirect() {
     this.Router.navigate(['/changePassword'])
   }
 
-  getUserbyUsername(){
-    this.userService.getUserByUsername().subscribe(user => {
+  getUserbyUsername() {
+    /*this.userService.getUserByUsername().subscribe(user => {
       this.user = user
-    })
+    })*/
   }
 
 }
