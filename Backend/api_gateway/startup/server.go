@@ -33,7 +33,7 @@ func cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h := w.Header()
 
-		h.Set("Access-Control-Allow-Origin", "https://localhost:4200")
+		h.Set("Access-Control-Allow-Origin", "http://localhost:4200")
 
 		if r.Method == http.MethodOptions {
 			h.Set("Access-Control-Allow-Methods", strings.Join(
