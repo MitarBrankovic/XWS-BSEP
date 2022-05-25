@@ -46,7 +46,7 @@ func (handler *UserHandler) FindByUsername(ctx context.Context, request *pb.Find
 	response := &pb.FindByUsernameResponse{
 		User: UserPb,
 	}
-	return response, nil
+	return response, err
 }
 
 func (handler *UserHandler) Get(ctx context.Context, request *pb.GetRequest) (*pb.GetResponse, error) {

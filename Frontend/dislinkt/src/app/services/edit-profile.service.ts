@@ -17,7 +17,7 @@ export class EditProfileService {
       token = ""
     }
     let header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
-    return this.http.get(this._url + '/user/' + username, { headers: header });
+    return this.http.get(this._url + '/user/findByUsername/' + username, { headers: header });
   }
 
 
