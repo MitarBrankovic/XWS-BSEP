@@ -32,6 +32,10 @@ export class UserHomePageComponent implements OnInit {
     this.router.navigate(['/changePassword'])
   }
 
+  editProfileRedirect() {
+    this.router.navigate(['/editProfile'])
+  }
+
   getUserbyUsername() {
     /*this.userService.getUserByUsername().subscribe(user => {
       this.user = user

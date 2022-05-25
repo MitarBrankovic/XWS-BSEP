@@ -1,0 +1,155 @@
+<div class="columns is-mobile is-centered mt-5">
+    <div class="column is-half">
+      <div class="field">
+        <label class="label">First name</label>
+        <div class="control">
+          <input name="nameInput" class="input" type="text" required [(ngModel)]="name" #nameInput="ngModel">
+        </div>
+        <div *ngIf="nameInput.invalid" class="alert" style="color:red">
+          <div *ngIf="nameInput.errors?.['required']">
+            *Name is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Last name</label>
+        <div class="control">
+          <input name="lastNameInput" class="input" type="text" required [(ngModel)]="lastName" #lastNameInput="ngModel">
+        </div>
+        <div *ngIf="lastNameInput.invalid" class="alert" style="color:red">
+          <div *ngIf="lastNameInput.errors?.['required']">
+            *Last name is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Username</label>
+        <div class="control">
+          <input name="usernameInput" disabled class="input" type="text" required minlength="4" [(ngModel)]="username"
+            #usernameInput="ngModel">
+        </div>
+        <!--<div *ngIf="usernameInput.invalid" class="alert" style="color:red">
+          <div *ngIf="usernameInput.errors?.['required']">
+            *Username is required.
+          </div>
+          <div *ngIf="usernameInput.errors?.['minlength']">
+            *Username must be at least 4 characters long.
+          </div>
+        </div>
+        <div *ngIf="allUsernames?.includes(username)" class="alert" style="color:red">
+          *Username already exist.
+        </div>-->
+      </div>
+
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <input name="emailInput" class="input" type="email" required [(ngModel)]="email" #emailInput="ngModel"
+            email="true">
+        </div>
+        <div *ngIf="emailInput.invalid" class="alert" style="color:red">
+          <div *ngIf="emailInput.errors?.['required']">
+            *Email is required.
+          </div>
+          <div *ngIf="emailInput.errors?.['email']">
+            *Wrong email.
+          </div>
+        </div>
+        <!--<div *ngIf="allEmails?.includes(email)" class="alert" style="color:red">
+          *Email already used.
+        </div>-->
+      </div>
+
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input class="input" name="passwordInput" type="password" required minlength="8"
+            pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" [(ngModel)]="password" #passwordInput="ngModel">
+        </div>
+        <div *ngIf="passwordInput.invalid" class="alert" style="color:red">
+          <div *ngIf="passwordInput.errors?.['required']">
+            *Password is required.
+          </div>
+          <div *ngIf="passwordInput.errors?.['minlength'] || passwordInput.errors?.['pattern']">
+            *Must contain at least one number and one uppercase or lowercase letter, and at least 8 or more characters.
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Date of birth</label>
+        <div class="control">
+          <input name="dateOfBirthInput" class="input" type="date" [max]="todayDate" required [(ngModel)]="dateOfBirth"
+            #dateOfBirthInput="ngModel" date="true">
+        </div>
+        <div *ngIf="dateOfBirthInput.invalid" class="alert" style="color:red">
+          <div *ngIf="dateOfBirthInput.errors?.['required']">
+            *Date of birth is required.
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <label class="label">Skills</label>
+        <textarea class="textarea" placeholder="Skills"></textarea>
+      </div>
+      <div>
+        <label class="label">Interests</label>
+        <textarea class="textarea" placeholder="Interests"></textarea>
+      </div>
+
+
+
+
+    </div>
+
+    <div class="column is-one-third ">
+        EDUKACIJA I POSAO
+
+
+        <div id="education" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <p class="modal-card-title">Modal title</p>
+                <button class="delete" aria-label="close"></button>
+              </header>
+              <section class="modal-card-body">
+                <!-- Content ... -->
+              </section>
+              <footer class="modal-card-foot">
+                <button class="button is-success">Save changes</button>
+                <button class="button">Cancel</button>
+              </footer>
+            </div>
+          </div>
+
+          <button class="js-modal-trigger" data-target="education">
+            Open JS example modal
+          </button>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+    });
+  }
+})
+
+
+
+</script>

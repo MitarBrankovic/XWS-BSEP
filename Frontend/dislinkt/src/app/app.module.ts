@@ -12,6 +12,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { RecoveryEmailComponent } from './recovery-email/recovery-email.component';
 import { RecoveryPasswordComponent } from './recovery-password/recovery-password.component';
 import { RedirectComponent } from './redirect/redirect.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,13 +24,15 @@ import { RedirectComponent } from './redirect/redirect.component';
     ChangePasswordComponent,
     RecoveryEmailComponent,
     RecoveryPasswordComponent,
-    RedirectComponent
+    RedirectComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

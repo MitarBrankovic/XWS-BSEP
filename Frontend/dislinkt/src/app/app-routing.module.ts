@@ -7,6 +7,7 @@ import { RecoveryPasswordComponent } from './recovery-password/recovery-password
 import { RedirectComponent } from './redirect/redirect.component';
 import { RegisterComponent } from './register/register.component';
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
   { path: "", redirectTo: '/login', pathMatch: 'full'  },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: "recovery", component: RecoveryEmailComponent },
   { path: "recover/:token", component: RecoveryPasswordComponent},
   { path: "redirect/:token", component: RedirectComponent},
+  { path: "editProfile", component: EditProfileComponent},
 ];
 
 @NgModule({
