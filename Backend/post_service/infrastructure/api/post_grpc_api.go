@@ -70,3 +70,33 @@ func (handler PostHandler) Update(ctx context.Context, request *pb.UpdateRequest
 		Post: mapPostToPb(post),
 	}, nil
 }
+
+func (handler *PostHandler) GetProfilePosts(ctx context.Context, request *pb.GetPostRequest) (*pb.GetPostsResponse, error) {
+	Posts, err := handler.service.GetProfilePosts(request.ProfileId)
+	if err != nil {
+		return nil, err
+	}
+	response := &pb.GetPostsResponse{
+		Posts: []*pb.Post{},
+	}
+	for _, Post := range Posts {
+		current := mapPostToPb(Post)
+		response.Posts = append(response.Posts, current)
+	}
+	return response, nil
+}
+
+func (handler *PostHandler) GetConnectionPosts(ctx context.Context, request *pb.GetPostRequest) (*pb.GetPostsResponse, error) {
+	Posts, err := handler.service.GetConnectionPosts(request.ProfileId)
+	if err != nil {
+		return nil, err
+	}
+	response := &pb.GetPostsResponse{
+		Posts: []*pb.Post{},
+	}
+	for _, Post := range Posts {
+		current := mapPostToPb(Post)
+		response.Posts = append(response.Posts, current)
+	}
+	return response, nil
+}

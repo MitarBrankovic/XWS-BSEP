@@ -27,3 +27,11 @@ func (service *PostService) Create(post *domain.Post) error {
 func (service *PostService) Update(postId string, post *domain.Post) error {
 	return service.store.Update(postId, post)
 }
+
+func (service *PostService) GetProfilePosts(profileId string) ([]*domain.Post, error) {
+	return service.store.GetProfilePosts(profileId)
+}
+
+func (service *PostService) GetConnectionPosts(profileId string) ([]*domain.Post, error) {
+	return service.store.GetConnectionPosts(profileId)
+}

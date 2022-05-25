@@ -6,4 +6,6 @@ type PostStore interface {
 	Create(post *Post) error
 	Update(postId string, post *Post) error
 	DeleteAll() error
+	GetProfilePosts(profileId string) ([]*Post, error)
+	GetConnectionPosts(profileId string) ([]*Post, error)
 }

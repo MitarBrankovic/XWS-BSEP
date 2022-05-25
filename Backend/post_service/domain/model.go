@@ -46,3 +46,9 @@ type Comment struct {
 	PostId      primitive.ObjectID `bson:"postId"`
 	DateCreated time.Time          `bson:"dateCreated"`
 }
+
+type Connection struct {
+	Id        primitive.ObjectID `bson:"_id"`
+	IssuerId  primitive.ObjectID `bson:"_issuerId"`
+	SubjectId primitive.ObjectID `bson:"_subjectId"`
+}

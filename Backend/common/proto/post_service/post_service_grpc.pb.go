@@ -18,7 +18,7 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// PostServiceClient is the clients API for PostService service.
+// PostServiceClient is the client API for PostService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostServiceClient interface {
@@ -36,6 +36,8 @@ type PostServiceClient interface {
 	GetAllReactions(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponseReaction, error)
 	CreateReaction(ctx context.Context, in *CreateRequestReaction, opts ...grpc.CallOption) (*CreateResponseReaction, error)
 	UpdateReaction(ctx context.Context, in *UpdateRequestReaction, opts ...grpc.CallOption) (*UpdateResponseReaction, error)
+	GetProfilePosts(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostsResponse, error)
+	GetConnectionPosts(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostsResponse, error)
 }
 
 type postServiceClient struct {
@@ -154,6 +156,24 @@ func (c *postServiceClient) UpdateReaction(ctx context.Context, in *UpdateReques
 	return out, nil
 }
 
+func (c *postServiceClient) GetProfilePosts(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostsResponse, error) {
+	out := new(GetPostsResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetProfilePosts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) GetConnectionPosts(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostsResponse, error) {
+	out := new(GetPostsResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetConnectionPosts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PostServiceServer is the server API for PostService service.
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
@@ -172,6 +192,8 @@ type PostServiceServer interface {
 	GetAllReactions(context.Context, *GetAllRequest) (*GetAllResponseReaction, error)
 	CreateReaction(context.Context, *CreateRequestReaction) (*CreateResponseReaction, error)
 	UpdateReaction(context.Context, *UpdateRequestReaction) (*UpdateResponseReaction, error)
+	GetProfilePosts(context.Context, *GetPostRequest) (*GetPostsResponse, error)
+	GetConnectionPosts(context.Context, *GetPostRequest) (*GetPostsResponse, error)
 	mustEmbedUnimplementedPostServiceServer()
 }
 
@@ -214,6 +236,12 @@ func (UnimplementedPostServiceServer) CreateReaction(context.Context, *CreateReq
 }
 func (UnimplementedPostServiceServer) UpdateReaction(context.Context, *UpdateRequestReaction) (*UpdateResponseReaction, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateReaction not implemented")
+}
+func (UnimplementedPostServiceServer) GetProfilePosts(context.Context, *GetPostRequest) (*GetPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProfilePosts not implemented")
+}
+func (UnimplementedPostServiceServer) GetConnectionPosts(context.Context, *GetPostRequest) (*GetPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConnectionPosts not implemented")
 }
 func (UnimplementedPostServiceServer) mustEmbedUnimplementedPostServiceServer() {}
 
@@ -444,6 +472,42 @@ func _PostService_UpdateReaction_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_GetProfilePosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetProfilePosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetProfilePosts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetProfilePosts(ctx, req.(*GetPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_GetConnectionPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetConnectionPosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetConnectionPosts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetConnectionPosts(ctx, req.(*GetPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostService_ServiceDesc is the grpc.ServiceDesc for PostService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -498,6 +562,14 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateReaction",
 			Handler:    _PostService_UpdateReaction_Handler,
+		},
+		{
+			MethodName: "GetProfilePosts",
+			Handler:    _PostService_GetProfilePosts_Handler,
+		},
+		{
+			MethodName: "GetConnectionPosts",
+			Handler:    _PostService_GetConnectionPosts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

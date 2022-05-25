@@ -21,6 +21,27 @@ type User struct {
 	Token          string             `bson:"token"`
 	PasswordToken  string             `bson:"passwordToken"`
 	RecoveryToken  string             `bson:"recoveryToken"`
+	Education      []Education        `bson:"education"`
+	WorkExperience []WorkExperience   `bson:"workExperience"`
+	Skills         []string           `bson:"skills"`
+	Interests      []string           `bson:"interests"`
+}
+
+type Education struct {
+	School       string    `bson:"school"`
+	Degree       string    `bson:"degree"`
+	FieldOfStudy string    `bson:"fieldOfStudy"`
+	StartDate    time.Time `bson:"startDate"`
+	EndDate      time.Time `bson:"endDate"`
+}
+
+type WorkExperience struct {
+	Title          string    `bson:"title"`
+	Company        string    `bson:"company"`
+	EmploymentType string    `bson:"employmentType"`
+	Location       string    `bson:"location"`
+	StartDate      time.Time `bson:"startDate"`
+	EndDate        time.Time `bson:"endDate"`
 }
 
 func (user *User) IsCorrectPassword(password string) bool {

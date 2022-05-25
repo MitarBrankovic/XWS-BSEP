@@ -77,6 +77,18 @@ service PostService{
       body: "reaction"
     };
   }
+  rpc GetProfilePosts(GetPostRequest) returns(GetPostsResponse) {
+    option (google.api.http) = {
+      get: "/post/profile/{profileId}"
+    };
+  }
+
+  rpc GetConnectionPosts(GetPostRequest) returns(GetPostsResponse) {
+    option (google.api.http) = {
+      get: "/post/connection/{profileId}"
+    };
+  }
+
 
 }
 
@@ -110,6 +122,14 @@ message UpdateRequest {
 
 message UpdateResponse {
   Post post = 1;
+}
+
+message GetPostRequest {
+  string profileId = 1;
+}
+
+message GetPostsResponse {
+  repeated Post posts = 1;
 }
 
 //#########################COMMENTS#########################

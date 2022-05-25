@@ -10,18 +10,22 @@ import (
 )
 
 const (
-	DATABASE   = "post_service"
-	COLLECTION = "post"
+	DATABASE    = "post_service"
+	COLLECTION  = "post"
+	COLLECTION2 = "connection"
 )
 
 type PostMongoDBStore struct {
-	posts *mongo.Collection
+	posts       *mongo.Collection
+	connections *mongo.Collection
 }
 
 func NewPostMongoDBStore(client *mongo.Client) domain.PostStore {
 	posts := client.Database(DATABASE).Collection(COLLECTION)
+	connections := client.Database(DATABASE).Collection(COLLECTION2)
 	return &PostMongoDBStore{
-		posts: posts,
+		posts:       posts,
+		connections: connections,
 	}
 }
 
@@ -104,6 +108,72 @@ func decode(cursor *mongo.Cursor) (posts []*domain.Post, err error) {
 			return
 		}
 		posts = append(posts, &Post)
+	}
+	err = cursor.Err()
+	return
+}
+
+func (store *PostMongoDBStore) GetProfilePosts(profileId string) ([]*domain.Post, error) {
+	id, err := primitive.ObjectIDFromHex(profileId)
+	if err != nil {
+		return nil, err
+	}
+	filter := bson.M{"profile._id": id}
+	return store.filter(filter)
+}
+
+func (store *PostMongoDBStore) GetConnectionPosts(profileId string) ([]*domain.Post, error) {
+	id, err := primitive.ObjectIDFromHex(profileId)
+	if err != nil {
+		return nil, err
+	}
+	filter := bson.D{{"$or", bson.A{bson.M{"_issuerId": id}, bson.M{"_subjectId": id}}}}
+	connections, err := store.filterConnections(filter)
+	if err != nil {
+		return nil, err
+	}
+	posts := make([]*domain.Post, 0)
+	for _, connection := range connections {
+		if connection.IssuerId == id {
+			connectionPosts, err := store.filter(bson.M{"profile._id": connection.SubjectId})
+			if err != nil {
+				return nil, err
+			}
+			posts = append(posts, connectionPosts...)
+		} else if connection.SubjectId == id {
+			connectionPosts, err := store.filter(bson.M{"profile._id": connection.IssuerId})
+			if err != nil {
+				return nil, err
+			}
+			posts = append(posts, connectionPosts...)
+		}
+	}
+	return posts, nil
+}
+
+func (store *PostMongoDBStore) filterConnections(filter interface{}) ([]*domain.Connection, error) {
+	cursor, err := store.connections.Find(context.TODO(), filter)
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+			return
+		}
+	}(cursor, context.TODO())
+
+	if err != nil {
+		return nil, err
+	}
+	return decodeConnections(cursor)
+}
+
+func decodeConnections(cursor *mongo.Cursor) (connections []*domain.Connection, err error) {
+	for cursor.Next(context.TODO()) {
+		var Connection domain.Connection
+		err = cursor.Decode(&Connection)
+		if err != nil {
+			return
+		}
+		connections = append(connections, &Connection)
 	}
 	err = cursor.Err()
 	return
