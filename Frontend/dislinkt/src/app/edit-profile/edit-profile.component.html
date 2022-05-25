@@ -1,9 +1,10 @@
+<div>
 <div class="columns is-mobile is-centered mt-5">
     <div class="column is-half">
       <div class="field">
         <label class="label">First name</label>
         <div class="control">
-          <input name="nameInput" class="input" type="text" required [(ngModel)]="name" #nameInput="ngModel">
+          <input [attr.disabled]="!isEdit? true : null" name="nameInput" class="input" type="text" required [(ngModel)]="name" #nameInput="ngModel">
         </div>
         <div *ngIf="nameInput.invalid" class="alert" style="color:red">
           <div *ngIf="nameInput.errors?.['required']">
@@ -15,7 +16,7 @@
       <div class="field">
         <label class="label">Last name</label>
         <div class="control">
-          <input name="lastNameInput" class="input" type="text" required [(ngModel)]="lastName" #lastNameInput="ngModel">
+          <input [attr.disabled]="!isEdit? true : null" name="lastNameInput" class="input" type="text" required [(ngModel)]="lastName" #lastNameInput="ngModel">
         </div>
         <div *ngIf="lastNameInput.invalid" class="alert" style="color:red">
           <div *ngIf="lastNameInput.errors?.['required']">
@@ -27,7 +28,7 @@
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
-          <input name="usernameInput" disabled class="input" type="text" required minlength="4" [(ngModel)]="username"
+          <input [attr.disabled]="!isEdit? true : null" name="usernameInput" class="input" type="text" required minlength="4" [(ngModel)]="username"
             #usernameInput="ngModel">
         </div>
         <!--<div *ngIf="usernameInput.invalid" class="alert" style="color:red">
@@ -46,7 +47,7 @@
       <div class="field">
         <label class="label">Email</label>
         <div class="control">
-          <input name="emailInput" class="input" type="email" required [(ngModel)]="email" #emailInput="ngModel"
+          <input [attr.disabled]="!isEdit? true : null" name="emailInput" class="input" type="email" required [(ngModel)]="email" #emailInput="ngModel"
             email="true">
         </div>
         <div *ngIf="emailInput.invalid" class="alert" style="color:red">
@@ -62,7 +63,7 @@
         </div>-->
       </div>
 
-      <div class="field">
+      <!--<div class="field">
         <label class="label">Password</label>
         <div class="control">
           <input class="input" name="passwordInput" type="password" required minlength="8"
@@ -76,12 +77,12 @@
             *Must contain at least one number and one uppercase or lowercase letter, and at least 8 or more characters.
           </div>
         </div>
-      </div>
+      </div>-->
 
       <div class="field">
         <label class="label">Date of birth</label>
         <div class="control">
-          <input name="dateOfBirthInput" class="input" type="date" [max]="todayDate" required [(ngModel)]="dateOfBirth"
+          <input [attr.disabled]="!isEdit? true : null" name="dateOfBirthInput" class="input" type="date" [max]="todayDate" required [(ngModel)]="dateOfBirth"
             #dateOfBirthInput="ngModel" date="true">
         </div>
         <div *ngIf="dateOfBirthInput.invalid" class="alert" style="color:red">
@@ -90,66 +91,89 @@
           </div>
         </div>
       </div>
-      
+
       <div>
         <label class="label">Skills</label>
-        <textarea class="textarea" placeholder="Skills"></textarea>
+        <textarea [attr.disabled]="!isEdit? true : null" class="textarea" placeholder="Skills" [(ngModel)]="skills"></textarea>
       </div>
       <div>
         <label class="label">Interests</label>
-        <textarea class="textarea" placeholder="Interests"></textarea>
+        <textarea [attr.disabled]="!isEdit? true : null" class="textarea" placeholder="Interests" [(ngModel)]="interests"></textarea>
       </div>
-
-
-
 
     </div>
 
     <div class="column is-one-third ">
         EDUKACIJA I POSAO
 
+        <div class="container">
+            <table class="table">
+                <tr>
+                  <th>School</th>
+                  <th>Degree</th>
+                  <th>Field of study</th>
+                  <th><th>
+                </tr>
+                <tr  *ngFor="let e of educations">
+                  <td>{{e.school}}</td>
+                  <td>{{e.degree}}</td>
+                  <td>{{e.fieldOfStudy}}</td>
+                  <td *ngIf="isEdit"><button class="button is-danger" (click)="removeEducation(e)">Delete</button></td>
+                </tr>
+              </table>
+              <button class="button is-primary">Add education</button>
+        </div><br><br><br>
 
-        <div id="education" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-              <header class="modal-card-head">
-                <p class="modal-card-title">Modal title</p>
-                <button class="delete" aria-label="close"></button>
-              </header>
-              <section class="modal-card-body">
-                <!-- Content ... -->
-              </section>
-              <footer class="modal-card-foot">
-                <button class="button is-success">Save changes</button>
-                <button class="button">Cancel</button>
-              </footer>
-            </div>
-          </div>
+        <div class="container">
+            <table class="table">
+                <tr>
+                  <th>Title</th>
+                  <th>Company</th>
+                  <th>Employment Type</th>
+                  <th><th>
+                </tr>
+                <tr  *ngFor="let w of workExperiences">
+                  <td>{{w.title}}</td>
+                  <td>{{w.company}}</td>
+                  <td>{{w.employmentType}}</td>
+                  <td *ngIf="isEdit"><button class="button is-danger" (click)="removeWork(w)">Delete</button></td>
+                </tr>
+              </table>
+              <button class="button is-primary" (click)="open(content)" data-backdrop="false">Add employment</button>
 
-          <button class="js-modal-trigger" data-target="education">
-            Open JS example modal
-          </button>
+        </div>
 
     </div>
+
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Functions to open and close a modal
-  function openModal($el) {
-    $el.classList.add('is-active');
-  }
-
-  function closeModal($el) {
-    $el.classList.remove('is-active');
-  }
-
-  function closeAllModals() {
-    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
-    });
-  }
-})
+<div class="buttons is-centered">
+    <button class="button is-info mr-5 is-centered" *ngIf="!isEdit" (click)="isEdit=true" >Edit</button>
+    <button class="button is-info mr-5 is-centered" *ngIf="isEdit" (click) = "saveUser()">Save</button>
+    <button class="button is-secondary is-centered" *ngIf="isEdit" (click)="isEdit=false" >Cancel</button>
+</div>
 
 
+<ng-template #content let-modal data-backdrop="false">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="dateOfBirth">Date of birth</label>
+          <div class="input-group">
+            <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+  </ng-template>
 
-</script>
+</div>
+

@@ -52,7 +52,7 @@
       <recent name="C:\Users\Brankovic\Desktop\XWS-BSEP\Backend\common\proto\post_service\google\api" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build dislinkt/user_service">
+  <component name="RunManager" selected="Compound.xml">
     <configuration name="xml" type="CompoundRunConfigurationType">
       <toRun name="go build dislinkt/api_gateway" type="GoApplicationRunConfiguration" />
       <toRun name="go build dislinkt/connection_service" type="GoApplicationRunConfiguration" />
@@ -155,21 +155,5 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/user_service/infrastructure/api/user_grpc_api.go</url>
-          <line>40</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/user_service/infrastructure/persistence/user_mongodb_store.go</url>
-          <line>80</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

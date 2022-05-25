@@ -19,6 +19,10 @@ var users = []*domain.User{
 		Role:           "user",
 		Activated:      true,
 		Private:        false,
+		Skills:         []string{"aa", "bb", "cc"},
+		Interests:      []string{"aa", "bb", "cc"},
+		Education:      []domain.Education{{School: "osnovna", Degree: "6", FieldOfStudy: "stolar", StartDate: time.Time{}, EndDate: time.Time{}}},
+		WorkExperience: []domain.WorkExperience{{Title: "Pomocnik stolara", Company: "Stolarske carolije", EmploymentType: "INTERNSHIP", Location: "Tutin", StartDate: time.Time{}, EndDate: time.Time{}}},
 	},
 	{
 		Id:             getObjectId("78596r4u645d4db787e61fea"),
