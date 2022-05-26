@@ -5,6 +5,10 @@ export class User {
     lastName: string;
     dateOfBirth: string;
     email: string;
+    skills: any;
+    interests: any;
+    education: any;
+    workExperience: any;
 
     constructor(){
         this.username = "";
@@ -13,5 +17,9 @@ export class User {
         this.lastName = "";
         this.dateOfBirth = "";
         this.email = "";
+        this.skills = [];
+        this.interests = [];
+        this.education = [];
+        this.workExperience = [];
     }
 }

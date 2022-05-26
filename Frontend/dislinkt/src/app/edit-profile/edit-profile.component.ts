@@ -2,6 +2,8 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
+import { User } from '../model/user.model';
 import { EditProfileService } from '../services/edit-profile.service';
 
 @Component({
@@ -22,10 +24,24 @@ export class EditProfileComponent implements OnInit {
   todayDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en_US');
   educations: any = [];
   workExperiences: any = [];
-  user: any;
+  user:any;
+  user2: User = new User;
 
   isEdit: boolean = false;
   closeResult = '';
+
+  //modals
+  schoolModal:string = "";
+  degreeModal:string = "";
+  fieldOfStudyModal:string = "";
+  startDateModal:any;
+  endDateModal:any;
+  titleModal:string = "";
+  companyModal:string = "";
+  employmentTypeModal:string = "";
+  locationModal:string = "";
+  startDateWorkModal:any;
+  endDateWorkModal:any;
 
 
   constructor(private editProfileService: EditProfileService, private router: Router, private modalService: NgbModal) { }
@@ -92,29 +108,71 @@ export class EditProfileComponent implements OnInit {
       skills: this.skills,
       interests: this.interests
     }
-    this.editProfileService.editProfile(user)
+    this.editProfileService.editProfile(user).subscribe(f => this.user = f)
   }
 
+  addEducation(){
+    const education= {
+      school: this.schoolModal,
+      degree: this.degreeModal,
+      fieldOfStudy: this.fieldOfStudyModal,
+      startDate: this.startDateModal,
+      endDate: this.endDateModal
+    }
+    if(education.school == "" || education.degree == "" || education.fieldOfStudy == "" || education.startDate == "" || education.endDate == ""){
+      Swal.fire({
+        icon: 'error',
+        title: 'Fill all inputs',
+        text: 'Something went wrong!',
+      })
+    }else{
+      this.user.education.push(education)
+      this.educations.push(education)
+      this.modalService.dismissAll()
+    }
 
-
-
-  //################## MODAL EDUCATION ################
-  open(content: any) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
+  addWorkExperience(){
+    const workExperience= {
+      title: this.titleModal,
+      company: this.companyModal,
+      employmentType: this.employmentTypeModal,
+      location: this.locationModal,
+      startDate: this.startDateWorkModal,
+      endDate: this.endDateWorkModal
+    }
+    if(workExperience.title == "" || workExperience.company == "" || workExperience.employmentType == "" || workExperience.startDate == "" || workExperience.endDate == "" || workExperience.location == ""){
+      Swal.fire({
+        icon: 'error',
+        title: 'Fill all inputs',
+        text: 'Something went wrong!',
+      })
+    }else{
+      this.user.workExperience.push(workExperience)
+      this.workExperiences.push(workExperience)
+      this.modalService.dismissAll()
     }
   }
+
+
+
+
+  //################## MODALS #########################
+  open(content: any) {
+    this.schoolModal = ""
+    this.degreeModal = ""
+    this.fieldOfStudyModal = ""
+    this.startDateModal = ""
+    this.endDateModal = ""
+    this.titleModal = ""
+    this.companyModal = ""
+    this.employmentTypeModal = ""
+    this.locationModal = ""
+    this.startDateWorkModal = ""
+    this.endDateWorkModal = ""
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {}, (reason) => {});
+  }
+
     //#################################################
 }

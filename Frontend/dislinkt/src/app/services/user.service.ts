@@ -8,8 +8,15 @@ import { User } from "../model/user.model";
 })
 export class UserService {
   private _url = 'http://localhost:8000';
+  header: any;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {
+    let token = localStorage.getItem('token')
+    if (token === null) {
+      token = ""
+    }
+    this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+   }
 
   public login(user: User) {
     return this.http.post(this._url + '/login', user);
@@ -34,12 +41,7 @@ export class UserService {
       newPassword: newPassword
     }
 
-    let token = localStorage.getItem('token')
-    if (token === null) {
-      token = ""
-    }
-    let header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
-    return this.http.put(this._url + '/changePassword/' + username, body, { headers: header });
+    return this.http.put(this._url + '/changePassword/' + username, body, { headers: this.header });
   }
 
   public sendRecoveryMessage(email: string) {
@@ -56,14 +58,5 @@ export class UserService {
     return this.http.put(this._url + '/recover/' + token, body);
   }
 
-  public getUserByUsername() {
-    /*let username = localStorage.getItem('username')
-    let token = localStorage.getItem('token')
-    if (token === null) {
-      token = ""
-    }
-    let header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
-    return this.http.get(this._url + '/user/' + username, { headers: header });*/
-  }
 
 }
