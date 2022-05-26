@@ -38,11 +38,10 @@ func accessibleRoles() map[string][]string {
 	const userServicePath = "/user.UserService/"
 
 	return map[string][]string{
-		userServicePath + "GetAll":         {"admin"},
 		userServicePath + "Get":            {"user", "admin"},
 		userServicePath + "FindByUsername": {"user", "admin"},
 		userServicePath + "Create":         {"admin"},
-		userServicePath + "Update":         {"admin"},
+		userServicePath + "Update":         {"admin", "user"},
 		userServicePath + "Delete":         {"admin"},
 		userServicePath + "ChangePassword": {"user"},
 	}

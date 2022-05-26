@@ -27,7 +27,7 @@
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
-          <input [attr.disabled]="!isEdit? true : null" name="usernameInput" class="input" type="text" required minlength="4" [(ngModel)]="user.username"
+          <input [attr.disabled]="!isEdit? true : null" name="usernameInput" class="input" type="text" required minlength="4" [(ngModel)]="username"
             #usernameInput="ngModel">
         </div>
         <!--<div *ngIf="usernameInput.invalid" class="alert" style="color:red">

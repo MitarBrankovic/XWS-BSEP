@@ -16,11 +16,11 @@ export class EditProfileComponent implements OnInit {
   name: string = "";
   lastName: string = "";
   username: string = "";
-  //password: string = "";
+  password: string = "";
   email: string = "";
   dateOfBirth: string = "";
-  skills: any = [];
-  interests: any = [];
+  skills: string = "";
+  interests: string = "";
   todayDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en_US');
   educations: any = [];
   workExperiences: any = [];
@@ -52,19 +52,22 @@ export class EditProfileComponent implements OnInit {
       token = ""
       this.router.navigate(['/'])
     }
-    let username = this.parseJwt(JSON.parse(token)?.accessToken)?.username
+    let oldUsername = this.parseJwt(JSON.parse(token)?.accessToken)?.username
 
-    this.editProfileService.getLoggedUserFromServer(username).subscribe(f => {
+    this.editProfileService.getLoggedUserFromServer(oldUsername).subscribe(f => {
+      this.user2 = f.user;
+      console.log(this.user2)
       this.user = f.user;
       this.name = this.user.firstName;
       this.lastName = this.user.lastName;
       this.username = this.user.username;
+      this.password = '';
       this.email = this.user.email;
       this.skills = this.user.skills;
       this.interests = this.user.interests;
       this.educations = this.user.education;
       this.workExperiences = this.user.workExperience;
-      this.dateOfBirth = formatDate(this.user.dateOfBirth, 'yyyy-MM-dd', 'en_US');
+      this.dateOfBirth = formatDate(this.user.dateOfBirth, 'yyyy-MM-dd', 'en_US') + "T00:00:00Z";
     });
 
   }
@@ -98,15 +101,15 @@ export class EditProfileComponent implements OnInit {
     const user= {
       id: this.user.id,
       username: this.username,
-      //password
+      password: this.password,
       firstName: this.name,
-      lastLame: this.lastName,
+      lastName: this.lastName,
       dateOfBirth: this.dateOfBirth,
       email: this.email,
       education: this.educations,
       workExperience: this.workExperiences,
-      skills: this.skills,
-      interests: this.interests
+      skills: this.skills.toString().split(','),	
+      interests: this.interests.toString().split(',')
     }
     this.editProfileService.editProfile(user).subscribe(f => this.user = f)
   }

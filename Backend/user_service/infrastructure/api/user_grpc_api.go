@@ -105,6 +105,11 @@ func (handler UserHandler) Create(ctx context.Context, request *pb.CreateRequest
 func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest) (*pb.UpdateResponse, error) {
 	user := mapPbToUser(request.User)
 	userId := request.Id
+	oldUser, _ := handler.service.Get(userId)
+	user.HashedPassword = oldUser.HashedPassword
+	user.Role = oldUser.Role
+	user.Activated = oldUser.Activated
+	user.Private = oldUser.Private
 	if err := handler.validate.Struct(user); err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
 	}
