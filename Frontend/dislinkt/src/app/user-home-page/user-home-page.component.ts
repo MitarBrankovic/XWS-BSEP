@@ -16,8 +16,7 @@ export class UserHomePageComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router) { }
 
-  ngOnInit(): void {
-    //this.getUserbyUsername() 
+  ngOnInit(): void { 
     let token = localStorage.getItem('token')
     if (token === null) {
       token = ""
@@ -28,18 +27,13 @@ export class UserHomePageComponent implements OnInit {
     }
   }
 
+
   changePasswordRedirect() {
     this.router.navigate(['/changePassword'])
   }
 
   editProfileRedirect() {
     this.router.navigate(['/editProfile'])
-  }
-
-  getUserbyUsername() {
-    /*this.userService.getUserByUsername().subscribe(user => {
-      this.user = user
-    })*/
   }
 
   parseJwt(token: string) {

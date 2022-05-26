@@ -52,7 +52,7 @@
       <recent name="C:\Users\Brankovic\Desktop\XWS-BSEP\Backend\common\proto\post_service\google\api" />
     </key>
   </component>
-  <component name="RunManager" selected="Compound.xml">
+  <component name="RunManager" selected="Go Build.go build dislinkt/user_service">
     <configuration name="xml" type="CompoundRunConfigurationType">
       <toRun name="go build dislinkt/api_gateway" type="GoApplicationRunConfiguration" />
       <toRun name="go build dislinkt/connection_service" type="GoApplicationRunConfiguration" />

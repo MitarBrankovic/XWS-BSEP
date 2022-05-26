@@ -8,9 +8,10 @@ import { RedirectComponent } from './redirect/redirect.component';
 import { RegisterComponent } from './register/register.component';
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 const routes: Routes = [
-  { path: "", redirectTo: '/login', pathMatch: 'full'  },
+  { path: "", redirectTo: '/homePage', pathMatch: 'full'  },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "userHomePage", component: UserHomePageComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: "recover/:token", component: RecoveryPasswordComponent},
   { path: "redirect/:token", component: RedirectComponent},
   { path: "editProfile", component: EditProfileComponent},
+  { path: "homePage", component: HomePageComponent},
 ];
 
 @NgModule({

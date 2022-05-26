@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 import { User } from "../model/user.model";
 
 @Injectable({
@@ -58,5 +59,8 @@ export class UserService {
     return this.http.put(this._url + '/recover/' + token, body);
   }
 
+  public getAllPublicUsers(): Observable<any> {
+    return this.http.get(this._url + '/publicUsers');
+  }
 
 }

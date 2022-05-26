@@ -77,6 +77,23 @@ func (handler *UserHandler) GetAll(ctx context.Context, request *pb.GetAllReques
 	return response, nil
 }
 
+func (handler *UserHandler) GetAllPublic(ctx context.Context, request *pb.GetAllRequest) (*pb.GetAllResponse, error) {
+	Users, err := handler.service.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	response := &pb.GetAllResponse{
+		Users: []*pb.User{},
+	}
+	for _, User := range Users {
+		if !User.Private {
+			current := mapUserToPb(User)
+			response.Users = append(response.Users, current)
+		}
+	}
+	return response, nil
+}
+
 func (handler UserHandler) Create(ctx context.Context, request *pb.CreateRequest) (*pb.CreateResponse, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	user := mapPbToUser(request.User)

@@ -14,6 +14,8 @@ import { RecoveryPasswordComponent } from './recovery-password/recovery-password
 import { RedirectComponent } from './redirect/redirect.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HomePageComponent } from './home-page/home-page.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RecoveryEmailComponent,
     RecoveryPasswordComponent,
     RedirectComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    HomePageComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
