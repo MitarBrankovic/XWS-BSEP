@@ -88,7 +88,13 @@ service PostService{
       get: "/post/connection/{profileId}"
     };
   }
-
+  //########################USERS##################################
+  rpc UpdateUser(UpdateUserRequest) returns(UpdateUserResponse) {
+    option (google.api.http) = {
+      put: "/post/user/{username}"
+      body: "user"
+    };
+  }
 
 }
 
@@ -186,13 +192,23 @@ message UpdateResponseReaction {
   Reaction reaction = 1;
 }
 
+//###########################USERS###################
+
+message UpdateUserRequest{
+  string username = 1;
+  User user = 2;
+}
+
+message UpdateUserResponse{
+  User user = 1;
+}
 
 //##############################OBJECTS###################
 
 
 message Post {
   string id = 1;
-  string userId = 2;
+  User user = 2;
   google.protobuf.Timestamp createdAt = 3;
   Content content = 4;
 }
@@ -211,6 +227,11 @@ message Reaction {
   string postId = 3;
   int64 type = 4;
   google.protobuf.Timestamp createdAt = 5;
+}
+
+message User{
+  string firstName = 2;
+  string lastName = 3;
 }
 
 message Content {

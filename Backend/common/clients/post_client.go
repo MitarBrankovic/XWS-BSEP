@@ -4,13 +4,17 @@ import (
 	"context"
 	pbPost "dislinkt/common/proto/post_service"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"time"
 )
 
 func NewPostClient(address string) (pbPost.PostServiceClient, error) {
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Second*30)
 	defer cancel()
-	conn, err := grpc.DialContext(ctx, address)
+	dialOptions := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	}
+	conn, err := grpc.DialContext(ctx, address, dialOptions...)
 	if err != nil {
 		return nil, err
 	}

@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	pb "dislinkt/common/proto/post_service"
 	"dislinkt/post_service/domain"
 	"errors"
 	"go.mongodb.org/mongo-driver/bson"
@@ -77,6 +78,28 @@ func (store *PostMongoDBStore) DeleteAll() error {
 		return err
 	}
 	return nil
+}
+
+func (store *PostMongoDBStore) UpdateUser(username string, user *pb.User) (*domain.User, error) {
+	filter := bson.D{{}}
+	posts, _ := store.filter(filter)
+	changedUser := domain.User{}
+	for _, post := range posts {
+		if post.User.Username == username {
+			post.User.FirstName = user.FirstName
+			post.User.LastName = user.LastName
+			changedUser = post.User
+			_, err := store.posts.ReplaceOne(
+				context.TODO(),
+				bson.M{"_id": post.Id},
+				post,
+			)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+	return &changedUser, nil
 }
 
 func (store *PostMongoDBStore) filter(filter interface{}) ([]*domain.Post, error) {

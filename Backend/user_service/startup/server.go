@@ -3,6 +3,7 @@ package startup
 import (
 	"context"
 	"dislinkt/common/clients"
+	pbPost "dislinkt/common/proto/post_service"
 	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/user_service/application"
 	"dislinkt/user_service/auth"
@@ -56,11 +57,16 @@ func (server *Server) Start() {
 		log.Fatal(err)
 	}
 
+	postClient, err := clients.NewPostClient(fmt.Sprintf("%s:%s", server.config.PostHost, server.config.PostPort))
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	mongoClient := server.initMongoClient()
 	userStore := server.initUserStore(mongoClient)
 	userService := server.initUserService(userStore)
 	mailService := server.initMailService()
-	userHandler := server.initUserHandler(userService, mailService, jwtManager, userClient)
+	userHandler := server.initUserHandler(userService, mailService, jwtManager, userClient, postClient)
 	server.startGrpcServer(userHandler, jwtManager)
 }
 
@@ -95,8 +101,9 @@ func (server *Server) initMailService() *application.MailService {
 	return application.NewMailService()
 }
 
-func (server *Server) initUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient) *api.UserHandler {
-	return api.NewUserHandler(service, mailService, jwtManager, userClient)
+func (server *Server) initUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager,
+	userClient pbUser.UserServiceClient, postClient pbPost.PostServiceClient) *api.UserHandler {
+	return api.NewUserHandler(service, mailService, jwtManager, userClient, postClient)
 }
 
 func (server *Server) Login(ctx context.Context, req *pbUser.LoginRequest) (*pbUser.LoginResponse, error) {

@@ -38,6 +38,8 @@ type PostServiceClient interface {
 	UpdateReaction(ctx context.Context, in *UpdateRequestReaction, opts ...grpc.CallOption) (*UpdateResponseReaction, error)
 	GetProfilePosts(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostsResponse, error)
 	GetConnectionPosts(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostsResponse, error)
+	//########################USERS##################################
+	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 }
 
 type postServiceClient struct {
@@ -174,6 +176,15 @@ func (c *postServiceClient) GetConnectionPosts(ctx context.Context, in *GetPostR
 	return out, nil
 }
 
+func (c *postServiceClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
+	out := new(UpdateUserResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/UpdateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PostServiceServer is the server API for PostService service.
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
@@ -194,6 +205,8 @@ type PostServiceServer interface {
 	UpdateReaction(context.Context, *UpdateRequestReaction) (*UpdateResponseReaction, error)
 	GetProfilePosts(context.Context, *GetPostRequest) (*GetPostsResponse, error)
 	GetConnectionPosts(context.Context, *GetPostRequest) (*GetPostsResponse, error)
+	//########################USERS##################################
+	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	mustEmbedUnimplementedPostServiceServer()
 }
 
@@ -242,6 +255,9 @@ func (UnimplementedPostServiceServer) GetProfilePosts(context.Context, *GetPostR
 }
 func (UnimplementedPostServiceServer) GetConnectionPosts(context.Context, *GetPostRequest) (*GetPostsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetConnectionPosts not implemented")
+}
+func (UnimplementedPostServiceServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
 func (UnimplementedPostServiceServer) mustEmbedUnimplementedPostServiceServer() {}
 
@@ -508,6 +524,24 @@ func _PostService_GetConnectionPosts_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/UpdateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostService_ServiceDesc is the grpc.ServiceDesc for PostService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -570,6 +604,10 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetConnectionPosts",
 			Handler:    _PostService_GetConnectionPosts_Handler,
+		},
+		{
+			MethodName: "UpdateUser",
+			Handler:    _PostService_UpdateUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

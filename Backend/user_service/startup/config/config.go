@@ -18,6 +18,9 @@ type Config struct {
 
 	PostDBHost string
 	PostDBPort string
+
+	PostHost string
+	PostPort string
 }
 
 func NewConfig() *Config {
@@ -35,6 +38,8 @@ func NewConfig() *Config {
 		NatsUser:   os.Getenv("NATS_USER"),
 		NatsPass:   os.Getenv("NATS_PASS"),
 
+		PostHost:   os.Getenv("POST_SERVICE_HOST"),
+		PostPort:   os.Getenv("POST_SERVICE_PORT"),
 		PostDBHost: os.Getenv("POST_DB_HOST"),
 		PostDBPort: os.Getenv("POST_DB_PORT"),
 	}

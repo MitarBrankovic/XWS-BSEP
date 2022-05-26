@@ -100,3 +100,13 @@ func (handler *PostHandler) GetConnectionPosts(ctx context.Context, request *pb.
 	}
 	return response, nil
 }
+
+func (handler *PostHandler) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+	user, err := handler.service.UpdateProfile(request.Username, request.User)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.UpdateUserResponse{
+		User: mapUserToPb(user),
+	}, nil
+}

@@ -7,7 +7,7 @@ import (
 
 type Post struct {
 	Id        primitive.ObjectID `bson:"_id"`
-	UserId    primitive.ObjectID `bson:"userId"`
+	User      User               `bson:"user"`
 	CreatedAt time.Time          `bson:"createdAt"`
 	Content   Content            `bson:"content"`
 }
@@ -20,6 +20,7 @@ type Content struct {
 
 type User struct {
 	Id        primitive.ObjectID `bson:"_id"`
+	Username  string             `bson:"username"`
 	FirstName string             `bson:"firstName"`
 	LastName  string             `bson:"lastName"`
 }

@@ -1,6 +1,9 @@
 package application
 
-import "dislinkt/post_service/domain"
+import (
+	pb "dislinkt/common/proto/post_service"
+	"dislinkt/post_service/domain"
+)
 
 type PostService struct {
 	store domain.PostStore
@@ -34,4 +37,8 @@ func (service *PostService) GetProfilePosts(profileId string) ([]*domain.Post, e
 
 func (service *PostService) GetConnectionPosts(profileId string) ([]*domain.Post, error) {
 	return service.store.GetConnectionPosts(profileId)
+}
+
+func (service *PostService) UpdateProfile(username string, user *pb.User) (*domain.User, error) {
+	return service.store.UpdateUser(username, user)
 }
