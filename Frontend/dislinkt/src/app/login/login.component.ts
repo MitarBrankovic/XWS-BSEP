@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
 
@@ -22,13 +23,18 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.userService.login(this.user).subscribe((token) => {
-
       localStorage.setItem('token', JSON.stringify(token))
-
       localStorage.setItem('username', this.user.username)
-
       this.router.navigate(['/userHomePage']);
-    });
+    },
+    ()=>{
+      Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Username/Password incorect',
+    })},
+    ()=>{}
+    );
   }
 
   loginPasswordlessDemand() {

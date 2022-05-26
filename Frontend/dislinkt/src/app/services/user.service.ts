@@ -63,4 +63,8 @@ export class UserService {
     return this.http.get(this._url + '/publicUsers');
   }
 
+  public getAllUsernames(): Observable<any> {
+    return this.http.get(this._url + '/getAllUsernames');
+  }
+  
 }

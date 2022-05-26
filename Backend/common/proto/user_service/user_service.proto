@@ -32,6 +32,12 @@ service UserService{
     };
   }
 
+  rpc GetAllUsernames(GetAllRequest) returns(GetAllUsernamesResponse) {
+    option (google.api.http) = {
+      get: "/getAllUsernames"
+    };
+  }
+
   rpc Create(CreateRequest) returns(CreateResponse) {
     option (google.api.http) = {
       post: "/user"
@@ -120,6 +126,10 @@ message GetAllRequest {
 
 message GetAllResponse {
   repeated User users = 1;
+}
+
+message GetAllUsernamesResponse {
+  repeated string usernames = 1;
 }
 
 message CreateRequest {

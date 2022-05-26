@@ -46,7 +46,7 @@ export class EditProfileComponent implements OnInit {
     
     this.editProfileService.getLoggedUserFromServer(oldUsername).subscribe(f => {
       this.user = f.user;
-      this.user.dateOfBirth = formatDate(this.user.dateOfBirth, 'yyyy-MM-dd', 'en_US') + "T00:00:00Z";
+      this.user.dateOfBirth = formatDate(this.user.dateOfBirth, 'yyyy-MM-dd', 'en_US');
     });
 
   }
@@ -79,8 +79,12 @@ export class EditProfileComponent implements OnInit {
   saveUser(): void{
     this.user.skills = this.user.skills.toString().split(','),	
     this.user.interests =this.user.interests.toString().split(',')
-    
-    this.editProfileService.editProfile(this.user).subscribe(f => this.user = f)
+    this.user.dateOfBirth = `${this.user.dateOfBirth}T00:00:00.000Z` 
+    window.location.reload()
+    this.editProfileService.editProfile(this.user).subscribe(f => {
+      this.user = f;
+      
+    })
   }
 
   addEducation(){
@@ -88,10 +92,10 @@ export class EditProfileComponent implements OnInit {
       school: this.schoolModal,
       degree: this.degreeModal,
       fieldOfStudy: this.fieldOfStudyModal,
-      startDate: this.startDateModal,
-      endDate: this.endDateModal
+      startDate: `${this.startDateModal}T00:00:00.000Z`,
+      endDate: `${this.endDateModal}T00:00:00.000Z`
     }
-    if(education.school == "" || education.degree == "" || education.fieldOfStudy == "" || education.startDate == "" || education.endDate == ""){
+    if(education.school == "" || education.degree == "" || education.fieldOfStudy == "" || education.startDate == "T00:00:00.000Z" || education.endDate == "T00:00:00.000Z"){
       Swal.fire({
         icon: 'error',
         title: 'Fill all inputs',
@@ -110,10 +114,10 @@ export class EditProfileComponent implements OnInit {
       company: this.companyModal,
       employmentType: this.employmentTypeModal,
       location: this.locationModal,
-      startDate: this.startDateWorkModal,
-      endDate: this.endDateWorkModal
+      startDate: `${this.startDateWorkModal}T00:00:00.000Z`,
+      endDate: `${this.endDateWorkModal}T00:00:00.000Z`
     }
-    if(workExperience.title == "" || workExperience.company == "" || workExperience.employmentType == "" || workExperience.startDate == "" || workExperience.endDate == "" || workExperience.location == ""){
+    if(workExperience.title == "" || workExperience.company == "" || workExperience.employmentType == "" || workExperience.startDate == "T00:00:00.000Z" || workExperience.endDate == "T00:00:00.000Z" || workExperience.location == ""){
       Swal.fire({
         icon: 'error',
         title: 'Fill all inputs',

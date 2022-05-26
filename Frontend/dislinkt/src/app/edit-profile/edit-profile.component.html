@@ -62,21 +62,6 @@
         </div>-->
       </div>
 
-      <!--<div class="field">
-        <label class="label">Password</label>
-        <div class="control">
-          <input class="input" name="passwordInput" type="password" required minlength="8"
-            pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" [(ngModel)]="password" #passwordInput="ngModel">
-        </div>
-        <div *ngIf="passwordInput.invalid" class="alert" style="color:red">
-          <div *ngIf="passwordInput.errors?.['required']">
-            *Password is required.
-          </div>
-          <div *ngIf="passwordInput.errors?.['minlength'] || passwordInput.errors?.['pattern']">
-            *Must contain at least one number and one uppercase or lowercase letter, and at least 8 or more characters.
-          </div>
-        </div>
-      </div>-->
 
       <div class="field">
         <label class="label">Date of birth</label>
@@ -103,8 +88,7 @@
     </div>
 
     <div class="column is-one-third ">
-        EDUKACIJA I POSAO
-
+      <label class="label">Education</label>
         <div class="container">
             <table class="table">
                 <tr>
@@ -124,6 +108,7 @@
         </div><br><br><br>
 
         <div class="container">
+          <label class="label">Employments</label>
             <table class="table">
                 <tr>
                   <th>Title</th>

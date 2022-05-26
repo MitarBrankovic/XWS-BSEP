@@ -26,6 +26,7 @@ type UserServiceClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 	GetAllPublic(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
+	GetAllUsernames(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllUsernamesResponse, error)
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
@@ -76,6 +77,15 @@ func (c *userServiceClient) GetAll(ctx context.Context, in *GetAllRequest, opts 
 func (c *userServiceClient) GetAllPublic(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error) {
 	out := new(GetAllResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/GetAllPublic", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetAllUsernames(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllUsernamesResponse, error) {
+	out := new(GetAllUsernamesResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetAllUsernames", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -180,6 +190,7 @@ type UserServiceServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	GetAll(context.Context, *GetAllRequest) (*GetAllResponse, error)
 	GetAllPublic(context.Context, *GetAllRequest) (*GetAllResponse, error)
+	GetAllUsernames(context.Context, *GetAllRequest) (*GetAllUsernamesResponse, error)
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
@@ -208,6 +219,9 @@ func (UnimplementedUserServiceServer) GetAll(context.Context, *GetAllRequest) (*
 }
 func (UnimplementedUserServiceServer) GetAllPublic(context.Context, *GetAllRequest) (*GetAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllPublic not implemented")
+}
+func (UnimplementedUserServiceServer) GetAllUsernames(context.Context, *GetAllRequest) (*GetAllUsernamesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsernames not implemented")
 }
 func (UnimplementedUserServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -320,6 +334,24 @@ func _UserService_GetAllPublic_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).GetAllPublic(ctx, req.(*GetAllRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetAllUsernames_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetAllUsernames(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetAllUsernames",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetAllUsernames(ctx, req.(*GetAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -526,6 +558,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllPublic",
 			Handler:    _UserService_GetAllPublic_Handler,
+		},
+		{
+			MethodName: "GetAllUsernames",
+			Handler:    _UserService_GetAllUsernames_Handler,
 		},
 		{
 			MethodName: "Create",
