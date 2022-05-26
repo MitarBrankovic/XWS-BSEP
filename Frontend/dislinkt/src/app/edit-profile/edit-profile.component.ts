@@ -13,19 +13,8 @@ import { EditProfileService } from '../services/edit-profile.service';
 })
 export class EditProfileComponent implements OnInit {
   
-  name: string = "";
-  lastName: string = "";
-  username: string = "";
-  password: string = "";
-  email: string = "";
-  dateOfBirth: string = "";
-  skills: string = "";
-  interests: string = "";
   todayDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en_US');
-  educations: any = [];
-  workExperiences: any = [];
-  user:any;
-  user2: User = new User;
+  user: User = new User;
 
   isEdit: boolean = false;
   closeResult = '';
@@ -52,22 +41,12 @@ export class EditProfileComponent implements OnInit {
       token = ""
       this.router.navigate(['/'])
     }
-    let oldUsername = this.parseJwt(JSON.parse(token)?.accessToken)?.username
 
+    let oldUsername = this.parseJwt(JSON.parse(token)?.accessToken)?.username
+    
     this.editProfileService.getLoggedUserFromServer(oldUsername).subscribe(f => {
-      this.user2 = f.user;
-      console.log(this.user2)
       this.user = f.user;
-      this.name = this.user.firstName;
-      this.lastName = this.user.lastName;
-      this.username = this.user.username;
-      this.password = '';
-      this.email = this.user.email;
-      this.skills = this.user.skills;
-      this.interests = this.user.interests;
-      this.educations = this.user.education;
-      this.workExperiences = this.user.workExperience;
-      this.dateOfBirth = formatDate(this.user.dateOfBirth, 'yyyy-MM-dd', 'en_US') + "T00:00:00Z";
+      this.user.dateOfBirth = formatDate(this.user.dateOfBirth, 'yyyy-MM-dd', 'en_US') + "T00:00:00Z";
     });
 
   }
@@ -85,33 +64,23 @@ export class EditProfileComponent implements OnInit {
   onSubmit(){}
 
   removeEducation(e:any): void{
-    const index = this.educations.indexOf(e, 0);
+    const index = this.user.education.indexOf(e, 0);
     if (index > -1) {
-      this.educations.splice(index, 1);
+      this.user.education.splice(index, 1);
     }
   }
   removeWork(w:any): void{
-    const index = this.workExperiences.indexOf(w, 0);
+    const index = this.user.workExperience.indexOf(w, 0);
     if (index > -1) {
-      this.workExperiences.splice(index, 1);
+      this.user.workExperience.splice(index, 1);
     }
   }
 
   saveUser(): void{
-    const user= {
-      id: this.user.id,
-      username: this.username,
-      password: this.password,
-      firstName: this.name,
-      lastName: this.lastName,
-      dateOfBirth: this.dateOfBirth,
-      email: this.email,
-      education: this.educations,
-      workExperience: this.workExperiences,
-      skills: this.skills.toString().split(','),	
-      interests: this.interests.toString().split(',')
-    }
-    this.editProfileService.editProfile(user).subscribe(f => this.user = f)
+    this.user.skills = this.user.skills.toString().split(','),	
+    this.user.interests =this.user.interests.toString().split(',')
+    
+    this.editProfileService.editProfile(this.user).subscribe(f => this.user = f)
   }
 
   addEducation(){
@@ -130,7 +99,6 @@ export class EditProfileComponent implements OnInit {
       })
     }else{
       this.user.education.push(education)
-      this.educations.push(education)
       this.modalService.dismissAll()
     }
 
@@ -153,7 +121,6 @@ export class EditProfileComponent implements OnInit {
       })
     }else{
       this.user.workExperience.push(workExperience)
-      this.workExperiences.push(workExperience)
       this.modalService.dismissAll()
     }
   }

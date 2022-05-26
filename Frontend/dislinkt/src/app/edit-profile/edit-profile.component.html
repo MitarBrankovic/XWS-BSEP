@@ -3,7 +3,7 @@
       <div class="field">
         <label class="label">First name</label>
         <div class="control">
-          <input [attr.disabled]="!isEdit? true : null" name="nameInput" class="input" type="text" required [(ngModel)]="name" #nameInput="ngModel">
+          <input [attr.disabled]="!isEdit? true : null" name="nameInput" class="input" type="text" required [(ngModel)]="user.firstName" #nameInput="ngModel">
         </div>
         <div *ngIf="nameInput.invalid" class="alert" style="color:red">
           <div *ngIf="nameInput.errors?.['required']">
@@ -15,7 +15,7 @@
       <div class="field">
         <label class="label">Last name</label>
         <div class="control">
-          <input [attr.disabled]="!isEdit? true : null" name="lastNameInput" class="input" type="text" required [(ngModel)]="lastName" #lastNameInput="ngModel">
+          <input [attr.disabled]="!isEdit? true : null" name="lastNameInput" class="input" type="text" required [(ngModel)]="user.lastName" #lastNameInput="ngModel">
         </div>
         <div *ngIf="lastNameInput.invalid" class="alert" style="color:red">
           <div *ngIf="lastNameInput.errors?.['required']">
@@ -27,7 +27,7 @@
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
-          <input [attr.disabled]="!isEdit? true : null" name="usernameInput" class="input" type="text" required minlength="4" [(ngModel)]="username"
+          <input [attr.disabled]="true" name="usernameInput" class="input" type="text" required minlength="4" [(ngModel)]="user.username"
             #usernameInput="ngModel">
         </div>
         <!--<div *ngIf="usernameInput.invalid" class="alert" style="color:red">
@@ -46,7 +46,7 @@
       <div class="field">
         <label class="label">Email</label>
         <div class="control">
-          <input [attr.disabled]="!isEdit? true : null" name="emailInput" class="input" type="email" required [(ngModel)]="email" #emailInput="ngModel"
+          <input [attr.disabled]="!isEdit? true : null" name="emailInput" class="input" type="email" required [(ngModel)]="user.email" #emailInput="ngModel"
             email="true">
         </div>
         <div *ngIf="emailInput.invalid" class="alert" style="color:red">
@@ -81,7 +81,7 @@
       <div class="field">
         <label class="label">Date of birth</label>
         <div class="control">
-          <input [attr.disabled]="!isEdit? true : null" name="dateOfBirthInput" class="input" type="date" [max]="todayDate" required [(ngModel)]="dateOfBirth"
+          <input [attr.disabled]="!isEdit? true : null" name="dateOfBirthInput" class="input" type="date" [max]="todayDate" required [(ngModel)]="user.dateOfBirth"
             #dateOfBirthInput="ngModel" date="true">
         </div>
         <div *ngIf="dateOfBirthInput.invalid" class="alert" style="color:red">
@@ -93,11 +93,11 @@
 
       <div>
         <label class="label">Skills</label>
-        <textarea [attr.disabled]="!isEdit? true : null" class="textarea" placeholder="Skills" [(ngModel)]="skills"></textarea>
+        <textarea [attr.disabled]="!isEdit? true : null" class="textarea" placeholder="Skills" [(ngModel)]="user.skills"></textarea>
       </div>
       <div>
         <label class="label">Interests</label>
-        <textarea [attr.disabled]="!isEdit? true : null" class="textarea" placeholder="Interests" [(ngModel)]="interests"></textarea>
+        <textarea [attr.disabled]="!isEdit? true : null" class="textarea" placeholder="Interests" [(ngModel)]="user.interests"></textarea>
       </div>
 
     </div>
@@ -113,7 +113,7 @@
                   <th>Field of study</th>
                   <th><th>
                 </tr>
-                <tr  *ngFor="let e of educations">
+                <tr  *ngFor="let e of user.education">
                   <td>{{e.school}}</td>
                   <td>{{e.degree}}</td>
                   <td>{{e.fieldOfStudy}}</td>
@@ -131,7 +131,7 @@
                   <th>Employment Type</th>
                   <th><th>
                 </tr>
-                <tr  *ngFor="let w of workExperiences">
+                <tr  *ngFor="let w of user.workExperience">
                   <td>{{w.title}}</td>
                   <td>{{w.company}}</td>
                   <td>{{w.employmentType}}</td>

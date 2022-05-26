@@ -24,7 +24,7 @@ export class EditProfileService {
     return this.http.get(this._url + '/user/findByUsername/' + username, { headers: this.header });
   }
 
-  public editProfile(user:any){
+  public editProfile(user:any): Observable<any> {
     let userId = user.id
     return this.http.put(this._url + '/user/' + userId, user, { headers: this.header });
   }
