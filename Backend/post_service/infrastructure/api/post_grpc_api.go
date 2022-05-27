@@ -102,7 +102,7 @@ func (handler *PostHandler) GetConnectionPosts(ctx context.Context, request *pb.
 }
 
 func (handler *PostHandler) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
-	user, err := handler.service.UpdateProfile(request.Username, request.User)
+	user, err := handler.service.UpdateUser(request.User.Username, request.User)
 	if err != nil {
 		return nil, err
 	}
