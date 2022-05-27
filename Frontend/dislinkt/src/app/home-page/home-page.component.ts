@@ -10,6 +10,8 @@ import { UserService } from '../services/user.service';
 export class HomePageComponent implements OnInit {
 
   publicUsers:any;
+  filteredUsers: any;
+  searchValue: string="";
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -19,7 +21,18 @@ export class HomePageComponent implements OnInit {
 
   getAllPublicUsers() {
     this.userService.getAllPublicUsers().subscribe(
-      f=> this.publicUsers = f.users)
+      f=> {this.publicUsers = f.users;
+      this.filteredUsers = this.publicUsers;
+      })
+    
+  }
+
+  searchUsers(username: string) {
+    this.filteredUsers = this.publicUsers.filter(
+    (user:any) => user.username.toLowerCase() === username.toLowerCase());
+    
+    if(username === "")
+      this.filteredUsers = this.publicUsers;
   }
 
 }
