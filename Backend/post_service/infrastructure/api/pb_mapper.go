@@ -16,6 +16,7 @@ func mapPostToPb(post *domain.Post) *pb.Post {
 		Content: &pb.Content{
 			Text:  post.Content.Text,
 			Image: post.Content.Image,
+			Links: post.Content.Links,
 		},
 		Comments:  mapCommentListToPb(post.Comments),
 		Reactions: mapReactionListToPb(post.Reactions),
@@ -32,6 +33,7 @@ func mapPbToPost(pbPost *pb.Post) *domain.Post {
 		Content: domain.Content{
 			Text:  pbPost.Content.Text,
 			Image: pbPost.Content.Image,
+			Links: pbPost.Content.Links,
 		},
 		Comments:  mapPbToCommentList(pbPost.Comments),
 		Reactions: mapPbToReactionList(pbPost.Reactions),

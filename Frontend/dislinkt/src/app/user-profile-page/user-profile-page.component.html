@@ -1,5 +1,5 @@
 <div class="tile is-ancestor m-5">
-    <div class="tile is-4 is-vertical is-parent">
+    <div class="tile is-4 is-vertical is-parent sticky"  style="max-height: 15rem;">
         <div class="tile is-child box">
             <img src="assets/maki.jpg">
             <p class="title mt-5" style="margin-bottom: 0px;">{{user.firstName}} {{user.lastName}}</p>
@@ -24,17 +24,38 @@
     </div>
     <div class="tile is-parent">
         <div class="tile is-child box">
-            <p class="title">Three</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam at erat pulvinar, at pulvinar
-                felis blandit. Vestibulum volutpat tellus diam, consequat gravida libero rhoncus ut. Morbi maximus, leo
-                sit amet vehicula eleifend, nunc dui porta orci, quis semper odio felis ut quam.</p>
-            <p>Suspendisse varius ligula in molestie lacinia. Maecenas varius eget ligula a sagittis. Pellentesque
-                interdum, nisl nec interdum maximus, augue diam porttitor lorem, et sollicitudin felis neque sit amet
-                erat. Maecenas imperdiet felis nisi, fringilla luctus felis hendrerit sit amet. Aenean vitae gravida
-                diam, finibus dignissim turpis. Sed eget varius ligula, at volutpat tortor.</p>
-            <p>Integer sollicitudin, tortor a mattis commodo, velit urna rhoncus erat, vitae congue lectus dolor
-                consequat libero. Donec leo ligula, maximus et pellentesque sed, gravida a metus. Cras ullamcorper a
-                nunc ac porta. Aliquam ut aliquet lacus, quis faucibus libero. Quisque non semper leo.</p>
+            
+            <div class="card mb-5" >
+                <div class="card-content" *ngIf="checkOwnership()">             
+                  <div class="content">
+                    <div>
+                        <textarea placeholder="What's on your mind?" maxlength="256" class="textarea" [(ngModel)] = "newPost.content.text"></textarea>
+                  </div>
+                </div>
+                <footer class="card-footer">
+                    <button href="#" class="card-footer-item button is-info" (click)="createPost()">Post 📩</button>
+                    <button href="#" class="card-footer-item button is-light ml-5">Input image 📎</button>
+                </footer>
+            </div>
+            </div>
+            <div class="card mt-5" *ngFor="let p of posts">
+            <div class="card-content" >             
+                <div class="content">
+                <div>
+                    {{p.content.image}}
+                </div>
+                    {{p.content.text}}
+                    <a href="#" *ngFor="let link of p.content.links "> #{{link}}</a>
+                    <br>
+                    <time>{{formatDates(p.createdAt)}}</time>
+                </div>
+                    <footer class="card-footer">
+                        <button href="#" class="card-footer-item button is-info">Like 👍</button>
+                        <button href="#" class="card-footer-item button is-light ml-5">Dislike 👎 </button>
+                        <button href="#" class="card-footer-item button is-light ml-5">Comment 💬</button>
+                    </footer>
+                </div>
+            </div>
         </div>
     </div>
 </div>

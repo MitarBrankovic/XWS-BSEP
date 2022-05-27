@@ -2,3 +2,9 @@ img {
     border-radius: 50%;
     width: 15rem;
 }
+
+.sticky{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
