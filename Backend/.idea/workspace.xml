@@ -129,10 +129,10 @@
     <list>
       <item itemvalue="Compound.xml" />
       <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      <item itemvalue="Go Build.go build dislinkt/api_gateway" />
       <item itemvalue="Go Build.go build dislinkt/connection_service" />
       <item itemvalue="Go Build.go build dislinkt/post_service" />
       <item itemvalue="Go Build.go build dislinkt/user_service" />
-      <item itemvalue="Go Build.go build dislinkt/api_gateway" />
     </list>
     <recent_temporary>
       <list>

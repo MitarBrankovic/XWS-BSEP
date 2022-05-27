@@ -11,13 +11,14 @@ export class UserService {
   private _url = 'http://localhost:8000';
   header: any;
 
+  currentUser: User = new User()
   constructor(private http: HttpClient, private router: Router) {
     let token = localStorage.getItem('token')
     if (token === null) {
       token = ""
     }
     this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
-   }
+  }
 
   public login(user: User) {
     return this.http.post(this._url + '/login', user);
@@ -25,7 +26,7 @@ export class UserService {
 
   public loginPaswordlessDemand(username: string) {
     return this.http.get(this._url + '/loginDemand/' + username);
-  } 
+  }
 
   public loginPaswrodless(token: string) {
     return this.http.get(this._url + '/login/' + token);
@@ -52,7 +53,7 @@ export class UserService {
     return this.http.post(this._url + '/recover', body);
   }
 
-  public recoveryPassword(token:string, newPassword: string){
+  public recoveryPassword(token: string, newPassword: string) {
     let body = {
       newPassword: newPassword
     }
@@ -66,5 +67,5 @@ export class UserService {
   public getAllUsernames(): Observable<any> {
     return this.http.get(this._url + '/getAllUsernames');
   }
-  
+
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -9,9 +10,9 @@ import { UserService } from '../services/user.service';
 })
 export class HomePageComponent implements OnInit {
 
-  publicUsers:any;
+  publicUsers: any;
   filteredUsers: any;
-  searchValue: string="";
+  searchValue: string = "";
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -21,18 +22,24 @@ export class HomePageComponent implements OnInit {
 
   getAllPublicUsers() {
     this.userService.getAllPublicUsers().subscribe(
-      f=> {this.publicUsers = f.users;
-      this.filteredUsers = this.publicUsers;
+      f => {
+        this.publicUsers = f.users;
+        this.filteredUsers = this.publicUsers;
       })
-    
+
   }
 
   searchUsers(username: string) {
     this.filteredUsers = this.publicUsers.filter(
-    (user:any) => user.username.toLowerCase() === username.toLowerCase());
-    
-    if(username === "")
+      (user: any) => user.username.toLowerCase() === username.toLowerCase());
+
+    if (username === "")
       this.filteredUsers = this.publicUsers;
+  }
+
+  redirectToUserProfile(user: User) {
+    this.userService.currentUser = user;
+    this.router.navigate(['/profile'])
   }
 
 }

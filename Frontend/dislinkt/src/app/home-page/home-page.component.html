@@ -1,26 +1,28 @@
 <div class="container">
 
   <div class="field has-addons">
-      <div class="control">
-        <input name='searchBar' [(ngModel)]='searchValue' class="input" type="text" placeholder="Search users" (keyup.enter)="searchUsers(searchValue)">
-      </div>
-      <div class="control">
-        <button class="button is-info" (click)="searchUsers(searchValue)">Search</button>
-      </div>
+    <div class="control">
+      <input name='searchBar' [(ngModel)]='searchValue' class="input" type="text" placeholder="Search users"
+        (keyup)="searchUsers(searchValue)">
     </div>
+    <div class="control">
+      <button class="button is-info" (click)="searchUsers(searchValue)">Search</button>
+    </div>
+  </div>
 
 
-    <table class="table">
-        <tr>
-          <th>Name</th>
-          <th>Last name</th>
-          <th>Username</th>
-          <th><th>
-        </tr>
-        <tr *ngFor="let u of filteredUsers">
-          <td>{{u.firstName}}</td>
-          <td>{{u.lastName}}</td>
-          <td>{{u.username}}</td>
-        </tr>
-      </table>
+  <table class="table">
+    <thead>
+      <th>Name</th>
+      <th>Last name</th>
+      <th>Username</th>
+      <th>
+      <th>
+    </thead>
+    <tr *ngFor="let u of filteredUsers" (click)="redirectToUserProfile(u)">
+      <td>{{u.firstName}}</td>
+      <td>{{u.lastName}}</td>
+      <td>{{u.username}}</td>
+    </tr>
+  </table>
 </div><br><br><br>
