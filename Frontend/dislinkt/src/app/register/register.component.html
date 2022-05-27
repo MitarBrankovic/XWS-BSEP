@@ -1,244 +1,257 @@
 <div class="hero is-fullheight is-light">
-    <div class="hero-body has-text-centered">
-        <div class="container">
-            <div class="box">
+  <div class="hero-body has-text-centered">
+    <div class="container">
+      <div class="box">
 
-                <div class="field">
-                    <label class="label">Username</label>
-                    <div class="control">
-                      <input name="usernameInput" class="input" type="text" required minlength="4" [(ngModel)]="newUser.username"
-                        #usernameInput="ngModel">
-                    </div>
-                    <div *ngIf="usernameInput.invalid" class="alert" style="color:red">
-                      <div *ngIf="usernameInput.errors?.['required']">
-                        *Username is required.
-                      </div>
-                      <div *ngIf="usernameInput.errors?.['minlength']">
-                        *Username must be at least 4 characters long.
-                      </div>
-                    </div>
-                    <!--<div *ngIf="allUsernames?.includes(newUser.username)" class="alert" style="color:red">
-                      *Username already exist.
-                    </div>-->
-                </div>
-
-                <div class="field">
-                    <label class="label">Password</label>
-                    <div class="control">
-                      <input class="input" name="passwordInput" type="password" required minlength="8"
-                        pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" [(ngModel)]="newUser.password" #passwordInput="ngModel">
-                    </div>
-                    <div *ngIf="passwordInput.invalid" class="alert" style="color:red">
-                      <div *ngIf="passwordInput.errors?.['required']">
-                        *Password is required.
-                      </div>
-                      <div *ngIf="passwordInput.errors?.['minlength'] || passwordInput.errors?.['pattern']">
-                        *Must contain at least one number and one uppercase or lowercase letter, and at least 8 or more characters.
-                      </div>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">First name</label>
-                    <div class="control">
-                      <input name="nameInput" pattern="^[A-Z][a-z]{3,19}$" minlength="4" class="input" type="text" required [(ngModel)]="newUser.firstName" #nameInput="ngModel">
-                    </div>
-                    <div *ngIf="nameInput.invalid" class="alert" style="color:red">
-                      <div *ngIf="nameInput.errors?.['required']">
-                        *Name is required.
-                      </div>
-                      <div *ngIf="nameInput.errors?.['minlength'] || nameInput.errors?.['pattern']">
-                        Uppercase then lowercases.
-                      </div>
-                    </div>
-                  </div>
-
-                <div class="field">
-                    <label class="label">Last name</label>
-                    <div class="control">
-                    <input name="lastNameInput" pattern="^[A-Z][a-z]{3,19}$" minlength="4" class="input" type="text" required [(ngModel)]="newUser.lastName" #lastNameInput="ngModel">
-                    </div>
-                    <div *ngIf="lastNameInput.invalid" class="alert" style="color:red">
-                    <div *ngIf="lastNameInput.errors?.['required']">
-                        *Last name is required.
-                    </div>
-                    <div *ngIf="lastNameInput.errors?.['minlength'] || lastNameInput.errors?.['pattern']">
-                        Uppercase then lowercases.
-                      </div>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Date of birth</label>
-                    <div class="control">
-                      <input name="dateOfBirthInput" class="input" type="date" [max]="todayDate" required [(ngModel)]="newUser.dateOfBirth"
-                        #dateOfBirthInput="ngModel" date="true">
-                    </div>
-                    <div *ngIf="dateOfBirthInput.invalid" class="alert" style="color:red">
-                      <div *ngIf="dateOfBirthInput.errors?.['required']">
-                        *Date of birth is required.
-                      </div>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Email</label>
-                    <div class="control">
-                    <input name="emailInput" class="input" type="email" required [(ngModel)]="newUser.email" #emailInput="ngModel"
-                        email="true">
-                    </div>
-                    <div *ngIf="emailInput.invalid" class="alert" style="color:red">
-                    <div *ngIf="emailInput.errors?.['required']">
-                        *Email is required.
-                    </div>
-                    <div *ngIf="emailInput.errors?.['email']">
-                        *Wrong email.
-                    </div>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="label">Skills</label>
-                    <textarea class="textarea" placeholder="Skills" [(ngModel)]="newUser.skills"></textarea>
-                </div>
-                <div>
-                    <label class="label">Interests</label>
-                    <textarea class="textarea" placeholder="Interests" [(ngModel)]="newUser.interests"></textarea>
-                </div>
-
-                <label class="label">Education</label>
-                    <div class="container">
-                        <table class="table">
-                            <tr>
-                            <th>School</th>
-                            <th>Degree</th>
-                            <th>Field of study</th>
-                            <th><th>
-                            </tr>
-                            <tr  *ngFor="let e of newUser.education">
-                            <td>{{e.school}}</td>
-                            <td>{{e.degree}}</td>
-                            <td>{{e.fieldOfStudy}}</td>
-                            <td><button class="button is-danger" (click)="removeEducation(e)">Delete</button></td>
-                            </tr>
-                        </table>
-                        <button class="button is-primary" (click)="open(content)">Add education</button>
-                </div><br><br><br>
-              
-                <div class="container">
-                <label class="label">Employments</label>
-                    <table class="table">
-                        <tr>
-                        <th>Title</th>
-                        <th>Company</th>
-                        <th>Employment Type</th>
-                        <th><th>
-                        </tr>
-                        <tr  *ngFor="let w of newUser.workExperience">
-                        <td>{{w.title}}</td>
-                        <td>{{w.company}}</td>
-                        <td>{{w.employmentType}}</td>
-                        <td><button class="button is-danger" (click)="removeWork(w)">Delete</button></td>
-                        </tr>
-                    </table>
-                    <button class="button is-primary" data-backdrop="false" (click)="open(contentWork)">Add employment</button>
-        
-                </div>
-                <br><hr>
-                <button class="button is-dark mt-5" (click)="createAccount()"  [disabled]="nameInput.invalid || lastNameInput.invalid
-                || usernameInput.invalid || emailInput.invalid || passwordInput.invalid || dateOfBirthInput.invalid">Create account</button>
+        <div class="field">
+          <label class="label">Username</label>
+          <div class="control">
+            <input name="usernameInput" class="input" type="text" required minlength="4" [(ngModel)]="newUser.username"
+              #usernameInput="ngModel" (keyup)='usernameExists()'>
+          </div>
+          <div *ngIf="usernameInput.invalid" class="alert" style="color:red">
+            <div *ngIf="usernameInput.errors?.[' required']">
+              *Username is required.
             </div>
+            <div *ngIf="usernameInput.errors?.['minlength']">
+              *Username must be at least 4 characters long.
+            </div>
+          </div>
+          <div *ngIf="usernameExists()" class="alert" style="color:red">
+            *Username already exist.
+          </div>
         </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input class="input" name="passwordInput" type="password" required minlength="8"
+              pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" [(ngModel)]="newUser.password" #passwordInput="ngModel">
+          </div>
+          <div *ngIf="passwordInput.invalid" class="alert" style="color:red">
+            <div *ngIf="passwordInput.errors?.['required']">
+              *Password is required.
+            </div>
+            <div *ngIf="passwordInput.errors?.['minlength'] || passwordInput.errors?.['pattern']">
+              *Must contain at least one number and one uppercase or lowercase letter, and at least 8 or more
+              characters.
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">First name</label>
+          <div class="control">
+            <input name="nameInput" pattern="^[A-Z][a-z]{3,19}$" minlength="4" class="input" type="text" required
+              [(ngModel)]="newUser.firstName" #nameInput="ngModel">
+          </div>
+          <div *ngIf="nameInput.invalid" class="alert" style="color:red">
+            <div *ngIf="nameInput.errors?.['required']">
+              *Name is required.
+            </div>
+            <div *ngIf="nameInput.errors?.['minlength'] || nameInput.errors?.['pattern']">
+              Uppercase then lowercases.
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Last name</label>
+          <div class="control">
+            <input name="lastNameInput" pattern="^[A-Z][a-z]{3,19}$" minlength="4" class="input" type="text" required
+              [(ngModel)]="newUser.lastName" #lastNameInput="ngModel">
+          </div>
+          <div *ngIf="lastNameInput.invalid" class="alert" style="color:red">
+            <div *ngIf="lastNameInput.errors?.['required']">
+              *Last name is required.
+            </div>
+            <div *ngIf="lastNameInput.errors?.['minlength'] || lastNameInput.errors?.['pattern']">
+              Uppercase then lowercases.
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Date of birth</label>
+          <div class="control">
+            <input name="dateOfBirthInput" class="input" type="date" [max]="todayDate" required
+              [(ngModel)]="newUser.dateOfBirth" #dateOfBirthInput="ngModel" date="true">
+          </div>
+          <div *ngIf="dateOfBirthInput.invalid" class="alert" style="color:red">
+            <div *ngIf="dateOfBirthInput.errors?.['required']">
+              *Date of birth is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control">
+            <input name="emailInput" class="input" type="email" required [(ngModel)]="newUser.email"
+              #emailInput="ngModel" email="true">
+          </div>
+          <div *ngIf="emailInput.invalid" class="alert" style="color:red">
+            <div *ngIf="emailInput.errors?.['required']">
+              *Email is required.
+            </div>
+            <div *ngIf="emailInput.errors?.['email']">
+              *Wrong email.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="label">Skills</label>
+          <textarea class="textarea" placeholder="Skills" [(ngModel)]="newUser.skills"></textarea>
+        </div>
+        <div>
+          <label class="label">Interests</label>
+          <textarea class="textarea" placeholder="Interests" [(ngModel)]="newUser.interests"></textarea>
+        </div>
+
+        <label class="label">Education</label>
+        <div class="container">
+          <table class="table">
+            <tr>
+              <th>School</th>
+              <th>Degree</th>
+              <th>Field of study</th>
+              <th>
+              <th>
+            </tr>
+            <tr *ngFor="let e of newUser.education">
+              <td>{{e.school}}</td>
+              <td>{{e.degree}}</td>
+              <td>{{e.fieldOfStudy}}</td>
+              <td><button class="button is-danger" (click)="removeEducation(e)">Delete</button></td>
+            </tr>
+          </table>
+          <button class="button is-primary" (click)="open(content)">Add education</button>
+        </div><br><br><br>
+
+        <div class="container">
+          <label class="label">Employments</label>
+          <table class="table">
+            <tr>
+              <th>Title</th>
+              <th>Company</th>
+              <th>Employment Type</th>
+              <th>
+              <th>
+            </tr>
+            <tr *ngFor="let w of newUser.workExperience">
+              <td>{{w.title}}</td>
+              <td>{{w.company}}</td>
+              <td>{{w.employmentType}}</td>
+              <td><button class="button is-danger" (click)="removeWork(w)">Delete</button></td>
+            </tr>
+          </table>
+          <button class="button is-primary" data-backdrop="false" (click)="open(contentWork)">Add employment</button>
+
+        </div>
+        <br>
+        <hr>
+        <button class="button is-dark mt-5" (click)="createAccount()"
+          [disabled]="nameInput.invalid || lastNameInput.invalid
+                || usernameInput.invalid || emailInput.invalid || passwordInput.invalid || dateOfBirthInput.invalid">Create account</button>
+      </div>
     </div>
+  </div>
 </div>
 
 
 
 <ng-template #content let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Add new education</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-    </div>
-    <div class="modal-body">
-      <form>
-        <div class="mb-3">
-          <label class="label">School</label>
-          <div class="control">
-            <input class="input" type="text" required [(ngModel)]="schoolModal" [ngModelOptions]="{standalone: true}">
-          </div>
-
-          <label class="label">Degree</label>
-          <div class="control">
-            <input class="input" type="text" required [(ngModel)]="degreeModal" [ngModelOptions]="{standalone: true}">
-          </div>
-
-          <label class="label">Field of study</label>
-          <div class="control">
-            <input class="input" type="text" required [(ngModel)]="fieldOfStudyModal" [ngModelOptions]="{standalone: true}">
-          </div>
-
-          <label class="label">Start date</label>
-          <div class="control">
-            <input class="input" type="date" [max]="todayDate" required [(ngModel)]="startDateModal" date="true" [ngModelOptions]="{standalone: true}">
-          </div>
-
-          <label class="label">End date</label>
-          <div class="control">
-            <input class="input" type="date" [max]="todayDate" required [(ngModel)]="endDateModal" date="true" [ngModelOptions]="{standalone: true}">
-          </div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add new education</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label class="label">School</label>
+        <div class="control">
+          <input class="input" type="text" required [(ngModel)]="schoolModal" [ngModelOptions]="{standalone: true}">
         </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="addEducation()">Save</button>
-    </div>
-  </ng-template>
 
-  <ng-template #contentWork let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Add new work experience</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-    </div>
-    <div class="modal-body">
-      <form>
-        <div class="mb-3">
-          <label class="label">Title</label>
-          <div class="control">
-            <input class="input" type="text" required [(ngModel)]="titleModal" [ngModelOptions]="{standalone: true}">
-          </div>
-
-          <label class="label">Company</label>
-          <div class="control">
-            <input class="input" type="text" required [(ngModel)]="companyModal" [ngModelOptions]="{standalone: true}">
-          </div>
-
-          <label class="label">Location</label>
-          <div name="fieldName" ngDefaultControl class="select" required [(ngModel)]="employmentTypeModal" [ngModelOptions]="{standalone: true}">
-            <select>
-              <option selected value="FULL_TIME">Full time</option>
-              <option value="PART_TIME">Part time</option>
-              <option value="INTERNSHIP">Internship</option>
-            </select>
-          </div>
-
-          <label class="label">Location</label>
-          <div class="control">
-            <input class="input" type="text" required [(ngModel)]="locationModal" [ngModelOptions]="{standalone: true}">
-          </div>
-
-          <label class="label">Start date</label>
-          <div class="control">
-            <input class="input" type="date" [max]="todayDate" required [(ngModel)]="startDateWorkModal" date="true" [ngModelOptions]="{standalone: true}">
-          </div>
-
-          <label class="label">End date</label>
-          <div class="control">
-            <input class="input" type="date" [max]="todayDate" required [(ngModel)]="endDateWorkModal" date="true" [ngModelOptions]="{standalone: true}">
-          </div>
+        <label class="label">Degree</label>
+        <div class="control">
+          <input class="input" type="text" required [(ngModel)]="degreeModal" [ngModelOptions]="{standalone: true}">
         </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="addWorkExperience()">Save</button>
-    </div>
-  </ng-template>
+
+        <label class="label">Field of study</label>
+        <div class="control">
+          <input class="input" type="text" required [(ngModel)]="fieldOfStudyModal"
+            [ngModelOptions]="{standalone: true}">
+        </div>
+
+        <label class="label">Start date</label>
+        <div class="control">
+          <input class="input" type="date" [max]="todayDate" required [(ngModel)]="startDateModal" date="true"
+            [ngModelOptions]="{standalone: true}">
+        </div>
+
+        <label class="label">End date</label>
+        <div class="control">
+          <input class="input" type="date" [max]="todayDate" required [(ngModel)]="endDateModal" date="true"
+            [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="addEducation()">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #contentWork let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add new work experience</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label class="label">Title</label>
+        <div class="control">
+          <input class="input" type="text" required [(ngModel)]="titleModal" [ngModelOptions]="{standalone: true}">
+        </div>
+
+        <label class="label">Company</label>
+        <div class="control">
+          <input class="input" type="text" required [(ngModel)]="companyModal" [ngModelOptions]="{standalone: true}">
+        </div>
+
+        <label class="label">Location</label>
+        <div name="fieldName" ngDefaultControl class="select" required [(ngModel)]="employmentTypeModal"
+          [ngModelOptions]="{standalone: true}">
+          <select>
+            <option selected value="FULL_TIME">Full time</option>
+            <option value="PART_TIME">Part time</option>
+            <option value="INTERNSHIP">Internship</option>
+          </select>
+        </div>
+
+        <label class="label">Location</label>
+        <div class="control">
+          <input class="input" type="text" required [(ngModel)]="locationModal" [ngModelOptions]="{standalone: true}">
+        </div>
+
+        <label class="label">Start date</label>
+        <div class="control">
+          <input class="input" type="date" [max]="todayDate" required [(ngModel)]="startDateWorkModal" date="true"
+            [ngModelOptions]="{standalone: true}">
+        </div>
+
+        <label class="label">End date</label>
+        <div class="control">
+          <input class="input" type="date" [max]="todayDate" required [(ngModel)]="endDateWorkModal" date="true"
+            [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="addWorkExperience()">Save</button>
+  </div>
+</ng-template>
