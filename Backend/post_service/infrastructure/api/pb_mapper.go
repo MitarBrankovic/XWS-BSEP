@@ -17,6 +17,8 @@ func mapPostToPb(post *domain.Post) *pb.Post {
 			Text:  post.Content.Text,
 			Image: post.Content.Image,
 		},
+		Comments:  mapCommentListToPb(post.Comments),
+		Reactions: mapReactionListToPb(post.Reactions),
 	}
 
 	return pbPost
@@ -31,6 +33,8 @@ func mapPbToPost(pbPost *pb.Post) *domain.Post {
 			Text:  pbPost.Content.Text,
 			Image: pbPost.Content.Image,
 		},
+		Comments:  mapPbToCommentList(pbPost.Comments),
+		Reactions: mapPbToReactionList(pbPost.Reactions),
 	}
 
 	return post
@@ -52,6 +56,38 @@ func mapPbToUser(pbUser *pb.User) domain.User {
 		LastName:  pbUser.LastName,
 	}
 	return user
+}
+
+func mapCommentListToPb(comments []domain.Comment) []*pb.Comment {
+	pbComments := make([]*pb.Comment, len(comments))
+	for i, comment := range comments {
+		pbComments[i] = mapCommentToPb(&comment)
+	}
+	return pbComments
+}
+
+func mapPbToCommentList(pbComments []*pb.Comment) []domain.Comment {
+	comments := make([]domain.Comment, len(pbComments))
+	for i, pbComment := range pbComments {
+		comments[i] = *mapPbToComment(pbComment)
+	}
+	return comments
+}
+
+func mapReactionListToPb(reactions []domain.Reaction) []*pb.Reaction {
+	pbReactions := make([]*pb.Reaction, len(reactions))
+	for i, reaction := range reactions {
+		pbReactions[i] = mapReactionToPb(&reaction)
+	}
+	return pbReactions
+}
+
+func mapPbToReactionList(pbReactions []*pb.Reaction) []domain.Reaction {
+	reactions := make([]domain.Reaction, len(pbReactions))
+	for i, pbReaction := range pbReactions {
+		reactions[i] = *mapPbToReaction(pbReaction)
+	}
+	return reactions
 }
 
 func getObjectId(id string) primitive.ObjectID {

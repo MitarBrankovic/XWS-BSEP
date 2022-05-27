@@ -227,11 +227,13 @@ message Post {
   User user = 2;
   google.protobuf.Timestamp createdAt = 3;
   Content content = 4;
+  repeated Comment comments = 5;
+  repeated Reaction reactions = 6;
 }
 
 message Comment {
   string id = 1;
-  Content content = 2;
+  string Content = 2;
   User user = 3;
   google.protobuf.Timestamp DateCreated = 5;
 }
