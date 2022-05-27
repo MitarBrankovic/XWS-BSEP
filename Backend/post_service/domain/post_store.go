@@ -13,4 +13,5 @@ type PostStore interface {
 	GetProfilePosts(profileId string) ([]*Post, error)
 	GetConnectionPosts(profileId string) ([]*Post, error)
 	UpdateUser(username string, user *pb.User) (*User, error)
+	GetByUser(username string) ([]*Post, error)
 }

@@ -132,6 +132,21 @@ func (store *PostMongoDBStore) UpdateUser(username string, user *pb.User) (*doma
 	return &changedUser, nil
 }
 
+func (store *PostMongoDBStore) GetByUser(username string) ([]*domain.Post, error) {
+	filter := bson.D{{}}
+	posts, _ := store.filter(filter)
+
+	userPosts := []*domain.Post{}
+
+	for _, post := range posts {
+		if post.User.Username == username {
+			userPosts = append(userPosts, post)
+		}
+	}
+
+	return userPosts, nil
+}
+
 func (store *PostMongoDBStore) filter(filter interface{}) ([]*domain.Post, error) {
 	cursor, err := store.posts.Find(context.TODO(), filter)
 	defer func(cursor *mongo.Cursor, ctx context.Context) {

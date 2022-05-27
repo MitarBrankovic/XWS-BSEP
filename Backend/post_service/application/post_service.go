@@ -42,3 +42,7 @@ func (service *PostService) GetConnectionPosts(profileId string) ([]*domain.Post
 func (service *PostService) UpdateUser(username string, user *pb.User) (*domain.User, error) {
 	return service.store.UpdateUser(username, user)
 }
+
+func (service *PostService) GetByUser(username string) ([]*domain.Post, error) {
+	return service.store.GetByUser(username)
+}

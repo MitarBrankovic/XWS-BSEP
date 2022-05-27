@@ -110,3 +110,17 @@ func (handler *PostHandler) UpdateUser(ctx context.Context, request *pb.UpdateUs
 		User: mapUserToPb(user),
 	}, nil
 }
+
+func (handler *PostHandler) GetByUser(ctx context.Context, request *pb.GetByUserRequest) (*pb.GetByUserResponse, error) {
+	posts, err := handler.service.GetByUser(request.Username)
+	pbPost := []*pb.Post{}
+	for _, post := range posts {
+		pbPost = append(pbPost, mapPostToPb(post))
+	}
+	if err != nil {
+		return nil, err
+	}
+	return &pb.GetByUserResponse{
+		UserPosts: pbPost,
+	}, nil
+}

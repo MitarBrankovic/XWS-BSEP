@@ -9,6 +9,13 @@ import "google/protobuf/timestamp.proto";
 
 
 service PostService{
+
+  rpc GetByUser(GetByUserRequest) returns(GetByUserResponse) {
+    option (google.api.http) = {
+      get: "/post/user/{username}"
+    };
+  }
+
   rpc Get(GetRequest) returns(GetResponse) {
     option (google.api.http) = {
       get: "/post/{id}"
@@ -96,6 +103,16 @@ service PostService{
     };
   }
 
+
+
+}
+
+message GetByUserRequest{
+  string username = 1;
+}
+
+message GetByUserResponse{
+  repeated Post userPosts = 1;
 }
 
 message GetRequest {
