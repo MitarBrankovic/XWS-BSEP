@@ -663,23 +663,6 @@ func request_PostService_UpdateUser_0(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["username"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "username")
-	}
-
-	protoReq.Username, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "username", err)
-	}
-
 	msg, err := client.UpdateUser(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -695,23 +678,6 @@ func local_request_PostService_UpdateUser_0(ctx context.Context, marshaler runti
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.User); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["username"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "username")
-	}
-
-	protoReq.Username, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "username", err)
 	}
 
 	msg, err := server.UpdateUser(ctx, &protoReq)
@@ -1068,7 +1034,7 @@ func RegisterPostServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/post.PostService/UpdateUser", runtime.WithHTTPPathPattern("/post/user/{username}"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/post.PostService/UpdateUser", runtime.WithHTTPPathPattern("/post/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1425,7 +1391,7 @@ func RegisterPostServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/post.PostService/UpdateUser", runtime.WithHTTPPathPattern("/post/user/{username}"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/post.PostService/UpdateUser", runtime.WithHTTPPathPattern("/post/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1473,7 +1439,7 @@ var (
 
 	pattern_PostService_GetConnectionPosts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"post", "connection", "profileId"}, ""))
 
-	pattern_PostService_UpdateUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"post", "user", "username"}, ""))
+	pattern_PostService_UpdateUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"post", "user"}, ""))
 )
 
 var (

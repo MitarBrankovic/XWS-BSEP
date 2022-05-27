@@ -10,12 +10,14 @@ type Post struct {
 	User      User               `bson:"user"`
 	CreatedAt time.Time          `bson:"createdAt"`
 	Content   Content            `bson:"content"`
+	Comments  []Comment          `bson:"comments"`
+	Reactions []Reaction         `bson:"reactions"`
 }
 
 type Content struct {
-	Text  string `bson:"text"`
-	Image string `bson:"image"`
-	//Links []string `bson:"links"`
+	Text  string   `bson:"text"`
+	Image string   `bson:"image"`
+	Links []string `bson:"links"`
 }
 
 type User struct {
@@ -27,8 +29,7 @@ type User struct {
 
 type Reaction struct {
 	Id        primitive.ObjectID `bson:"_id"`
-	UserId    primitive.ObjectID `bson:"userId"`
-	PostId    primitive.ObjectID `bson:"postId"`
+	User      User               `bson:"user"`
 	Type      ReactionType       `bson:"type"`
 	CreatedAt time.Time          `bson:"createdAt"`
 }
@@ -43,8 +44,7 @@ const (
 type Comment struct {
 	Id          primitive.ObjectID `bson:"_id"`
 	Content     string             `bson:"content"`
-	UserId      primitive.ObjectID `bson:"userId"`
-	PostId      primitive.ObjectID `bson:"postId"`
+	User        User               `bson:"user"`
 	DateCreated time.Time          `bson:"dateCreated"`
 }
 

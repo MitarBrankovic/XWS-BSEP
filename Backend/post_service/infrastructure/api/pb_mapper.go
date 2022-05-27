@@ -38,6 +38,7 @@ func mapPbToPost(pbPost *pb.Post) *domain.Post {
 
 func mapUserToPb(user *domain.User) *pb.User {
 	pbUser := &pb.User{
+		Username:  user.Username,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 	}
@@ -46,6 +47,7 @@ func mapUserToPb(user *domain.User) *pb.User {
 
 func mapPbToUser(pbUser *pb.User) domain.User {
 	user := domain.User{
+		Username:  pbUser.Username,
 		FirstName: pbUser.FirstName,
 		LastName:  pbUser.LastName,
 	}

@@ -11,34 +11,41 @@ var posts = []*domain.Post{
 		Id: getObjectId("11596r4u645d4db787e61fe9"),
 		User: domain.User{
 			Id:        getObjectId("61596r4u645d4db787e61fe9"),
-			FirstName: "radisa",
-			LastName:  "Radisa",
+			Username:  "radisa",
+			FirstName: "Radisa",
+			LastName:  "Milovcevic",
 		},
 		CreatedAt: time.Time{},
 		Content: domain.Content{
 			Text:  "kontent",
 			Image: "slika",
 		},
-	},
-}
-
-var reactions = []*domain.Reaction{
-	{
-		Id:        getObjectId("21596r4u645d4db787e61fe9"),
-		UserId:    getObjectId("61596r4u645d4db787e61fe9"),
-		PostId:    getObjectId("11596r4u645d4db787e61fe9"),
-		Type:      0,
-		CreatedAt: time.Time{},
-	},
-}
-
-var comments = []*domain.Comment{
-	{
-		Id:          getObjectId("31596r4u645d4db787e61fe9"),
-		Content:     "kontent",
-		UserId:      getObjectId("61596r4u645d4db787e61fe9"),
-		PostId:      getObjectId("11596r4u645d4db787e61fe9"),
-		DateCreated: time.Time{},
+		Comments: []domain.Comment{
+			{
+				Id: getObjectId("11596r4u645d4db787e61fe8"),
+				User: domain.User{
+					Id:        getObjectId("61596r4u645d4db787e61fe9"),
+					Username:  "radisa",
+					FirstName: "Radisa",
+					LastName:  "Milovcevic",
+				},
+				DateCreated: time.Time{},
+				Content:     "neki komentar",
+			},
+		},
+		Reactions: []domain.Reaction{
+			{
+				Id: getObjectId("11596r4u645d4db787e61fe7"),
+				User: domain.User{
+					Id:        getObjectId("61596r4u645d4db787e61fe9"),
+					Username:  "radisa",
+					FirstName: "Radisa",
+					LastName:  "Milovcevic",
+				},
+				CreatedAt: time.Time{},
+				Type:      domain.ReactionType(1),
+			},
+		},
 	},
 }
 
