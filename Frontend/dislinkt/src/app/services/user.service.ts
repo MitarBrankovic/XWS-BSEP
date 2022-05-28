@@ -15,7 +15,6 @@ export class UserService {
   header: any;
   loggedUser: LoggedUser = new LoggedUser();
 
-  currentUser: User = new User()
   constructor(private http: HttpClient, private router: Router) {
     this.updateCredentials()
   }
@@ -87,5 +86,9 @@ export class UserService {
       this.loggedUser = this.parseJwt(JSON.parse(token)?.accessToken)
       this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
     }
+  }
+
+  public isExpired(): boolean{
+      return this.loggedUser.exp < Date.now() / 1000
   }
 }

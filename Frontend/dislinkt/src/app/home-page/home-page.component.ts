@@ -38,7 +38,7 @@ export class HomePageComponent implements OnInit {
   }
 
   redirectToUserProfile(user: User) {
-    this.userService.currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user))
     this.router.navigate(['/profile'])
   }
 

@@ -6,7 +6,6 @@ import { RecoveryEmailComponent } from './recovery-email/recovery-email.componen
 import { RecoveryPasswordComponent } from './recovery-password/recovery-password.component';
 import { RedirectComponent } from './redirect/redirect.component';
 import { RegisterComponent } from './register/register.component';
-import { UserHomePageComponent } from './user-home-page/user-home-page.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { UserProfilePageComponent } from './user-profile-page/user-profile-page.component';
@@ -16,7 +15,6 @@ const routes: Routes = [
   { path: "", redirectTo: '/homePage', pathMatch: 'full' },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
-  { path: "userHomePage", component: UserHomePageComponent },
   { path: "changePassword", component: ChangePasswordComponent },
   { path: "recovery", component: RecoveryEmailComponent },
   { path: "recover/:token", component: RecoveryPasswordComponent },

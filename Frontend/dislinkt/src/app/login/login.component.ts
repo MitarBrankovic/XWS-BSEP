@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', JSON.stringify(token))
       localStorage.setItem('username', this.user.username)
       this.userService.updateCredentials();
-      this.router.navigate(['/userHomePage']);
+      //this.router.navigate(['/homePage']);
+      window.location.href = '/homePage';
     },
     ()=>{
       Swal.fire({

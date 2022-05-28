@@ -1,7 +1,7 @@
 <nav class="navbar sticky" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+        <img src="../../assets/dislinkt_logo.png" class="format-logo" width="112" height="28">
       </a>
   
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -13,8 +13,12 @@
   
     <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item" (click)="homePage()">
-          Home
+        <a class="navbar-item" *ngIf="loggedUser.role === 'user' && !isExpired()" (click)="editProfileRedirect()">
+          Edit Profile
+        </a>
+
+        <a class="navbar-item" *ngIf="loggedUser.role === 'user'  && !isExpired()" (click)="changePasswordRedirect()">
+          Change Password
         </a>
   
       </div>
@@ -22,10 +26,11 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary">
+            <a class="button is-primary" *ngIf="loggedUser.username === ''">
               <strong (click)="register()">Sign up</strong>
             </a>
-            <a class="button is-light" (click)="login()">Log in</a>
+            <a class="button is-light" *ngIf="loggedUser.username === ''" (click)="login()">Log in</a>
+            <a class="button is-light" *ngIf="loggedUser.username !== ''" (click)="logout()">Log out</a>
           </div>
         </div>
       </div>

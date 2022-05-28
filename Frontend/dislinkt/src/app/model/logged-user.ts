@@ -1,11 +1,11 @@
 export class LoggedUser {
     username: string;
     role: string;
-    exp: Date;
+    exp: number;
 
     constructor() {
         this.username = '';
         this.role = 'guest';
-        this.exp = new Date();
+        this.exp = 0;
     }
 }

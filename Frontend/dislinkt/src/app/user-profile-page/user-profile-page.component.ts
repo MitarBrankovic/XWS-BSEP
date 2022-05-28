@@ -28,7 +28,10 @@ export class UserProfilePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser;
-    this.user = this.userService.currentUser
+   
+    let checkUser = localStorage.getItem('currentUser') 
+    if(checkUser)
+      this.user = JSON.parse(checkUser);
     this.getPosts()
   }
 
