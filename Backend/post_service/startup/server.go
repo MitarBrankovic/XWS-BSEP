@@ -43,13 +43,14 @@ func (server *Server) Start() {
 	mongoClient := server.initMongoClient()
 	postStore := server.initPostStore(mongoClient)
 	postService := server.initPostService(postStore)
+	reactionService := server.initReactionService(postStore)
 
 	userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	postHandler := server.initPostHandler(postService, userClient)
+	postHandler := server.initPostHandler(postService, reactionService, userClient)
 	server.startGrpcServer(postHandler, jwtManager)
 }
 
@@ -80,8 +81,12 @@ func (server *Server) initPostService(store domain.PostStore) *application.PostS
 	return application.NewPostService(store)
 }
 
-func (server *Server) initPostHandler(service *application.PostService, userClient pbUser.UserServiceClient) *api.PostHandler {
-	return api.NewPostHandler(service, userClient)
+func (server *Server) initReactionService(store domain.PostStore) *application.ReactionService {
+	return application.NewReactionService(store)
+}
+
+func (server *Server) initPostHandler(service *application.PostService, reactionService *application.ReactionService, userClient pbUser.UserServiceClient) *api.PostHandler {
+	return api.NewPostHandler(service, reactionService, userClient)
 }
 
 func (server *Server) startGrpcServer(postHandler *api.PostHandler, jwtManager *auth.JWTManager) {

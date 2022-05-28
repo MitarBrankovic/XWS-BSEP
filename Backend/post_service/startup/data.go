@@ -8,7 +8,7 @@ import (
 
 var posts = []*domain.Post{
 	{
-		Id: getObjectId("11596r4u645d4db787e61fe9"),
+		Id: getObjectId("6292407360516717bd54f22b"),
 		User: domain.User{
 			Id:        getObjectId("61596r4u645d4db787e61fe9"),
 			Username:  "radisa",

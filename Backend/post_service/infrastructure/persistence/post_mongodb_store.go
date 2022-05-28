@@ -45,6 +45,7 @@ func (store *PostMongoDBStore) GetAll() ([]*domain.Post, error) {
 }
 
 func (store *PostMongoDBStore) Create(post *domain.Post) error {
+	post.Id = primitive.NewObjectID()
 	result, err := store.posts.InsertOne(context.TODO(), post)
 	if err != nil {
 		return err
@@ -118,9 +119,18 @@ func (store *PostMongoDBStore) GetByUser(username string) ([]*domain.Post, error
 }
 
 func (store *PostMongoDBStore) AddReaction(reaction *domain.Reaction, postId string) error {
-	post, _ := store.filterOne(bson.M{"postId": postId})
+	reaction.Id = primitive.NewObjectID()
+	id, err := primitive.ObjectIDFromHex(postId)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": id}
+	post, err := store.filterOne(filter)
+	if err != nil {
+		return err
+	}
 	post.Reactions = append(post.Reactions, *reaction)
-	_, err := store.posts.ReplaceOne(
+	_, err = store.posts.ReplaceOne(
 		context.TODO(),
 		bson.M{"_id": post.Id},
 		post,

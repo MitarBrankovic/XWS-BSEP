@@ -9,14 +9,16 @@ import (
 
 type PostHandler struct {
 	pb.UnimplementedPostServiceServer
-	service    *application.PostService
-	userClient pbUser.UserServiceClient
+	service         *application.PostService
+	reactionService *application.ReactionService
+	userClient      pbUser.UserServiceClient
 }
 
-func NewPostHandler(service *application.PostService, userClient pbUser.UserServiceClient) *PostHandler {
+func NewPostHandler(service *application.PostService, reactionService *application.ReactionService, userClient pbUser.UserServiceClient) *PostHandler {
 	return &PostHandler{
-		service:    service,
-		userClient: userClient,
+		service:         service,
+		reactionService: reactionService,
+		userClient:      userClient,
 	}
 }
 
@@ -122,5 +124,16 @@ func (handler *PostHandler) GetByUser(ctx context.Context, request *pb.GetByUser
 	}
 	return &pb.GetByUserResponse{
 		UserPosts: pbPost,
+	}, nil
+}
+
+func (handler *PostHandler) CreateReaction(ctx context.Context, request *pb.CreateRequestReaction) (*pb.CreateResponseReaction, error) {
+	reaction := mapPbToReaction(request.Reaction)
+	err := handler.reactionService.Create(reaction, request.PostId)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateResponseReaction{
+		Reaction: mapReactionToPb(reaction),
 	}, nil
 }

@@ -75,7 +75,7 @@ service PostService{
   rpc CreateReaction(CreateRequestReaction) returns(CreateResponseReaction) {
     option (google.api.http) = {
       post: "/reaction"
-      body: "reaction"
+      body: "*"
     };
   }
   rpc UpdateReaction(UpdateRequestReaction) returns(UpdateResponseReaction) {
@@ -243,8 +243,8 @@ message Comment {
 message Reaction {
   string id = 1;
   string username = 2;
-  int64 type = 4;
-  google.protobuf.Timestamp createdAt = 5;
+  int64 type = 3;
+  google.protobuf.Timestamp createdAt = 4;
 }
 
 message User{
