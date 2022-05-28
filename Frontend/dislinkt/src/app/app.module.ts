@@ -38,7 +38,7 @@ import { UserProfilePageComponent } from './user-profile-page/user-profile-page.
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

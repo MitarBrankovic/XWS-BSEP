@@ -14,3 +14,7 @@ img {
     position: sticky;
     top: 5rem;
 }
+
+input[type="file"] {
+    display: none;
+}

@@ -17,7 +17,8 @@ export class PostService{
         if (token === null) {
           token = ""
         }
-        this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+        if(token != "")
+            this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
     }
 
     public getPosts(username: string): Observable<any> {

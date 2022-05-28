@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable, Subscriber } from 'rxjs';
 import { LoggedUser } from '../model/logged-user';
 import { Post } from '../model/post';
 import { User } from '../model/user.model';
@@ -17,6 +18,12 @@ export class UserProfilePageComponent implements OnInit {
   posts: Array<any> = [];
   loggedUser: LoggedUser = new LoggedUser();
   newPost: Post = new Post();
+
+  url: any;
+  msg = "";
+  postImage: any;
+  postImageBase64: any;
+
   constructor(private userService: UserService, private postService: PostService) { }
 
   ngOnInit(): void {
@@ -43,6 +50,7 @@ export class UserProfilePageComponent implements OnInit {
       this.newPost.content.links.push(element.substring(1))
     })
     this.newPost.content.text = this.newPost.content.text.replace(/ #\S+/g, '');
+    this.newPost.content.image = this.url;
     this.newPost.createdAt = new Date();
     this.newPost.user.firstName = this.user.firstName;
     this.newPost.user.lastName = this.user.lastName;
@@ -51,10 +59,33 @@ export class UserProfilePageComponent implements OnInit {
     this.postService.createPost(this.newPost).subscribe()
   }
 
+
   checkOwnership(){
     if(this.loggedUser.username === this.user.username){
       return true;
     }
     return false;
   }
+
+	selectFile(event: any) { //Angular 11, for stricter type
+		if(!event.target.files[0] || event.target.files[0].length == 0) {
+			this.msg = 'You must select an image';
+			return;
+		}
+		
+		var mimeType = event.target.files[0].type;
+		
+		if (mimeType.match(/image\/*/) == null) {
+			this.msg = "Only images are supported";
+			return;
+		}
+		
+		var reader = new FileReader();
+		reader.readAsDataURL(event.target.files[0]);
+		reader.onload = (_event) => {
+			this.msg = "";
+			this.url = reader.result;
+		}
+	}
+
 }

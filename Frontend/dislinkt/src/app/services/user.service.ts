@@ -83,7 +83,9 @@ export class UserService {
     if (token === null) {
       token = ""
     }
-    this.loggedUser = this.parseJwt(JSON.parse(token)?.accessToken)
-    this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+    if(token != ""){
+      this.loggedUser = this.parseJwt(JSON.parse(token)?.accessToken)
+      this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+    }
   }
 }

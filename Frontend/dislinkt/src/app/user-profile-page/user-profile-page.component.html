@@ -28,22 +28,28 @@
             <div class="card mb-5" >
                 <div class="card-content" *ngIf="checkOwnership()">             
                   <div class="content">
-                    <div>
+                    <div style="text-align: center;">
+                        <img class="mb-3" [src]="url" style="border-radius: 0px; object-fit: contain;" *ngIf="url">
                         <textarea placeholder="What's on your mind?" maxlength="256" class="textarea" [(ngModel)] = "newPost.content.text"></textarea>
-                  </div>
+                    </div>
                 </div>
                 <footer class="card-footer">
                     <button href="#" class="card-footer-item button is-info" (click)="createPost()">Post 📩</button>
-                    <button href="#" class="card-footer-item button is-light ml-5">Input image 📎</button>
+                    <!--<button href="#" class="card-footer-item button is-light ml-5">Input image 📎</button>
+                    <input type="file" (change)="selectFile($event)">-->
+                    <label class="custom-file-upload card-footer-item button is-light ml-5">
+                        <input type="file" (change)="selectFile($event)" [(ngModel)]="postImage"/>
+                        Input image 📎
+                    </label>
                 </footer>
             </div>
             </div>
             <div class="card mt-5" *ngFor="let p of posts">
             <div class="card-content" >             
                 <div class="content">
-                <div>
-                    {{p.content.image}}
-                </div>
+                    <div class="mb-3" style="text-align: center; background-color: rgb(244, 244, 244);">
+                        <img src = "{{p.content.image}}" style="border-radius: 0px;">
+                    </div>
                     {{p.content.text}}
                     <a href="#" *ngFor="let link of p.content.links "> #{{link}}</a>
                     <br>
