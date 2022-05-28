@@ -167,6 +167,7 @@ message GetAllResponseComment {
 
 message CreateRequestComment {
   Comment comment = 1;
+  string postId = 2;
 }
 
 message CreateResponseComment {
@@ -194,6 +195,7 @@ message GetAllResponseReaction {
 
 message CreateRequestReaction {
   Reaction reaction = 1;
+  string postId = 2;
 }
 
 message CreateResponseReaction {
@@ -234,13 +236,13 @@ message Post {
 message Comment {
   string id = 1;
   string Content = 2;
-  User user = 3;
+  string username = 3;
   google.protobuf.Timestamp DateCreated = 5;
 }
 
 message Reaction {
   string id = 1;
-  User user = 2;
+  string username = 2;
   int64 type = 4;
   google.protobuf.Timestamp createdAt = 5;
 }

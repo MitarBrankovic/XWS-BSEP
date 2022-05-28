@@ -9,7 +9,7 @@ import (
 func mapCommentToPb(comment *domain.Comment) *pb.Comment {
 	pbComment := &pb.Comment{
 		Id:          comment.Id.Hex(),
-		User:        mapUserToPb(&comment.User),
+		Username:    comment.Username,
 		Content:     comment.Content,
 		DateCreated: timestamppb.New(comment.DateCreated),
 	}
@@ -20,7 +20,7 @@ func mapCommentToPb(comment *domain.Comment) *pb.Comment {
 func mapPbToComment(pbComment *pb.Comment) *domain.Comment {
 	comment := &domain.Comment{
 		Id:          getObjectId(pbComment.Id),
-		User:        mapPbToUser(pbComment.User),
+		Username:    pbComment.Username,
 		Content:     pbComment.Content,
 		DateCreated: pbComment.DateCreated.AsTime(),
 	}

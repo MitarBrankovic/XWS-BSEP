@@ -47,7 +47,7 @@ func (handler *ReactionHandler) GetAll(ctx context.Context, request *pb.GetAllRe
 
 func (handler ReactionHandler) Create(ctx context.Context, request *pb.CreateRequestReaction) (*pb.CreateResponseReaction, error) {
 	reaction := mapPbToReaction(request.Reaction)
-	err := handler.service.Create(reaction)
+	err := handler.service.Create(reaction, request.PostId)
 	if err != nil {
 		return nil, err
 	}

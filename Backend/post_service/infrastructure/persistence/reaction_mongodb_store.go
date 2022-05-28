@@ -38,12 +38,9 @@ func (store *ReactionMongoDBStore) GetAll() ([]*domain.Reaction, error) {
 	return store.filter(filter)
 }
 
-func (store *ReactionMongoDBStore) Create(reaction *domain.Reaction) error {
-	result, err := store.reactions.InsertOne(context.TODO(), reaction)
-	if err != nil {
-		return err
-	}
-	reaction.Id = result.InsertedID.(primitive.ObjectID)
+func (store *PostMongoDBStore) Create(reaction *domain.Reaction, postId string) error {
+	post, _ := store.filterOne(bson.M{"postId": postId})
+	post.Reactions = append(post.Reactions, *reaction)
 	return nil
 }
 

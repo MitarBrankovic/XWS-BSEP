@@ -20,8 +20,8 @@ func (service *ReactionService) GetAll() ([]*domain.Reaction, error) {
 	return service.store.GetAll()
 }
 
-func (service *ReactionService) Create(reaction *domain.Reaction) error {
-	return service.store.Create(reaction)
+func (service *ReactionService) Create(reaction *domain.Reaction, postId string) error {
+	return service.store.Create(reaction, postId)
 }
 
 func (service *ReactionService) Update(reactionId string, reaction *domain.Reaction) error {

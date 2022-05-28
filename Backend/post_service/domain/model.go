@@ -29,7 +29,7 @@ type User struct {
 
 type Reaction struct {
 	Id        primitive.ObjectID `bson:"_id"`
-	User      User               `bson:"user"`
+	Username  string             `bson:"username"`
 	Type      ReactionType       `bson:"type"`
 	CreatedAt time.Time          `bson:"createdAt"`
 }
@@ -44,7 +44,7 @@ const (
 type Comment struct {
 	Id          primitive.ObjectID `bson:"_id"`
 	Content     string             `bson:"content"`
-	User        User               `bson:"user"`
+	Username    string             `bson:"username"`
 	DateCreated time.Time          `bson:"dateCreated"`
 }
 

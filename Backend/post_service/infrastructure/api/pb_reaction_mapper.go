@@ -9,7 +9,7 @@ import (
 func mapReactionToPb(reaction *domain.Reaction) *pb.Reaction {
 	pbReaction := &pb.Reaction{
 		Id:        reaction.Id.Hex(),
-		User:      mapUserToPb(&reaction.User),
+		Username:  reaction.Username,
 		Type:      int64(reaction.Type), //VRV JE GRESKA
 		CreatedAt: timestamppb.New(reaction.CreatedAt),
 	}
@@ -20,7 +20,7 @@ func mapReactionToPb(reaction *domain.Reaction) *pb.Reaction {
 func mapPbToReaction(pbReaction *pb.Reaction) *domain.Reaction {
 	reaction := &domain.Reaction{
 		Id:        getObjectId(pbReaction.Id),
-		User:      mapPbToUser(pbReaction.User),
+		Username:  pbReaction.Username,
 		Type:      domain.ReactionType(pbReaction.Type),
 		CreatedAt: pbReaction.CreatedAt.AsTime(),
 	}
