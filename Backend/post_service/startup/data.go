@@ -22,26 +22,16 @@ var posts = []*domain.Post{
 		},
 		Comments: []domain.Comment{
 			{
-				Id: getObjectId("11596r4u645d4db787e61fe8"),
-				User: domain.User{
-					Id:        getObjectId("61596r4u645d4db787e61fe9"),
-					Username:  "radisa",
-					FirstName: "Radisa",
-					LastName:  "Milovcevic",
-				},
+				Id:          getObjectId("11596r4u645d4db787e61fe8"),
+				Username:    "radisa",
 				DateCreated: time.Time{},
 				Content:     "neki komentar",
 			},
 		},
 		Reactions: []domain.Reaction{
 			{
-				Id: getObjectId("11596r4u645d4db787e61fe7"),
-				User: domain.User{
-					Id:        getObjectId("61596r4u645d4db787e61fe9"),
-					Username:  "radisa",
-					FirstName: "Radisa",
-					LastName:  "Milovcevic",
-				},
+				Id:        getObjectId("11596r4u645d4db787e61fe7"),
+				Username:  "radisa",
 				CreatedAt: time.Time{},
 				Type:      domain.ReactionType(1),
 			},

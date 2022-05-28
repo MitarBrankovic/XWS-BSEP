@@ -3,12 +3,14 @@ package application
 import "dislinkt/post_service/domain"
 
 type ReactionService struct {
-	store domain.ReactionStore
+	store     domain.ReactionStore
+	postStore domain.PostStore
 }
 
-func NewReactionService(store domain.ReactionStore) *ReactionService {
+func NewReactionService(store domain.ReactionStore, postStore domain.PostStore) *ReactionService {
 	return &ReactionService{
-		store: store,
+		store:     store,
+		postStore: postStore,
 	}
 }
 
@@ -21,7 +23,7 @@ func (service *ReactionService) GetAll() ([]*domain.Reaction, error) {
 }
 
 func (service *ReactionService) Create(reaction *domain.Reaction, postId string) error {
-	return service.store.Create(reaction, postId)
+	return service.postStore.AddReaction(reaction, postId)
 }
 
 func (service *ReactionService) Update(reactionId string, reaction *domain.Reaction) error {

@@ -98,36 +98,6 @@ func (store *PostMongoDBStore) UpdateUser(username string, user *pb.User) (*doma
 				return nil, err
 			}
 		}
-		for i, comment := range post.Comments {
-			if comment.User.Username == username {
-				comment.User.FirstName = user.FirstName
-				comment.User.LastName = user.LastName
-				post.Comments[i] = comment
-				_, err := store.posts.ReplaceOne(
-					context.TODO(),
-					bson.M{"_id": post.Id},
-					post,
-				)
-				if err != nil {
-					return nil, err
-				}
-			}
-		}
-		for i, reaction := range post.Reactions {
-			if reaction.User.Username == username {
-				reaction.User.FirstName = user.FirstName
-				reaction.User.LastName = user.LastName
-				post.Reactions[i] = reaction
-				_, err := store.posts.ReplaceOne(
-					context.TODO(),
-					bson.M{"_id": post.Id},
-					post,
-				)
-				if err != nil {
-					return nil, err
-				}
-			}
-		}
 	}
 	return &changedUser, nil
 }
@@ -145,6 +115,20 @@ func (store *PostMongoDBStore) GetByUser(username string) ([]*domain.Post, error
 	}
 
 	return userPosts, nil
+}
+
+func (store *PostMongoDBStore) AddReaction(reaction *domain.Reaction, postId string) error {
+	post, _ := store.filterOne(bson.M{"postId": postId})
+	post.Reactions = append(post.Reactions, *reaction)
+	_, err := store.posts.ReplaceOne(
+		context.TODO(),
+		bson.M{"_id": post.Id},
+		post,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (store *PostMongoDBStore) filter(filter interface{}) ([]*domain.Post, error) {

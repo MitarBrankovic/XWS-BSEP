@@ -38,9 +38,9 @@ func (store *ReactionMongoDBStore) GetAll() ([]*domain.Reaction, error) {
 	return store.filter(filter)
 }
 
-func (store *PostMongoDBStore) Create(reaction *domain.Reaction, postId string) error {
-	post, _ := store.filterOne(bson.M{"postId": postId})
-	post.Reactions = append(post.Reactions, *reaction)
+func (store *ReactionMongoDBStore) Create(reaction *domain.Reaction, postId string) error {
+	//post, _ := store.filterOne(bson.M{"postId": postId})
+	//post.Reactions = append(post.Reactions, *reaction)
 	return nil
 }
 
