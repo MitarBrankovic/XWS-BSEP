@@ -6,8 +6,8 @@ import { Post } from "../model/post";
 
 @Injectable({
     providedIn: 'root',
-  })
-export class PostService{
+})
+export class PostService {
 
     private _url = 'http://localhost:8000';
     header: any;
@@ -15,17 +15,21 @@ export class PostService{
     constructor(private http: HttpClient, private router: Router) {
         let token = localStorage.getItem('token')
         if (token === null) {
-          token = ""
+            token = ""
         }
-        if(token != "")
+        if (token != "")
             this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
     }
 
     public getPosts(username: string): Observable<any> {
         return this.http.get(this._url + '/post/user/' + username);
     }
-    
+
     public createPost(post: Post) {
         return this.http.post(this._url + '/post', post, { headers: this.header });
+    }
+
+    public reactOnPost(reaction: any) {
+        return this.http.post(this._url + '/reaction', reaction, { headers: this.header });
     }
 }

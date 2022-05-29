@@ -24,18 +24,19 @@ export class UserProfilePageComponent implements OnInit {
   postImage: any;
   postImageBase64: any;
 
+
   constructor(private userService: UserService, private postService: PostService) { }
 
   ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser;
-   
-    let checkUser = localStorage.getItem('currentUser') 
-    if(checkUser)
+
+    let checkUser = localStorage.getItem('currentUser')
+    if (checkUser)
       this.user = JSON.parse(checkUser);
     this.getPosts()
   }
 
-  getPosts(){
+  getPosts() {
     this.postService.getPosts(this.user.username).subscribe(
       data => {
         this.posts = data.userPosts;
@@ -43,12 +44,12 @@ export class UserProfilePageComponent implements OnInit {
     )
   }
 
-  formatDates(date: any){
+  formatDates(date: any) {
     date = formatDate(date, 'dd MMMM yyyy hh:mm', 'en_US');
     return date;
   }
 
-  createPost(){
+  createPost() {
     this.newPost.content.text.match(/#\w+/g)?.forEach(element => {
       this.newPost.content.links.push(element.substring(1))
     })
@@ -63,32 +64,48 @@ export class UserProfilePageComponent implements OnInit {
   }
 
 
-  checkOwnership(){
-    if(this.loggedUser.username === this.user.username){
+  checkOwnership() {
+    if (this.loggedUser.username === this.user.username) {
       return true;
     }
     return false;
   }
 
-	selectFile(event: any) { //Angular 11, for stricter type
-		if(!event.target.files[0] || event.target.files[0].length == 0) {
-			this.msg = 'You must select an image';
-			return;
-		}
-		
-		var mimeType = event.target.files[0].type;
-		
-		if (mimeType.match(/image\/*/) == null) {
-			this.msg = "Only images are supported";
-			return;
-		}
-		
-		var reader = new FileReader();
-		reader.readAsDataURL(event.target.files[0]);
-		reader.onload = (_event) => {
-			this.msg = "";
-			this.url = reader.result;
-		}
-	}
+  selectFile(event: any) { //Angular 11, for stricter type
+    if (!event.target.files[0] || event.target.files[0].length == 0) {
+      this.msg = 'You must select an image';
+      return;
+    }
+
+    var mimeType = event.target.files[0].type;
+
+    if (mimeType.match(/image\/*/) == null) {
+      this.msg = "Only images are supported";
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = (_event) => {
+      this.msg = "";
+      this.url = reader.result;
+    }
+  }
+
+  reactOnPost(postId: any, reactionType: any) {
+    let data = {
+      reaction: {
+        id: '',
+        username: this.loggedUser.username,
+        type: reactionType,
+        createdAt: formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en_US') + 'Z'
+
+      },
+      postId: postId
+
+    }
+
+    this.postService.reactOnPost(data).subscribe();
+  }
 
 }
