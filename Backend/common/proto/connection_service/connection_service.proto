@@ -65,8 +65,8 @@ message UpdateResponse {
 
 message Connection {
   string id = 1;
-  string issuerId = 2;
-  string subjectId = 3;
+  string issuerUsername = 2;
+  string subjectUsername = 3;
   google.protobuf.Timestamp date = 4;
   bool isApproved = 5;
 }

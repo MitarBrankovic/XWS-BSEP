@@ -360,7 +360,7 @@ func RegisterConnectionServiceHandler(ctx context.Context, mux *runtime.ServeMux
 // RegisterConnectionServiceHandlerClient registers the http handlers for service ConnectionService
 // to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ConnectionServiceClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ConnectionServiceClient"
-// doesn't go through the normal gRPC flow (creating a gRPC clients etc.) then it will be up to the passed in
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "ConnectionServiceClient" to call the correct interceptors.
 func RegisterConnectionServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ConnectionServiceClient) error {
 
