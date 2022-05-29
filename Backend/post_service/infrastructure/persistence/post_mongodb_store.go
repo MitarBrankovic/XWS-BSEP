@@ -129,6 +129,11 @@ func (store *PostMongoDBStore) AddReaction(reaction *domain.Reaction, postId str
 	if err != nil {
 		return err
 	}
+	for _, r := range post.Reactions {
+		if reaction.Username == r.Username {
+			return errors.New("reaction already exists")
+		}
+	}
 	post.Reactions = append(post.Reactions, *reaction)
 	_, err = store.posts.ReplaceOne(
 		context.TODO(),

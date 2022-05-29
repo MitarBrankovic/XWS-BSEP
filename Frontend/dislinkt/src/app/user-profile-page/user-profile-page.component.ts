@@ -16,14 +16,14 @@ import { UserService } from '../services/user.service';
 export class UserProfilePageComponent implements OnInit {
 
   isClickedOnCommentButton: Array<boolean> = [];
-  commentContent: any
+  commentContent: any = "";
 
   user: User = new User();
   posts: Array<any> = [];
   loggedUser: LoggedUser = new LoggedUser();
   newPost: Post = new Post();
 
-  url: any;
+  url: any = "";
   msg = "";
   postImage: any;
   postImageBase64: any;
@@ -40,13 +40,21 @@ export class UserProfilePageComponent implements OnInit {
     this.getPosts()
   }
 
+  sortPostsByDate(posts:any){
+    return posts.sort((a:any, b:any) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
+  }
+
   getPosts() {
     this.postService.getPosts(this.user.username).subscribe(
       data => {
-        this.posts = data.userPosts;
+        this.posts = this.sortPostsByDate(data.userPosts);
       }
     )
   }
+
+
 
   formatDates(date: any) {
     date = formatDate(date, 'dd MMMM yyyy hh:mm', 'en_US');
@@ -54,17 +62,37 @@ export class UserProfilePageComponent implements OnInit {
   }
 
   createPost() {
-    this.newPost.content.text.match(/#\w+/g)?.forEach(element => {
-      this.newPost.content.links.push(element.substring(1))
-    })
-    this.newPost.content.text = this.newPost.content.text.replace(/ #\S+/g, '');
-    this.newPost.content.image = this.url;
-    this.newPost.createdAt = new Date();
-    this.newPost.user.firstName = this.user.firstName;
-    this.newPost.user.lastName = this.user.lastName;
-    this.newPost.user.username = this.user.username;
-    console.log(this.newPost)
-    this.postService.createPost(this.newPost).subscribe()
+    if(this.newPost.content.text != "" || this.url != ""){
+      this.newPost.content.text.match(/#\w+/g)?.forEach(element => {
+        this.newPost.content.links.push(element.substring(1))
+      })
+      this.newPost.content.text = this.newPost.content.text.replace(/ #\S+/g, '');
+      this.newPost.content.image = this.url;
+      this.newPost.createdAt = new Date();
+      this.newPost.user.firstName = this.user.firstName;
+      this.newPost.user.lastName = this.user.lastName;
+      this.newPost.user.username = this.user.username;
+      console.log(this.newPost)
+      this.postService.createPost(this.newPost).subscribe()
+      window.location.reload();
+    }else{
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1100,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Fill status or image!'
+      })
+    }
   }
 
 
@@ -111,6 +139,7 @@ export class UserProfilePageComponent implements OnInit {
 
     this.postService.reactOnPost(data).subscribe();
     this.getPosts();
+    window.location.reload();
   }
 
   openCommentDiv(i: number) {
@@ -118,27 +147,47 @@ export class UserProfilePageComponent implements OnInit {
   }
 
   sendComment(postId: any, i: number) {
-    let data = {
-      comment: {
-        id: "",
-        content: this.commentContent,
-        username: this.loggedUser.username,
-        dateCreated: formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en_US') + 'Z'
+    if(this.commentContent != ""){
+      let data = {
+        comment: {
+          id: "",
+          content: this.commentContent,
+          username: this.loggedUser.username,
+          dateCreated: formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en_US') + 'Z'
+        },
+        postId: postId
+      }
+      
+      this.postService.sendComment(data).subscribe(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Comment is sent',
+        })
       },
-      postId: postId
-    }
-
-    this.postService.sendComment(data).subscribe(() => {
-      Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Comment is sent',
+        () => { }
+      );
+      this.commentContent = "";
+      window.location.reload();
+      this.isClickedOnCommentButton[i] = false
+    }else{
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1100,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
       })
-    },
-      () => { }
-    );
-
-    this.isClickedOnCommentButton[i] = false
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Fill the comment field!'
+      })
+    }
   }
 
   getNumLikes(post: Post, type:number){ 
@@ -150,15 +199,16 @@ export class UserProfilePageComponent implements OnInit {
   }
 
   requestConnect(){
-    this.userService.requestConnect(this.user.username).subscribe(
-      (data) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: 'Request sent',
-        })
-      }
-    )
-
+    if(this.loggedUser.username != ""){
+      this.userService.requestConnect(this.user.username).subscribe(
+        (data) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Request sent',
+          })
+        }
+      )
+    }
   }
 }

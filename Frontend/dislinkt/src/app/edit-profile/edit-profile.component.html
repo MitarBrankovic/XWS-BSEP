@@ -30,6 +30,7 @@
           <input [attr.disabled]="true" name="usernameInput" class="input" type="text" required minlength="4" [(ngModel)]="user.username"
             #usernameInput="ngModel">
         </div>
+        <!--greska kada se menja username-->
         <!--<div *ngIf="usernameInput.invalid" class="alert" style="color:red">
           <div *ngIf="usernameInput.errors?.['required']">
             *Username is required.
@@ -101,10 +102,10 @@
                   <td>{{e.school}}</td>
                   <td>{{e.degree}}</td>
                   <td>{{e.fieldOfStudy}}</td>
-                  <td *ngIf="isEdit"><button class="button is-danger" (click)="removeEducation(e)">Delete</button></td>
+                  <td><button [attr.disabled]="!isEdit? true : null" class="button is-danger" (click)="removeEducation(e)">Delete</button></td>
                 </tr>
               </table>
-              <button class="button is-primary" (click)="open(content)">Add education</button>
+              <button class="button is-primary" [attr.disabled]="!isEdit? true : null" (click)="open(content)">Add education</button>
         </div><br><br><br>
 
         <div class="container">
@@ -120,10 +121,10 @@
                   <td>{{w.title}}</td>
                   <td>{{w.company}}</td>
                   <td>{{w.employmentType}}</td>
-                  <td *ngIf="isEdit"><button class="button is-danger" (click)="removeWork(w)">Delete</button></td>
+                  <td><button [attr.disabled]="!isEdit? true : null" class="button is-danger" (click)="removeWork(w)">Delete</button></td>
                 </tr>
               </table>
-              <button class="button is-primary" data-backdrop="false" (click)="open(contentWork)">Add employment</button>
+              <button [attr.disabled]="!isEdit? true : null" class="button is-primary" data-backdrop="false" (click)="open(contentWork)">Add employment</button>
 
         </div>
 

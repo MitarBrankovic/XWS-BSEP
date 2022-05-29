@@ -41,6 +41,14 @@ func (store *ConnectionMongoDBStore) Create(connection *domain.Connection) (*dom
 	if connection.IssuerUsername == connection.SubjectUsername {
 		return nil, status.Errorf(codes.InvalidArgument, "Cannot create connection with same username")
 	}
+
+	filter := bson.D{{}}
+	allConnections, _ := store.filter(filter)
+	for _, c := range allConnections {
+		if c.IssuerUsername == connection.IssuerUsername && c.SubjectUsername == connection.SubjectUsername {
+			return nil, status.Errorf(codes.AlreadyExists, "Connection already exists")
+		}
+	}
 	result, err := store.connections.InsertOne(context.TODO(), connection)
 	if err != nil {
 		return nil, err

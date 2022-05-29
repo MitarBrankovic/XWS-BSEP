@@ -3,8 +3,8 @@
         <div class="tile is-child box">
             <img src="assets/maki.jpg">
             <p class="title mt-5" style="margin-bottom: 0px;">{{user.firstName}} {{user.lastName}}</p>
-            <p class="subTitle">{{user.username}}</p>
-            <p class="subTitle mt-5">Born: {{user.dateOfBirth.substring(0,10)}}</p>
+            <p class="subTitle"><i>{{user.username}}</i></p>
+            <p class="subTitle mt-5">Born: <i>{{user.dateOfBirth.substring(0,10)}}</i></p>
             <p>
                 Interests:
                 <label *ngFor="let i of user.interests" class="mr-1"><i>{{i}}</i></label>
@@ -13,13 +13,15 @@
         </div>
         <div class="tile is-child box">
             <p class="title">Work experience</p>
+            <label *ngIf="user.workExperience.length == 0"><i>No work experience</i></label>
             <label *ngFor="let w of user.workExperience">
-                In "{{w.company}}" as {{w.title}}.
+                In "<b>{{w.company}}</b>" as <b>{{w.title}}</b>. <br>
             </label>
 
             <p class="title mt-5">Education</p>
+            <label *ngIf="user.education.length == 0"><i>No education</i></label>
             <label *ngFor="let w of user.education">
-                {{w.school}} (degree {{w.degree}}), major {{w.fieldOfStudy}}.
+                <b>{{w.school}}</b> (degree {{w.degree}}), major <b>{{w.fieldOfStudy}}</b>. <br>
             </label>
         </div>
     </div>
@@ -44,6 +46,7 @@
                     </footer>
                 </div>
             </div>
+            <h2 *ngIf="posts.length == 0 && loggedUser.username !== user.username" class="title" style="text-align: center;"><i>No posts yet</i></h2>
             <div class="card mt-5" *ngFor="let p of posts; let i = index">
                 <div class="card-content">
                     <div class="content">
@@ -53,7 +56,7 @@
                         {{p.content.text}}
                         <a href="#" *ngFor="let link of p.content.links "> #{{link}}</a>
                         <br>
-                        <time>{{formatDates(p.createdAt)}}</time>
+                        <time><i>{{formatDates(p.createdAt)}}</i></time>
                     </div>
                     <footer class="card-footer">
                         <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p.id, 0)" href="#" class="card-footer-item button is-info">Like
@@ -70,7 +73,7 @@
                             {{c.content}}
                             <hr>
                             <label>{{c.username}} </label> <br>
-                            <label>{{formatDates(c.dateCreated)}}</label>
+                            <label><i>{{formatDates(c.dateCreated)}}</i></label>
                             </div>
                         </div>
                         <textarea class="textarea" placeholder="Write a comment" [(ngModel)]="commentContent"></textarea><br>
