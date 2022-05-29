@@ -65,6 +65,14 @@
                     </footer>
 
                     <div *ngIf="isClickedOnCommentButton[i]">
+                        <div class="content mt-3 box" *ngFor="let c of p.comments">
+                            <div class="mb-3">
+                            {{c.content}}
+                            <hr>
+                            <label>{{c.username}} </label> <br>
+                            <label>{{formatDates(c.dateCreated)}}</label>
+                            </div>
+                        </div>
                         <textarea class="textarea" placeholder="Write a comment" [(ngModel)]="commentContent"></textarea><br>
                         <button (click)="sendComment(p.id, i)" class="button is-light mt-3">Send comment</button>
                     </div>
