@@ -8,12 +8,14 @@ import (
 
 type ConnectionHandler struct {
 	pb.UnimplementedConnectionServiceServer
-	service *application.ConnectionService
+	service        *application.ConnectionService
+	messageService *application.MessageService
 }
 
-func NewConnectionHandler(service *application.ConnectionService) *ConnectionHandler {
+func NewConnectionHandler(service *application.ConnectionService, messageService *application.MessageService) *ConnectionHandler {
 	return &ConnectionHandler{
-		service: service,
+		service:        service,
+		messageService: messageService,
 	}
 }
 
@@ -58,5 +60,16 @@ func (handler *ConnectionHandler) Update(ctx context.Context, request *pb.Update
 	}
 	return &pb.UpdateResponse{
 		Connection: mapConnectionToPb(connection),
+	}, nil
+}
+
+func (handler *ConnectionHandler) CreateMessage(ctx context.Context, request *pb.CreateMessageRequest) (*pb.CreateMessageResponse, error) {
+	message := mapPbToMessage(request.Message)
+	newMessage, err := handler.messageService.Create(message)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateMessageResponse{
+		Message: mapMessageToPb(newMessage),
 	}, nil
 }

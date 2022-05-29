@@ -30,6 +30,13 @@ service ConnectionService{
       patch: "/connection/{id}"
     };
   }
+  /*##########################MESSAGE#################################*/
+  rpc CreateMessage(CreateMessageRequest) returns(CreateMessageResponse) {
+    option (google.api.http) = {
+      post: "/message"
+      body: "message"
+    };
+  }
 }
 
 message GetRequest {
@@ -63,10 +70,28 @@ message UpdateResponse {
   Connection connection = 1;
 }
 
+/*############MESSAGE##################*/
+
+message CreateMessageRequest {
+  Message message = 1;
+}
+
+message CreateMessageResponse {
+  Message message = 1;
+}
+
 message Connection {
   string id = 1;
   string issuerUsername = 2;
   string subjectUsername = 3;
   google.protobuf.Timestamp date = 4;
   bool isApproved = 5;
+}
+
+message Message {
+  string id = 1;
+  string senderUsername = 2;
+  string receiverUsername = 3;
+  string content = 4;
+  google.protobuf.Timestamp date = 5;
 }

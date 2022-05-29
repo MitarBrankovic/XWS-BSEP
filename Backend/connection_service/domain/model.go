@@ -12,3 +12,11 @@ type Connection struct {
 	Date            time.Time          `bson:"date"`
 	IsApproved      bool               `bson:"isApproved"`
 }
+
+type Message struct {
+	Id               primitive.ObjectID `bson:"_id"`
+	SenderUsername   string             `bson:"senderUsername"`
+	ReceiverUsername string             `bson:"receiverUsername"`
+	Date             time.Time          `bson:"date"`
+	Content          string             `bson:"content"`
+}

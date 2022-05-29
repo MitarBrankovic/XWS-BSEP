@@ -8,24 +8,21 @@ import (
 
 var connections = []*domain.Connection{
 	{
-		Id:         getObjectId("45406d1b624b3da748f63fe1"),
-		IssuerId:   getObjectId("61596r4u645d4db787e61fe9"),
-		SubjectId:  getObjectId("78596r4u645d4db787e61fe4"),
-		IsApproved: true,
-		Date:       time.Now(),
+		Id:              getObjectId("45406d1b624b3da748f63fe1"),
+		IssuerUsername:  "radisa",
+		SubjectUsername: "filip",
+		IsApproved:      true,
+		Date:            time.Now(),
 	},
 }
 
-var profilesPrivacy = []*domain.ProfilePrivacy{
+var messages = []*domain.Message{
 	{
-		Id:        primitive.NewObjectID(),
-		UserId:    getObjectId("61596r4u645d4db787e61fe9"),
-		IsPrivate: false,
-	},
-	{
-		Id:        primitive.NewObjectID(),
-		UserId:    getObjectId("78596r4u645d4db787e61fe4"),
-		IsPrivate: false,
+		Id:               getObjectId("45406d1b624b3da748f63fe1"),
+		SenderUsername:   "radisa",
+		ReceiverUsername: "filip",
+		Content:          "Hello",
+		Date:             time.Now(),
 	},
 }
 

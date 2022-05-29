@@ -46,10 +46,12 @@ func (server *Server) Start() {
 
 	mongoClient := server.initMongoClient()
 	connectionStore := server.initConnectionStore(mongoClient)
+	messageStore := server.initMessageStore(mongoClient)
 
 	connectionService := server.initConnectionService(connectionStore)
+	messageService := server.initMessageService(messageStore)
 
-	connectionHandler := server.initConnectionHandler(connectionService)
+	connectionHandler := server.initConnectionHandler(connectionService, messageService)
 
 	server.startGrpcServer(connectionHandler, jwtManager)
 }
@@ -68,14 +70,23 @@ func (server *Server) initConnectionStore(client *mongo.Client) domain.Connectio
 	if err != nil {
 		return nil
 	}
-	for _, privacy := range profilesPrivacy {
-		_, err := store.CreatePrivacy(privacy)
+	for _, Connection := range connections {
+		_, err := store.Create(Connection)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
-	for _, Connection := range connections {
-		_, err := store.Create(Connection)
+	return store
+}
+
+func (server *Server) initMessageStore(client *mongo.Client) domain.MessageStore {
+	store := persistence.NewMessageMongoDBStore(client)
+	err := store.DeleteAll()
+	if err != nil {
+		return nil
+	}
+	for _, Message := range messages {
+		_, err := store.Create(Message)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -87,8 +98,12 @@ func (server *Server) initConnectionService(store domain.ConnectionStore) *appli
 	return application.NewConnectionService(store)
 }
 
-func (server *Server) initConnectionHandler(service *application.ConnectionService) *api.ConnectionHandler {
-	return api.NewConnectionHandler(service)
+func (server *Server) initMessageService(store domain.MessageStore) *application.MessageService {
+	return application.NewMessageService(store)
+}
+
+func (server *Server) initConnectionHandler(service *application.ConnectionService, messageService *application.MessageService) *api.ConnectionHandler {
+	return api.NewConnectionHandler(service, messageService)
 }
 
 func (server *Server) startGrpcServer(connectionHandler *api.ConnectionHandler, jwtManager *auth.JWTManager) {

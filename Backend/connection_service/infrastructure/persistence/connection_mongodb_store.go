@@ -11,20 +11,16 @@ import (
 const (
 	DATABASE    = "connection_service"
 	COLLECTION1 = "connection"
-	COLLECTION2 = "profilePrivacy"
 )
 
 type ConnectionMongoDBStore struct {
-	connections     *mongo.Collection
-	profilesPrivacy *mongo.Collection
+	connections *mongo.Collection
 }
 
 func NewConnectionMongoDBStore(client *mongo.Client) domain.ConnectionStore {
 	connections := client.Database(DATABASE).Collection(COLLECTION1)
-	profilesPrivacy := client.Database(DATABASE).Collection(COLLECTION2)
 	return &ConnectionMongoDBStore{
-		connections:     connections,
-		profilesPrivacy: profilesPrivacy,
+		connections: connections,
 	}
 }
 
@@ -50,10 +46,6 @@ func (store *ConnectionMongoDBStore) Create(connection *domain.Connection) (*dom
 
 func (store *ConnectionMongoDBStore) DeleteAll() error {
 	_, err := store.connections.DeleteMany(context.TODO(), bson.D{{}})
-	if err != nil {
-		return err
-	}
-	_, err = store.profilesPrivacy.DeleteMany(context.TODO(), bson.D{{}})
 	if err != nil {
 		return err
 	}
