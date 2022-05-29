@@ -6,6 +6,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const (
@@ -35,7 +37,10 @@ func (store *ConnectionMongoDBStore) Get(userId string) ([]*domain.Connection, e
 }
 
 func (store *ConnectionMongoDBStore) Create(connection *domain.Connection) (*domain.Connection, error) {
-	connection.IsApproved = true
+	connection.IsApproved = false
+	if connection.IssuerUsername == connection.SubjectUsername {
+		return nil, status.Errorf(codes.InvalidArgument, "Cannot create connection with same username")
+	}
 	result, err := store.connections.InsertOne(context.TODO(), connection)
 	if err != nil {
 		return nil, err

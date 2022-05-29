@@ -9,7 +9,7 @@
                 Interests:
                 <label *ngFor="let i of user.interests" class="mr-1"><i>{{i}}</i></label>
             </p>
-            <button [disabled]="this.loggedUser.role !== 'user'" class="button is-info is-outlined is-fullwidth mt-5" (click)="requestConnect()">Follow</button>
+            <button [disabled]="this.loggedUser.role !== 'user'" *ngIf="loggedUser.username !== user.username" class="button is-info is-outlined is-fullwidth mt-5" (click)="requestConnect()">Follow</button>
         </div>
         <div class="tile is-child box">
             <p class="title">Work experience</p>

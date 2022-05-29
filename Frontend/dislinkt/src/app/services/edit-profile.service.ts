@@ -17,7 +17,8 @@ export class EditProfileService {
     if (token === null) {
       token = ""
     }
-    this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+    if(token != "")
+      this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
   }
 
   public getLoggedUserFromServer(username:any): Observable<any> {
