@@ -15,7 +15,7 @@ import { UserService } from '../services/user.service';
 })
 export class UserProfilePageComponent implements OnInit {
 
-  isClickedOnCommentButton: boolean = false
+  isClickedOnCommentButton: Array<boolean> = [];
   commentContent: any
 
   user: User = new User();
@@ -110,13 +110,14 @@ export class UserProfilePageComponent implements OnInit {
     }
 
     this.postService.reactOnPost(data).subscribe();
+    this.getPosts();
   }
 
-  openCommentDiv() {
-    this.isClickedOnCommentButton = true
+  openCommentDiv(i: number) {
+    this.isClickedOnCommentButton[i] = !this.isClickedOnCommentButton[i]
   }
 
-  sendComment(postId: any) {
+  sendComment(postId: any, i: number) {
     let data = {
       comment: {
         id: "",
@@ -137,7 +138,27 @@ export class UserProfilePageComponent implements OnInit {
       () => { }
     );
 
-    this.isClickedOnCommentButton = false
+    this.isClickedOnCommentButton[i] = false
   }
 
+  getNumLikes(post: Post, type:number){ 
+     return post.reactions.filter((reaction:any) => reaction.type == type).length
+  }
+
+  alreadyReacted(post: Post){
+    return post.reactions.some((reaction:any) => reaction.username == this.loggedUser.username)
+  }
+
+  requestConnect(){
+    this.userService.requestConnect(this.user.username).subscribe(
+      (data) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Request sent',
+        })
+      }
+    )
+
+  }
 }

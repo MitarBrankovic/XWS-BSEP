@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
+import { Connection } from "../model/connection";
 import { LoggedUser } from "../model/logged-user";
-import { Post } from "../model/post";
 import { User } from "../model/user.model";
 
 @Injectable({
@@ -86,6 +86,13 @@ export class UserService {
       this.loggedUser = this.parseJwt(JSON.parse(token)?.accessToken)
       this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
     }
+  }
+
+  public requestConnect(username: string): Observable<any>{
+    let connection = new Connection(this.loggedUser.username, username);
+    
+    return this.http.post(this._url + '/connection', connection, { headers: this.header });
+
   }
 
   public isExpired(): boolean{
