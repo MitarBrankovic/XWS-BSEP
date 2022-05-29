@@ -60,10 +60,15 @@
                         <button (click)="reactOnPost(p.id, 0)" href="#" class="card-footer-item button is-info">Like
                             👍</button>
                         <button (click)="reactOnPost(p.id, 1)" href="#"
-                            class="card-footer-item button is-light ml-5">Dislike
-                            👎 </button>
-                        <button href="#" class="card-footer-item button is-light ml-5">Comment 💬</button>
+                            class="card-footer-item button is-light ml-5">Dislike 👎 </button>
+                        <button (click)="openCommentDiv()" class="card-footer-item button is-light ml-5">Comment
+                            💬</button>
                     </footer>
+
+                    <div *ngIf="isClickedOnCommentButton">
+                        <textarea class="textarea" [(ngModel)]="commentContent"></textarea><br>
+                        <button (click)="sendComment(p.id)" class="button is-light mt-3">Send comment</button>
+                    </div>
                 </div>
             </div>
         </div>

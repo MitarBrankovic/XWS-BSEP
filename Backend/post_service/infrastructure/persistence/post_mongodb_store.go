@@ -141,6 +141,29 @@ func (store *PostMongoDBStore) AddReaction(reaction *domain.Reaction, postId str
 	return nil
 }
 
+func (store *PostMongoDBStore) AddComment(comment *domain.Comment, postId string) error {
+	comment.Id = primitive.NewObjectID()
+	id, err := primitive.ObjectIDFromHex(postId)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": id}
+	post, err := store.filterOne(filter)
+	if err != nil {
+		return err
+	}
+	post.Comments = append(post.Comments, *comment)
+	_, err = store.posts.ReplaceOne(
+		context.TODO(),
+		bson.M{"_id": post.Id},
+		post,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (store *PostMongoDBStore) filter(filter interface{}) ([]*domain.Post, error) {
 	cursor, err := store.posts.Find(context.TODO(), filter)
 	defer func(cursor *mongo.Cursor, ctx context.Context) {

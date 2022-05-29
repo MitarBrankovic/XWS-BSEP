@@ -52,7 +52,7 @@ service PostService{
   rpc CreateComment(CreateRequestComment) returns(CreateResponseComment) {
     option (google.api.http) = {
       post: "/comment"
-      body: "comment"
+      body: "*"
     };
   }
   rpc UpdateComment(UpdateRequestComment) returns(UpdateResponseComment) {
@@ -235,9 +235,9 @@ message Post {
 
 message Comment {
   string id = 1;
-  string Content = 2;
+  string content = 2;
   string username = 3;
-  google.protobuf.Timestamp DateCreated = 5;
+  google.protobuf.Timestamp dateCreated = 4;
 }
 
 message Reaction {

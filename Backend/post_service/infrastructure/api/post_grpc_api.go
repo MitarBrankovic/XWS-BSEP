@@ -12,13 +12,15 @@ type PostHandler struct {
 	service         *application.PostService
 	reactionService *application.ReactionService
 	userClient      pbUser.UserServiceClient
+	commentService  *application.CommentService
 }
 
-func NewPostHandler(service *application.PostService, reactionService *application.ReactionService, userClient pbUser.UserServiceClient) *PostHandler {
+func NewPostHandler(service *application.PostService, reactionService *application.ReactionService, commentService *application.CommentService, userClient pbUser.UserServiceClient) *PostHandler {
 	return &PostHandler{
 		service:         service,
 		reactionService: reactionService,
 		userClient:      userClient,
+		commentService:  commentService,
 	}
 }
 
@@ -135,5 +137,16 @@ func (handler *PostHandler) CreateReaction(ctx context.Context, request *pb.Crea
 	}
 	return &pb.CreateResponseReaction{
 		Reaction: mapReactionToPb(reaction),
+	}, nil
+}
+
+func (handler *PostHandler) CreateComment(ctx context.Context, request *pb.CreateRequestComment) (*pb.CreateResponseComment, error) {
+	comment := mapPbToComment(request.Comment)
+	err := handler.commentService.Create(comment, request.PostId)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateResponseComment{
+		Comment: mapCommentToPb(comment),
 	}, nil
 }

@@ -47,7 +47,7 @@ func (handler *CommentHandler) GetAll(ctx context.Context, request *pb.GetAllReq
 
 func (handler CommentHandler) Create(ctx context.Context, request *pb.CreateRequestComment) (*pb.CreateResponseComment, error) {
 	comment := mapPbToComment(request.Comment)
-	err := handler.service.Create(comment)
+	err := handler.service.Create(comment, request.PostId)
 	if err != nil {
 		return nil, err
 	}

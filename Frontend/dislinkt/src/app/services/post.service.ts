@@ -32,4 +32,8 @@ export class PostService {
     public reactOnPost(reaction: any) {
         return this.http.post(this._url + '/reaction', reaction, { headers: this.header });
     }
-}
+
+    public sendComment(comment: any) {
+        return this.http.post(this._url + '/comment', comment, { headers: this.header });
+    }
+}   

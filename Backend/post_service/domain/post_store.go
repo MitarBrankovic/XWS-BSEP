@@ -15,4 +15,5 @@ type PostStore interface {
 	UpdateUser(username string, user *pb.User) (*User, error)
 	GetByUser(username string) ([]*Post, error)
 	AddReaction(reaction *Reaction, postId string) error
+	AddComment(comment *Comment, postId string) error
 }

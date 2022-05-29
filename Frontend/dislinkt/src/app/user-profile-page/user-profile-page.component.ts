@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
+import Swal from 'sweetalert2';
 import { LoggedUser } from '../model/logged-user';
 import { Post } from '../model/post';
 import { User } from '../model/user.model';
@@ -13,6 +14,9 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./user-profile-page.component.css']
 })
 export class UserProfilePageComponent implements OnInit {
+
+  isClickedOnCommentButton: boolean = false
+  commentContent: any
 
   user: User = new User();
   posts: Array<any> = [];
@@ -106,6 +110,34 @@ export class UserProfilePageComponent implements OnInit {
     }
 
     this.postService.reactOnPost(data).subscribe();
+  }
+
+  openCommentDiv() {
+    this.isClickedOnCommentButton = true
+  }
+
+  sendComment(postId: any) {
+    let data = {
+      comment: {
+        id: "",
+        content: this.commentContent,
+        username: this.loggedUser.username,
+        dateCreated: formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en_US') + 'Z'
+      },
+      postId: postId
+    }
+
+    this.postService.sendComment(data).subscribe(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Comment is sent',
+      })
+    },
+      () => { }
+    );
+
+    this.isClickedOnCommentButton = false
   }
 
 }
