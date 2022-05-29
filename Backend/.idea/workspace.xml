@@ -6,15 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/post_service/post_service.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/post_service/post_service.pb.gw.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/post_service/post_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/post_service/post_service.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/post_service/post_service_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/application/post_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/application/post_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/domain/post_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/domain/post_store.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/infrastructure/api/post_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/infrastructure/api/post_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/infrastructure/persistence/post_mongodb_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/infrastructure/persistence/post_mongodb_store.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/user-profile-page/user-profile-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/user-profile-page/user-profile-page.component.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
