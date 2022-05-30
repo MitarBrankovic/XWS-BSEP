@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	pb "dislinkt/common/proto/connection_service"
+	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/connection_service/application"
 )
 
@@ -10,12 +11,14 @@ type ConnectionHandler struct {
 	pb.UnimplementedConnectionServiceServer
 	service        *application.ConnectionService
 	messageService *application.MessageService
+	userClient     pbUser.UserServiceClient
 }
 
-func NewConnectionHandler(service *application.ConnectionService, messageService *application.MessageService) *ConnectionHandler {
+func NewConnectionHandler(service *application.ConnectionService, messageService *application.MessageService, userClient pbUser.UserServiceClient) *ConnectionHandler {
 	return &ConnectionHandler{
 		service:        service,
 		messageService: messageService,
+		userClient:     userClient,
 	}
 }
 
@@ -50,7 +53,13 @@ func (handler *ConnectionHandler) GetAll(ctx context.Context, request *pb.GetAll
 }
 
 func (handler *ConnectionHandler) Create(ctx context.Context, request *pb.CreateRequest) (*pb.CreateResponse, error) {
+	user, err := handler.userClient.FindByUsername(context.Background(), &pbUser.FindByUsernameRequest{Username: request.Connection.SubjectUsername})
 	connection := mapPbToConnection(request.Connection)
+	if user.User.Private {
+		connection.IsApproved = false
+	} else {
+		connection.IsApproved = true
+	}
 	newConnection, err := handler.service.Create(connection)
 	if err != nil {
 		return nil, err

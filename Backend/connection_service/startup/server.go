@@ -1,7 +1,9 @@
 package startup
 
 import (
+	"dislinkt/common/clients"
 	connection "dislinkt/common/proto/connection_service"
+	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/connection_service/application"
 	"dislinkt/connection_service/domain"
 	"dislinkt/connection_service/infrastructure/api"
@@ -51,7 +53,12 @@ func (server *Server) Start() {
 	connectionService := server.initConnectionService(connectionStore)
 	messageService := server.initMessageService(messageStore)
 
-	connectionHandler := server.initConnectionHandler(connectionService, messageService)
+	userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	connectionHandler := server.initConnectionHandler(connectionService, messageService, userClient)
 
 	server.startGrpcServer(connectionHandler, jwtManager)
 }
@@ -102,8 +109,8 @@ func (server *Server) initMessageService(store domain.MessageStore) *application
 	return application.NewMessageService(store)
 }
 
-func (server *Server) initConnectionHandler(service *application.ConnectionService, messageService *application.MessageService) *api.ConnectionHandler {
-	return api.NewConnectionHandler(service, messageService)
+func (server *Server) initConnectionHandler(service *application.ConnectionService, messageService *application.MessageService, userClient pbUser.UserServiceClient) *api.ConnectionHandler {
+	return api.NewConnectionHandler(service, messageService, userClient)
 }
 
 func (server *Server) startGrpcServer(connectionHandler *api.ConnectionHandler, jwtManager *auth.JWTManager) {

@@ -12,6 +12,8 @@ type Config struct {
 	ConnectionDBPort string
 	PostHost         string
 	PostPort         string
+	UserHost         string
+	UserPort         string
 	NatsHost         string
 	NatsPort         string
 	NatsUser         string
@@ -29,6 +31,8 @@ func NewConfig() *Config {
 		ConnectionDBPort: os.Getenv("CONNECTION_DB_PORT"),
 		PostHost:         os.Getenv("POST_SERVICE_HOST"),
 		PostPort:         os.Getenv("POST_SERVICE_PORT"),
+		UserHost:         os.Getenv("USER_SERVICE_HOST"),
+		UserPort:         os.Getenv("USER_SERVICE_PORT"),
 		NatsHost:         os.Getenv("NATS_HOST"),
 		NatsPort:         os.Getenv("NATS_PORT"),
 		NatsUser:         os.Getenv("NATS_USER"),

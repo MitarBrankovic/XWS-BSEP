@@ -219,6 +219,8 @@ message User {
   repeated WorkExperience workExperience = 9;
   repeated string skills = 10;
   repeated string interests = 11;
+  bool activated = 12;
+  bool private = 13;
 }
 
 message Education{

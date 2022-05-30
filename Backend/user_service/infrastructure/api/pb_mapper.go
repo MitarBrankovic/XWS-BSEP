@@ -20,6 +20,8 @@ func mapUserToPb(user *domain.User) *pb.User {
 		WorkExperience: make([]*pb.WorkExperience, 0),
 		Skills:         make([]string, 0),
 		Interests:      make([]string, 0),
+		Activated:      user.Activated,
+		Private:        user.Private,
 	}
 
 	for _, education := range user.Education {
@@ -68,8 +70,8 @@ func mapPbToUser(pbUser *pb.User) *domain.User {
 		DateOfBirth:    pbUser.DateOfBirth.AsTime(),
 		Email:          pbUser.Email,
 		Role:           "unverified",
-		Private:        false,
-		Activated:      false,
+		Private:        pbUser.Private,
+		Activated:      pbUser.Activated,
 		Education:      make([]domain.Education, 0),
 		WorkExperience: make([]domain.WorkExperience, 0),
 		Skills:         make([]string, 0),

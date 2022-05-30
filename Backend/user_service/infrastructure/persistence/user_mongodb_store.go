@@ -36,7 +36,7 @@ func (store *UserMongoDBStore) Get(userId string) (*domain.User, error) {
 }
 
 func (store *UserMongoDBStore) GetAll() ([]*domain.User, error) {
-	filter := bson.M{"role": "user", "isPrivate": false}
+	filter := bson.M{"role": "user"}
 	return store.filter(filter)
 }
 
