@@ -1,0 +1,1 @@
+insert into test_class (id, name) values (1, 'Test')
