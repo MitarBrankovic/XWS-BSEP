@@ -21,7 +21,7 @@ public class TestController {
     private TestService testService;
 
     @GetMapping
-    public ResponseEntity<List<TestClass>> getInstructorComplaints() {
+    public ResponseEntity<List<TestClass>> findAll() {
         return new ResponseEntity<List<TestClass>>(testService.findAll(), HttpStatus.OK);
     }
 
