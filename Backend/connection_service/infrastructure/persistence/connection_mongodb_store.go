@@ -27,12 +27,13 @@ func NewConnectionMongoDBStore(client *mongo.Client) domain.ConnectionStore {
 }
 
 func (store *ConnectionMongoDBStore) Get(userId string) ([]*domain.Connection, error) {
-	id, err := primitive.ObjectIDFromHex(userId)
-	if err != nil {
-		return nil, err
-	}
-	filter := bson.M{"$or": []bson.M{{"subjectId": id},
-		{"issuerId": id}}}
+	filter := bson.M{"$or": []bson.M{{"subjectId": userId},
+		{"issuerId": userId}}}
+	return store.filter(filter)
+}
+
+func (store *ConnectionMongoDBStore) GetAll() ([]*domain.Connection, error) {
+	filter := bson.M{}
 	return store.filter(filter)
 }
 

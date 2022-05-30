@@ -16,6 +16,10 @@ func (service *ConnectionService) Get(userId string) ([]*domain.Connection, erro
 	return service.store.Get(userId)
 }
 
+func (service *ConnectionService) GetAll() ([]*domain.Connection, error) {
+	return service.store.GetAll()
+}
+
 func (service *ConnectionService) Create(connection *domain.Connection) (*domain.Connection, error) {
 	return service.store.Create(connection)
 }
