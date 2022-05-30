@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -12,11 +13,11 @@ import java.util.Date;
 public class AgentUser {
 
     @Id
-    @SequenceGenerator(name = "agentUserIdSeqGen", sequenceName = "agentUserIdSeq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "agentUserIdSeqGen", sequenceName = "agentUserIdSeq", initialValue = 4, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agentUserIdSeqGen")
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
@@ -29,7 +30,7 @@ public class AgentUser {
     private String lastName;
 
     @Column
-    private Date dateOfBirth;
+    private LocalDateTime dateOfBirth;
 
     @Column
     private UserRole role;
@@ -39,4 +40,13 @@ public class AgentUser {
     private Company company;
 
     public AgentUser() {}
+
+    public AgentUser(String username, String password, String firstName, String lastName, LocalDateTime dateOfBirth, UserRole role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.role = role;
+    }
 }
