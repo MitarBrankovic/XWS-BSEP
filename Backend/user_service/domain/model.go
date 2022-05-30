@@ -16,8 +16,8 @@ type User struct {
 	FullName       string             `bson:"fullName" validate:"name"`
 	DateOfBirth    time.Time          `bson:"dateOfBirth"`
 	Email          string             `bson:"email" validate:"email"`
-	Activated      bool               `bson:"isActivated"`
-	Private        bool               `bson:"isPrivate"`
+	Activated      bool               `bson:"activated"`
+	Private        bool               `bson:"private"`
 	Token          string             `bson:"token"`
 	PasswordToken  string             `bson:"passwordToken"`
 	RecoveryToken  string             `bson:"recoveryToken"`
