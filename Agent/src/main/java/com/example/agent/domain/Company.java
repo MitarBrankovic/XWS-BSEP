@@ -14,7 +14,7 @@ public class Company {
     @Id
     @SequenceGenerator(name = "companyIdSeqGen", sequenceName = "companyIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "companyIdSeqGen")
-    private Long companyId;
+    private Long id;
 
     @Column
     private String contactInfo;

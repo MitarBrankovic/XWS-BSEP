@@ -14,7 +14,7 @@ public class AgentUser {
     @Id
     @SequenceGenerator(name = "agentUserIdSeqGen", sequenceName = "agentUserIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agentUserIdSeqGen")
-    private Long agentUserId;
+    private Long id;
 
     @Column
     private String username;
@@ -35,7 +35,7 @@ public class AgentUser {
     private UserRole role;
 
     @OneToOne
-    @JoinColumn(name="companyId", referencedColumnName="companyId")
+    @JoinColumn(name="companyId", referencedColumnName="id")
     private Company company;
 
     public AgentUser() {}

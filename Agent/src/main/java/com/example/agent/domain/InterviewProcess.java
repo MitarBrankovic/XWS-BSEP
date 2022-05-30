@@ -12,7 +12,7 @@ public class InterviewProcess {
     @Id
     @SequenceGenerator(name = "proccessIdSeqGen", sequenceName = "proccessIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proccessIdSeqGen")
-    private Long proccessId;
+    private Long id;
 
     @Column
     private String description;

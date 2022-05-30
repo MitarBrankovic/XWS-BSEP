@@ -8,17 +8,17 @@ import javax.persistence.*;
 @Entity
 @Setter
 @Getter
-public class OpenPositionSallary {
+public class Sallary {
 
     @Id
     @SequenceGenerator(name = "sallaryIddSeqGen", sequenceName = "sallaryIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sallaryIdSeqGen")
-    private Long sallaryId;
+    private Long id;
 
     @Column
-    private Double value;
+    private Double sallaryValue;
 
 
-    public OpenPositionSallary() {
+    public Sallary() {
     }
 }

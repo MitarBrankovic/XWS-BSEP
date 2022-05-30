@@ -12,10 +12,13 @@ public class CommentOnCompany {
     @Id
     @SequenceGenerator(name = "commentIdSeqGen", sequenceName = "commentIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentIdSeqGen")
-    private Long commentId;
+    private Long id;
 
     @Column
     private String comment;
+
+    @Column
+    private String userSignature;
 
     public CommentOnCompany() {
     }

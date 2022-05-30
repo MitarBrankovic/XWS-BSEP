@@ -13,13 +13,13 @@ public class OpenPosition {
     @Id
     @SequenceGenerator(name = "positonIdSeqGen", sequenceName = "positonIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "positonIdSeqGen")
-    private Long positonId;
+    private Long id;
 
     @Column
-    private String name;
+    private String positionName;
 
-    @OneToMany
-    private Set<OpenPositionSallary> sallarys;
+    @ManyToMany
+    private Set<Sallary> sallarys;
 
     public OpenPosition() {
     }
