@@ -14,6 +14,11 @@ service ConnectionService{
       get: "/connection/{userId}"
     };
   }
+  rpc GetAll(GetAllRequest) returns(GetAllResponse) {
+    option (google.api.http) = {
+      get: "/connection"
+    };
+  }
   rpc Create(CreateRequest) returns(CreateResponse) {
     option (google.api.http) = {
       post: "/connection"
@@ -44,6 +49,13 @@ message GetRequest {
 }
 
 message GetResponse {
+  repeated Connection connections = 1;
+}
+
+message GetAllRequest {
+}
+
+message GetAllResponse {
   repeated Connection connections = 1;
 }
 

@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { LoggedUser } from '../model/logged-user';
 import { Post } from '../model/post';
 import { User } from '../model/user.model';
+import { ConnectionService } from '../services/connection.service';
 import { PostService } from '../services/post.service';
 import { UserService } from '../services/user.service';
 
@@ -15,6 +16,8 @@ import { UserService } from '../services/user.service';
 })
 export class UserProfilePageComponent implements OnInit {
 
+  connections: any = [];
+  isConnected: boolean = false;
   isClickedOnCommentButton: Array<boolean> = [];
   commentContent: any = "";
 
@@ -29,7 +32,7 @@ export class UserProfilePageComponent implements OnInit {
   postImageBase64: any;
 
 
-  constructor(private userService: UserService, private postService: PostService) { }
+  constructor(private userService: UserService, private postService: PostService , private connectionService: ConnectionService) { }
 
   ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser;
@@ -38,6 +41,7 @@ export class UserProfilePageComponent implements OnInit {
     if (checkUser)
       this.user = JSON.parse(checkUser);
     this.getPosts()
+    this.getAllConnections();
   }
 
   sortPostsByDate(posts:any){
@@ -202,6 +206,7 @@ export class UserProfilePageComponent implements OnInit {
     if(this.loggedUser.username != ""){
       this.userService.requestConnect(this.user.username).subscribe(
         (data) => {
+          this.getAllConnections();
           Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -211,4 +216,14 @@ export class UserProfilePageComponent implements OnInit {
       )
     }
   }
+
+  getAllConnections(){
+    this.connectionService.getAllConnectionsByUser(this.user.username).subscribe(
+      (data) => {
+        this.connections = data.connections;
+        this.isConnected = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username)
+      }
+    )
+  }
+
 }
