@@ -31,7 +31,7 @@ export class HomePageComponent implements OnInit {
 
   searchUsers(username: string) {
     this.filteredUsers = this.publicUsers.filter(
-      (user: any) => user.username.toLowerCase() === username.toLowerCase());
+      (user: any) => user.username.toLowerCase().includes(username.toLowerCase()));
 
     if (username === "")
       this.filteredUsers = this.publicUsers;

@@ -118,7 +118,7 @@ export class NavbarComponent implements OnInit {
   }
 
   declineRequest(connection: any){
-    this.connectionService.declineRequest(connection.id).subscribe(() => {
+    this.connectionService.deleteConnection(connection.id).subscribe(() => {
       this.getAllConnections();
     })
   }

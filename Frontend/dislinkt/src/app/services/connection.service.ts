@@ -31,7 +31,7 @@ export class ConnectionService {
         return this.http.put(this._url + '/connection/' + id, { headers: this.header });
     }
 
-    public declineRequest(id: number): Observable<any>{
+    public deleteConnection(id: number): Observable<any>{
         return this.http.delete(this._url + '/connection/' + id, { headers: this.header });
     }
 

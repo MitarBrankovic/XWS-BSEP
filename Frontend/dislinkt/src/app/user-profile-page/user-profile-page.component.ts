@@ -208,11 +208,7 @@ export class UserProfilePageComponent implements OnInit {
       this.userService.requestConnect(this.user.username).subscribe(
         (data) => {
           this.getAllConnections();
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Request sent',
-          })
+          this.swalUpRight('Request sent')
         }
       )
     }
@@ -230,6 +226,33 @@ export class UserProfilePageComponent implements OnInit {
 
   requestIsAccepted(){
     return this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username && connection.isApproved == true);
+  }
+
+  unFollow(){
+    let connection = this.connections.filter((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username);
+    this.connectionService.deleteConnection(connection[0].id).subscribe(() => {
+        this.getAllConnections();
+        this.swalUpRight('Successfully unfollowed')
+      })
+  }
+
+  swalUpRight(title:string){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1100,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'success',
+      title: title
+    })
   }
 
 
