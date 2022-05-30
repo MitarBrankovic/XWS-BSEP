@@ -32,7 +32,7 @@ service ConnectionService{
   }
   rpc Update(UpdateRequest) returns(UpdateResponse) {
     option (google.api.http) = {
-      patch: "/connection/{id}"
+      put: "/connection/{id}"
     };
   }
   /*##########################MESSAGE#################################*/

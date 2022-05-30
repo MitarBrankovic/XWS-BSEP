@@ -219,7 +219,7 @@ export class UserProfilePageComponent implements OnInit {
   }
 
   getAllConnections(){
-    this.connectionService.getAllConnectionsByUser(this.user.username).subscribe(
+    this.connectionService.getAllConnections().subscribe(
       (data) => {
         this.connections = data.connections;
         this.isConnected = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username);

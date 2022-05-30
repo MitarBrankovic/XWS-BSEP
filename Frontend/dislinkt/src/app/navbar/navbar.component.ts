@@ -1,7 +1,10 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoggedUser } from '../model/logged-user';
+import { User } from '../model/user.model';
+import { ConnectionService } from '../services/connection.service';
 import { EditProfileService } from '../services/edit-profile.service';
 import { UserService } from '../services/user.service';
 
@@ -14,7 +17,10 @@ export class NavbarComponent implements OnInit {
 
   token: any;
 
-  constructor(private router:Router, private userService:UserService, private editProfileService:EditProfileService) { }
+  connections: any = [];
+  user: User = new User();
+
+  constructor(private router:Router, private userService:UserService, private editProfileService:EditProfileService, private modalService: NgbModal, private connectionService: ConnectionService) { }
 
   loggedUser: LoggedUser = new LoggedUser(); 
 
@@ -79,6 +85,42 @@ export class NavbarComponent implements OnInit {
 
   isExpired(): boolean{
     return this.loggedUser.exp < Date.now() / 1000
+  }
+
+  notifications(content: any) {
+    this.getAllConnections()
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {}, (reason) => {});
+  }
+
+  //OPTIMIZOVATI - NA BACKU NAPRAVITI METODU
+  getAllConnections(){
+    this.connectionService.getAllConnections().subscribe(
+      (data) => {
+        this.connections = this.getUnapprovedConnectionsByUser(data.connections);
+      }
+    )
+  }
+
+  getUnapprovedConnectionsByUser(connections:any){
+    let unapprovedConnections = [];
+    for(let connection of connections){
+      if(this.loggedUser.username == connection.subjectUsername && connection.isApproved == false){
+        unapprovedConnections.push(connection)
+      }
+    }
+    return unapprovedConnections
+  }
+
+  acceptRequest(connection: any){
+    this.connectionService.acceptRequest(connection.id).subscribe(() => {
+      this.getAllConnections();
+    })
+  }
+
+  declineRequest(connection: any){
+    this.connectionService.declineRequest(connection.id).subscribe(() => {
+      this.getAllConnections();
+    })
   }
 
 }

@@ -16,6 +16,7 @@
       <th>Name</th>
       <th>Last name</th>
       <th>Username</th>
+      <th>Status</th>
       <th>
       <th>
     </thead>
@@ -23,6 +24,7 @@
       <td>{{u.firstName}}</td>
       <td>{{u.lastName}}</td>
       <td>{{u.username}}</td>
+      <td><i>{{privateOrPublic(u)}}</i></td>
     </tr>
   </table>
 </div><br><br><br>

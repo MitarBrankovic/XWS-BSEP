@@ -42,4 +42,11 @@ export class HomePageComponent implements OnInit {
     this.router.navigate(['/profile'])
   }
 
+  privateOrPublic(user:any){
+    if(user.private)
+      return "Private"
+    else
+      return "Public"
+  }
+
 }

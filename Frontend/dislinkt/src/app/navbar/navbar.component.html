@@ -34,9 +34,34 @@
               <strong (click)="register()">Sign up</strong>
             </a>
             <a class="button is-light" *ngIf="loggedUser.username === ''" (click)="login()">Log in</a>
+            <a class="button is-light" *ngIf="loggedUser.username !== ''" (click)="notifications(content)">Notifications 🔔</a>
             <a class="button is-light" *ngIf="loggedUser.username !== ''" (click)="logout()">Log out</a>
           </div>
         </div>
       </div>
     </div>
   </nav>
+
+
+
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Follow requests</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <label *ngIf="connections.length == 0"><i>You don't have any requests.</i></label>
+      <div class="card mt-5" *ngFor="let c of connections; let i = index">
+        <div class="card-content">
+            <div class="content">
+                <label *ngIf="connections.length!=0">{{c.issuerUsername}} wants to be follow you.</label>
+                <button *ngIf="connections.length!=0" style="float: right;" type="button" class="button is-danger ml-3" (click)="declineRequest(c)">Decline</button>
+                <button *ngIf="connections.length!=0" style="float: right;" type="button" class="button is-info" (click)="acceptRequest(c)">Accept</button>          
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"></div>
+  </ng-template>

@@ -23,9 +23,16 @@ export class ConnectionService {
             this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
     }
 
-    public getAllConnectionsByUser(username: string): Observable<any>{
+    public getAllConnections(): Observable<any>{
         return this.http.get(this._url + '/connection', { headers: this.header });
-    
-      }
+    }
+
+    public acceptRequest(id: number): Observable<any>{
+        return this.http.put(this._url + '/connection/' + id, { headers: this.header });
+    }
+
+    public declineRequest(id: number): Observable<any>{
+        return this.http.delete(this._url + '/connection/' + id, { headers: this.header });
+    }
 
 }   
