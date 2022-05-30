@@ -64,6 +64,12 @@ func (handler *ConnectionHandler) Create(ctx context.Context, request *pb.Create
 	if err != nil {
 		return nil, err
 	}
+	if user.User.Private {
+		newConnection.IsApproved = false
+	} else {
+		newConnection.IsApproved = true
+	}
+
 	return &pb.CreateResponse{
 		Connection: mapConnectionToPb(newConnection),
 	}, nil

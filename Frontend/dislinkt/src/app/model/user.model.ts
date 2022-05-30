@@ -9,6 +9,8 @@ export class User {
     interests: any;
     education: any;
     workExperience: any;
+    private: boolean;
+    activated: boolean;
 
     constructor(){
         this.username = "";
@@ -21,5 +23,7 @@ export class User {
         this.interests = [];
         this.education = [];
         this.workExperience = [];
+        this.private = false;
+        this.activated = false;
     }
 }

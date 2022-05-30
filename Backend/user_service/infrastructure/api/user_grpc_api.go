@@ -90,10 +90,10 @@ func (handler *UserHandler) GetAllPublic(ctx context.Context, request *pb.GetAll
 		Users: []*pb.User{},
 	}
 	for _, User := range Users {
-		if !User.Private {
-			current := mapUserToPb(User)
-			response.Users = append(response.Users, current)
-		}
+		//if !User.Private {
+		current := mapUserToPb(User)
+		response.Users = append(response.Users, current)
+		//}
 	}
 	return response, nil
 }

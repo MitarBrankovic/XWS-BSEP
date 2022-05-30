@@ -18,6 +18,7 @@ export class UserProfilePageComponent implements OnInit {
 
   connections: any = [];
   isConnected: boolean = false;
+  isApproved: boolean = false;
   isClickedOnCommentButton: Array<boolean> = [];
   commentContent: any = "";
 
@@ -221,9 +222,24 @@ export class UserProfilePageComponent implements OnInit {
     this.connectionService.getAllConnectionsByUser(this.user.username).subscribe(
       (data) => {
         this.connections = data.connections;
-        this.isConnected = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username)
+        this.isConnected = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username);
+        this.isApproved = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username && connection.isApproved == true);
       }
     )
   }
+
+  requestIsAccepted(){
+    return this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username && connection.isApproved == true);
+  }
+
+
+  //OVA METODA CE SE KORISTITI ZA DOPISIVANJE
+  /*checkIfConnectionIsMutual(){
+    let firstConnection = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username && connection.isApproved == true);
+    let secondConnection = this.connections.some((connection:any) => connection.issuerUsername == this.user.username && connection.subjectUsername == this.loggedUser.username && connection.isApproved == true);
+    if(firstConnection && secondConnection)
+      return true
+    else return false
+  }*/
 
 }

@@ -38,7 +38,6 @@ func (store *ConnectionMongoDBStore) GetAll() ([]*domain.Connection, error) {
 }
 
 func (store *ConnectionMongoDBStore) Create(connection *domain.Connection) (*domain.Connection, error) {
-	connection.IsApproved = false
 	if connection.IssuerUsername == connection.SubjectUsername {
 		return nil, status.Errorf(codes.InvalidArgument, "Cannot create connection with same username")
 	}

@@ -37,6 +37,36 @@ var posts = []*domain.Post{
 			},
 		},
 	},
+	{
+		Id: getObjectId("6292407360516717bd54f22b"),
+		User: domain.User{
+			Id:        getObjectId("61596r4u645d4db787e61fe9"),
+			Username:  "mirko",
+			FirstName: "Mirko",
+			LastName:  "Vojinovic",
+		},
+		CreatedAt: time.Time{},
+		Content: domain.Content{
+			Text:  "Bas se dobro osecam",
+			Image: "",
+		},
+		Comments: []domain.Comment{
+			{
+				Id:          getObjectId("11596r4u645d4db787e61fe8"),
+				Username:    "radisa",
+				DateCreated: time.Time{},
+				Content:     "neki komentar",
+			},
+		},
+		Reactions: []domain.Reaction{
+			{
+				Id:        getObjectId("11596r4u645d4db787e61fe7"),
+				Username:  "radisa",
+				CreatedAt: time.Time{},
+				Type:      domain.ReactionType(0),
+			},
+		},
+	},
 }
 
 func getObjectId(id string) primitive.ObjectID {

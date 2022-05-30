@@ -10,7 +10,8 @@
                 <label *ngFor="let i of user.interests" class="mr-1"><i>{{i}}</i></label>
             </p>
             <button [disabled]="this.loggedUser.role !== 'user'" *ngIf="loggedUser.username !== user.username && !isConnected" class="button is-info is-outlined is-fullwidth mt-5" (click)="requestConnect()">Follow</button>
-            <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected">FOLLOWING</h2>
+            <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && isApproved">FOLLOWING</h2>
+            <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && !isApproved">FOLLOW REQUEST IS SENT</h2>
         </div>
         <div class="tile is-child box">
             <p class="title">Work experience</p>
@@ -47,38 +48,41 @@
                     </footer>
                 </div>
             </div>
-            <h2 *ngIf="posts.length == 0 && loggedUser.username !== user.username" class="title" style="text-align: center;"><i>No posts yet</i></h2>
-            <div class="card mt-5" *ngFor="let p of posts; let i = index">
-                <div class="card-content">
-                    <div class="content">
-                        <div class="mb-3" style="text-align: center; background-color: rgb(244, 244, 244);">
-                            <img *ngIf="p.content.image !== ''" src="{{p.content.image}}" style="border-radius: 0px;">
-                        </div>
-                        {{p.content.text}}
-                        <a href="#" *ngFor="let link of p.content.links "> #{{link}}</a>
-                        <br>
-                        <time><i>{{formatDates(p.createdAt)}}</i></time>
-                    </div>
-                    <footer class="card-footer">
-                        <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p.id, 0)" href="#" class="card-footer-item button is-info">Like
-                            👍 {{getNumLikes(p, 0)}}</button>
-                        <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p.id, 1)" href="#"
-                            class="card-footer-item button is-light ml-5">Dislike 👎 {{getNumLikes(p, 1)}}</button>
-                        <button [disabled]="loggedUser.role !== 'user'" (click)="openCommentDiv(i)" class="card-footer-item button is-light ml-5">Comment
-                            💬</button>
-                    </footer>
-
-                    <div *ngIf="isClickedOnCommentButton[i]">
-                        <div class="content mt-3 box" *ngFor="let c of p.comments">
-                            <div class="mb-3">
-                            {{c.content}}
-                            <hr>
-                            <label>{{c.username}} </label> <br>
-                            <label><i>{{formatDates(c.dateCreated)}}</i></label>
+            <h2 *ngIf="posts.length == 0 && loggedUser.username !== user.username && !user.private" class="title" style="text-align: center;"><i>No posts yet</i></h2>
+            <h2 *ngIf="loggedUser.username !== user.username && user.private && !requestIsAccepted()" class="title" style="text-align: center;"><i>Profile is private</i></h2>
+            <div *ngIf="requestIsAccepted() || !user.private">
+                <div class="card mt-5" *ngFor="let p of posts; let i = index">
+                    <div class="card-content">
+                        <div class="content">
+                            <div class="mb-3" style="text-align: center; background-color: rgb(244, 244, 244);">
+                                <img *ngIf="p.content.image !== ''" src="{{p.content.image}}" style="border-radius: 0px;">
                             </div>
+                            {{p.content.text}}
+                            <a href="#" *ngFor="let link of p.content.links "> #{{link}}</a>
+                            <br>
+                            <time><i>{{formatDates(p.createdAt)}}</i></time>
                         </div>
-                        <textarea class="textarea" placeholder="Write a comment" [(ngModel)]="commentContent"></textarea><br>
-                        <button (click)="sendComment(p.id, i)" class="button is-light mt-3">Send comment</button>
+                        <footer class="card-footer">
+                            <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p.id, 0)" href="#" class="card-footer-item button is-info">Like
+                                👍 {{getNumLikes(p, 0)}}</button>
+                            <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p.id, 1)" href="#"
+                                class="card-footer-item button is-light ml-5">Dislike 👎 {{getNumLikes(p, 1)}}</button>
+                            <button [disabled]="loggedUser.role !== 'user'" (click)="openCommentDiv(i)" class="card-footer-item button is-light ml-5">Comment
+                                💬</button>
+                        </footer>
+
+                        <div *ngIf="isClickedOnCommentButton[i]">
+                            <div class="content mt-3 box" *ngFor="let c of p.comments">
+                                <div class="mb-3">
+                                {{c.content}}
+                                <hr>
+                                <label>{{c.username}} </label> <br>
+                                <label><i>{{formatDates(c.dateCreated)}}</i></label>
+                                </div>
+                            </div>
+                            <textarea class="textarea" placeholder="Write a comment" [(ngModel)]="commentContent"></textarea><br>
+                            <button (click)="sendComment(p.id, i)" class="button is-light mt-3">Send comment</button>
+                        </div>
                     </div>
                 </div>
             </div>
