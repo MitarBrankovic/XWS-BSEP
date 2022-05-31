@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 public class OpenPosition {
     @Id
-    @SequenceGenerator(name = "positonIdSeqGen", sequenceName = "positonIdSeq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "positonIdSeqGen", sequenceName = "positonIdSeq", initialValue = 2, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "positonIdSeqGen")
     private Long id;
 
@@ -22,6 +22,10 @@ public class OpenPosition {
     private Set<Sallary> sallarys;
 
     public OpenPosition() {
+    }
+
+    public OpenPosition(String positionName) {
+        this.positionName = positionName;
     }
 
 

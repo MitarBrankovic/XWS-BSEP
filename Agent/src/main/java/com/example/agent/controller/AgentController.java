@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/agent")
@@ -45,5 +47,12 @@ public class AgentController {
     public ResponseEntity editCompanyInfo(@RequestBody CompanyInfoDTO dto){
         agentService.editCompanyInfo(dto);
         return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping("/addOpenPosition")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addOpenPosition(@PathParam("companyId") Long companyId, @PathParam("positionName") String positionName){
+        agentService.addOpenPosition(companyId, positionName);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }

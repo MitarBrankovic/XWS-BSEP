@@ -12,4 +12,6 @@ public interface AgentService {
     void saveCompany(CompanyRegistrationRequestDTO dto);
 
     void editCompanyInfo(CompanyInfoDTO dto);
+
+    void addOpenPosition(Long companyId, String positionName);
 }

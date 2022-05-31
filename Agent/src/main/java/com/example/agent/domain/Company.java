@@ -27,7 +27,7 @@ public class Company {
     @OneToMany
     private Set<CommentOnCompany> comments;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<OpenPosition> openPositions;
 
     public Company() {
