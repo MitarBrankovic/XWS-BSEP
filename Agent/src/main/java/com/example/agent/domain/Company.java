@@ -34,5 +34,10 @@ public class Company {
     public Company() {
     }
 
+    public Company(String contactInfo, String description) {
+        this.contactInfo = contactInfo;
+        this.description = description;
+    }
+
 
 }

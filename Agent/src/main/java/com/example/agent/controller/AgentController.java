@@ -1,5 +1,6 @@
 package com.example.agent.controller;
 
+import com.example.agent.dtos.CompanyRegistrationRequestDTO;
 import com.example.agent.dtos.UserRegistrationDTO;
 import com.example.agent.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,15 @@ public class AgentController {
 
     @RequestMapping("/registerUser")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserRegistrationDTO> createAdventure(@RequestBody UserRegistrationDTO dto){
+    public ResponseEntity<UserRegistrationDTO> saveUser(@RequestBody UserRegistrationDTO dto){
         agentService.saveUser(dto);
         return new ResponseEntity<UserRegistrationDTO>(dto, HttpStatus.CREATED);
+    }
+
+    @RequestMapping("/companyRegistrationRequest")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CompanyRegistrationRequestDTO> saveCompanyRegistrationRequest(@RequestBody CompanyRegistrationRequestDTO dto){
+        agentService.saveCompanyRegistrationRequest(dto);
+        return new ResponseEntity<CompanyRegistrationRequestDTO>(dto, HttpStatus.CREATED);
     }
 }
