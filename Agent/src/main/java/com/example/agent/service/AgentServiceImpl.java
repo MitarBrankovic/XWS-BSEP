@@ -1,12 +1,15 @@
 package com.example.agent.service;
 
 import com.example.agent.domain.AgentUser;
+import com.example.agent.domain.Company;
 import com.example.agent.domain.CompanyRegistrationRequest;
 import com.example.agent.domain.UserRole;
 import com.example.agent.dtos.CompanyRegistrationRequestDTO;
 import com.example.agent.dtos.UserRegistrationDTO;
 import com.example.agent.repository.AgentUserRepository;
 import com.example.agent.repository.CompanyRegistrationRequestRepository;
+import com.example.agent.repository.CompanyRepository;
+import org.aspectj.weaver.loadtime.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ public class AgentServiceImpl implements AgentService {
 
     @Autowired
     private CompanyRegistrationRequestRepository companyRegistrationRequestRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Override
     public void saveUser(UserRegistrationDTO userRegistrationDTO) {
@@ -31,9 +37,22 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public void saveCompanyRegistrationRequest(CompanyRegistrationRequestDTO dto) {
-        companyRegistrationRequestRepository.save(new CompanyRegistrationRequest(dto.getCompanyOwner(),
+        companyRegistrationRequestRepository.save(new CompanyRegistrationRequest(dto.getCompanyOwnerUsername(),
+                dto.getCompanyOwnerName(),
                 dto.getCompanyContactInfo(),
                 dto.getCompanyDescription()));
+    }
+
+    @Override
+    public void saveCompany(CompanyRegistrationRequestDTO dto) {
+        AgentUser commonUser = agentUserRepository.findAgentUserByUsername(dto.getCompanyOwnerUsername());
+        Company newCompany = new Company(dto.getCompanyContactInfo(), dto.getCompanyDescription());
+
+        commonUser.setCompany(newCompany);
+        commonUser.setRole(UserRole.CompanyOwner);
+
+        companyRepository.save(newCompany);
+        agentUserRepository.save(commonUser);
     }
 
 

@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CompanyRegistrationRequestDTO {
-    private String companyOwner;
+    private String companyOwnerUsername;
+    private String companyOwnerName;
     private String companyContactInfo;
     private String companyDescription;
 

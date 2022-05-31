@@ -15,7 +15,10 @@ public class CompanyRegistrationRequest {
     private Long id;
 
     @Column
-    private String companyOwner;
+    private String companyOwnerUsername;
+
+    @Column
+    private String companyOwnerName;
 
     @Column
     private String companyContactInfo;
@@ -26,8 +29,9 @@ public class CompanyRegistrationRequest {
     public CompanyRegistrationRequest() {
     }
 
-    public CompanyRegistrationRequest(String companyOwner, String companyContactInfo, String companyDescription) {
-        this.companyOwner = companyOwner;
+    public CompanyRegistrationRequest(String companyOwnerUsername, String companyOwnerName, String companyContactInfo, String companyDescription) {
+        this.companyOwnerUsername = companyOwnerUsername;
+        this.companyOwnerName = companyOwnerName;
         this.companyContactInfo = companyContactInfo;
         this.companyDescription = companyDescription;
     }

@@ -7,4 +7,6 @@ public interface AgentService {
     void saveUser(UserRegistrationDTO userRegistrationDTO);
 
     void saveCompanyRegistrationRequest(CompanyRegistrationRequestDTO dto);
+
+    void saveCompany(CompanyRegistrationRequestDTO dto);
 }
