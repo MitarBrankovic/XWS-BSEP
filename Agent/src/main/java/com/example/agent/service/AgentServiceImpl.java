@@ -4,12 +4,12 @@ import com.example.agent.domain.AgentUser;
 import com.example.agent.domain.Company;
 import com.example.agent.domain.CompanyRegistrationRequest;
 import com.example.agent.domain.UserRole;
+import com.example.agent.dtos.CompanyInfoDTO;
 import com.example.agent.dtos.CompanyRegistrationRequestDTO;
 import com.example.agent.dtos.UserRegistrationDTO;
 import com.example.agent.repository.AgentUserRepository;
 import com.example.agent.repository.CompanyRegistrationRequestRepository;
 import com.example.agent.repository.CompanyRepository;
-import org.aspectj.weaver.loadtime.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,5 +55,11 @@ public class AgentServiceImpl implements AgentService {
         agentUserRepository.save(commonUser);
     }
 
-
+    @Override
+    public void editCompanyInfo(CompanyInfoDTO dto) {
+        Company company = companyRepository.findById(dto.getId()).orElseGet(null);
+        company.setContactInfo(dto.getContactInfo());
+        company.setDescription(dto.getDescription());
+        companyRepository.save(company);
+    }
 }

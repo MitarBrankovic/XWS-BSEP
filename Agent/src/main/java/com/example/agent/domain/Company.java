@@ -2,7 +2,6 @@ package com.example.agent.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.aspectj.apache.bcel.classfile.Module;
 
 import javax.persistence.*;
 import java.util.Set;
