@@ -27,6 +27,9 @@ public class AgentServiceImpl implements AgentService {
     @Autowired
     private SallaryRepository sallaryRepository;
 
+    @Autowired
+    private InterviewProcessRepository interviewProcessRepository;
+
     @Override
     public void saveUser(UserRegistrationDTO userRegistrationDTO) {
         agentUserRepository.save(new AgentUser(userRegistrationDTO.getUsername(),
@@ -102,6 +105,20 @@ public class AgentServiceImpl implements AgentService {
         openPosition.getSallarys().add(newSallary);
 
         openPositionRepository.save(openPosition);
+    }
+
+    @Override
+    public void addInterviewProcess(InterviewProcessDTO dto) {
+        if(userIsNotCommon(dto.getUserId()))
+            return;
+
+        InterviewProcess newInterviewProcess = new InterviewProcess(dto.getInterviewDescription(), dto.getUserSignature());
+        interviewProcessRepository.save(newInterviewProcess);
+
+        Company company = companyRepository.findById(dto.getCompanyId()).orElseGet(null);
+        company.getInterviewProcesses().add(newInterviewProcess);
+
+        companyRepository.save(company);
     }
 
     private boolean userIsNotCommon(Long userId){

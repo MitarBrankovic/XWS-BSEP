@@ -4,7 +4,7 @@ insert into open_position (id, position_name) values (1, 'React developer')
 
 insert into open_position_sallarys (open_position_id, sallarys_id) values (1, 1)
 
-insert into interview_process (id, description) values (1, 'Interview process')
+insert into interview_process (id, description, user_signature) values (1, 'Interview process', 'Vue.js developer (Junior)')
 
 insert into comment_on_company (id, comment, user_signature) values (1, 'Comment on company', 'Software developer (Medior)')
 

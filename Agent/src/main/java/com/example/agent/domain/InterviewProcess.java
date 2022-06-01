@@ -10,13 +10,21 @@ import javax.persistence.*;
 @Setter
 public class InterviewProcess {
     @Id
-    @SequenceGenerator(name = "proccessIdSeqGen", sequenceName = "proccessIdSeq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "proccessIdSeqGen", sequenceName = "proccessIdSeq", initialValue = 2, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proccessIdSeqGen")
     private Long id;
 
     @Column
     private String description;
 
+    @Column
+    private String userSignature;
+
     public InterviewProcess() {
+    }
+
+    public InterviewProcess(String description, String userSignature) {
+        this.description = description;
+        this.userSignature = userSignature;
     }
 }

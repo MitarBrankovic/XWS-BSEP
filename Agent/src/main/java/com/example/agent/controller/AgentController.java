@@ -1,5 +1,6 @@
 package com.example.agent.controller;
 
+import com.example.agent.domain.InterviewProcess;
 import com.example.agent.dtos.*;
 import com.example.agent.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,13 @@ public class AgentController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addSallary(@RequestBody SallaryDTO dto){
         agentService.addSallary(dto);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping("/addInterviewProcess")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addInterviewProcess(@RequestBody InterviewProcessDTO dto){
+        agentService.addInterviewProcess(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 }
