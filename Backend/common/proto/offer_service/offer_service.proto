@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+option go_package = "dislinkt/common/offer";
+
+package offer;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+
+service OfferService{
+  rpc Get(GetRequest) returns(GetResponse) {
+    option (google.api.http) = {
+      get: "/offer/{id}"
+    };
+  }
+  rpc GetAll(GetAllRequest) returns(GetAllResponse) {
+    option (google.api.http) = {
+      get: "/offer"
+    };
+  }
+
+  rpc Create(CreateRequest) returns(CreateResponse) {
+    option (google.api.http) = {
+      post: "/offer"
+      body: "offer"
+    };
+  }
+  rpc Update(UpdateRequest) returns(UpdateResponse) {
+    option (google.api.http) = {
+      put: "/offer/{id}"
+      body: "offer"
+    };
+  }
+
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Offer offer = 1;
+}
+
+message GetAllRequest {
+}
+
+message GetAllResponse {
+  repeated Offer offers = 1;
+}
+
+message CreateRequest {
+  Offer offer = 1;
+}
+
+message CreateResponse {
+  Offer offer = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+  Offer offer = 2;
+}
+
+message UpdateResponse {
+  Offer offer = 1;
+}
+
+message Offer {
+  string id = 1;
+  string username = 2;
+  string company = 3;
+  string description = 4;
+  string position = 5;
+  string criteria = 6;
+  google.protobuf.Timestamp createdAt = 7;
+}

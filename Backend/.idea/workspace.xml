@@ -43,12 +43,13 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Brankovic&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Brankovic/Desktop/XWS-BSEP/Backend/common/proto/offer_service/google/api&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Brankovic\Desktop\XWS-BSEP\Backend\common\proto\offer_service\google\api" />
       <recent name="C:\Users\Brankovic\Desktop\XWS-BSEP\Backend\common\proto\post_service\google\api" />
     </key>
   </component>
@@ -56,6 +57,7 @@
     <configuration name="xml" type="CompoundRunConfigurationType">
       <toRun name="go build dislinkt/api_gateway" type="GoApplicationRunConfiguration" />
       <toRun name="go build dislinkt/connection_service" type="GoApplicationRunConfiguration" />
+      <toRun name="go build dislinkt/offer_service" type="GoApplicationRunConfiguration" />
       <toRun name="go build dislinkt/post_service" type="GoApplicationRunConfiguration" />
       <toRun name="go build dislinkt/user_service" type="GoApplicationRunConfiguration" />
       <method v="2" />
@@ -85,6 +87,15 @@
       <package value="dislinkt/connection_service" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$/connection_service/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build dislinkt/offer_service" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="Backend" />
+      <working_directory value="$PROJECT_DIR$/offer_service" />
+      <kind value="PACKAGE" />
+      <package value="dislinkt/offer_service" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/offer_service/main.go" />
       <method v="2" />
     </configuration>
     <configuration name="go build dislinkt/post_service" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
@@ -131,6 +142,7 @@
       <item itemvalue="Go Build.go build dislinkt/connection_service" />
       <item itemvalue="Go Build.go build dislinkt/post_service" />
       <item itemvalue="Go Build.go build dislinkt/user_service" />
+      <item itemvalue="Go Build.go build dislinkt/offer_service" />
     </list>
     <recent_temporary>
       <list>

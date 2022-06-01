@@ -4,6 +4,7 @@ import (
 	"context"
 	cfg "dislinkt/api_gateway/startup/config"
 	connectionPb "dislinkt/common/proto/connection_service"
+	offerPb "dislinkt/common/proto/offer_service"
 	postPb "dislinkt/common/proto/post_service"
 	userPb "dislinkt/common/proto/user_service"
 	"fmt"
@@ -87,6 +88,12 @@ func (server *Server) initHandlers() {
 	errConnection := connectionPb.RegisterConnectionServiceHandlerFromEndpoint(context.TODO(), server.mux, connectionEndpoint, opts)
 	if errConnection != nil {
 		panic(errConnection)
+	}
+
+	offerEndpoint := fmt.Sprintf("%s:%s", server.config.OfferHost, server.config.OfferPort)
+	errOffer := offerPb.RegisterOfferServiceHandlerFromEndpoint(context.TODO(), server.mux, offerEndpoint, opts)
+	if errOffer != nil {
+		panic(errOffer)
 	}
 }
 
