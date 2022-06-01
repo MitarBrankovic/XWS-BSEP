@@ -18,7 +18,7 @@ public class OpenPosition {
     @Column
     private String positionName;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Sallary> sallarys;
 
     public OpenPosition() {

@@ -21,7 +21,7 @@ public class Company {
     @Column
     private String description;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<InterviewProcess> interviewProcesses;
 
     @OneToMany(fetch = FetchType.EAGER)

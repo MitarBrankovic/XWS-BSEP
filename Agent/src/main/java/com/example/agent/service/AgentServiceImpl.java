@@ -1,10 +1,7 @@
 package com.example.agent.service;
 
 import com.example.agent.domain.*;
-import com.example.agent.dtos.CommentDTO;
-import com.example.agent.dtos.CompanyInfoDTO;
-import com.example.agent.dtos.CompanyRegistrationRequestDTO;
-import com.example.agent.dtos.UserRegistrationDTO;
+import com.example.agent.dtos.*;
 import com.example.agent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +23,9 @@ public class AgentServiceImpl implements AgentService {
 
     @Autowired
     private CommentOnCompanyRepository commentOnCompanyRepository;
+
+    @Autowired
+    private SallaryRepository sallaryRepository;
 
     @Override
     public void saveUser(UserRegistrationDTO userRegistrationDTO) {
@@ -78,8 +78,7 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public void saveComment(CommentDTO dto) {
-        AgentUser user = agentUserRepository.findById(dto.getUserId()).orElseGet(null);
-        if(user.getRole().equals(UserRole.CompanyOwner) || user.getRole().equals(UserRole.Admin))
+        if(userIsNotCommon(dto.getUserId()))
             return;
 
         CommentOnCompany newComment = new CommentOnCompany(dto.getContent(), dto.getUserSignature());
@@ -89,5 +88,24 @@ public class AgentServiceImpl implements AgentService {
         company.getComments().add(newComment);
 
         companyRepository.save(company);
+    }
+
+    @Override
+    public void addSallary(SallaryDTO dto) {
+        if(userIsNotCommon(dto.getUserId()))
+            return;
+
+        Sallary newSallary = new Sallary(dto.getSallary());
+        sallaryRepository.save(newSallary);
+
+        OpenPosition openPosition = openPositionRepository.findById(dto.getPositionId()).orElseGet(null);
+        openPosition.getSallarys().add(newSallary);
+
+        openPositionRepository.save(openPosition);
+    }
+
+    private boolean userIsNotCommon(Long userId){
+        AgentUser user = agentUserRepository.findById(userId).orElseGet(null);
+        return !user.getRole().equals(UserRole.Common);
     }
 }

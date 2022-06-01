@@ -1,9 +1,6 @@
 package com.example.agent.service;
 
-import com.example.agent.dtos.CommentDTO;
-import com.example.agent.dtos.CompanyInfoDTO;
-import com.example.agent.dtos.CompanyRegistrationRequestDTO;
-import com.example.agent.dtos.UserRegistrationDTO;
+import com.example.agent.dtos.*;
 
 public interface AgentService {
     void saveUser(UserRegistrationDTO userRegistrationDTO);
@@ -17,4 +14,6 @@ public interface AgentService {
     void addOpenPosition(Long companyId, String positionName);
 
     void saveComment(CommentDTO dto);
+
+    void addSallary(SallaryDTO dto);
 }

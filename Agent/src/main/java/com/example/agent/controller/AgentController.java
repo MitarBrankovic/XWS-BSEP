@@ -1,9 +1,6 @@
 package com.example.agent.controller;
 
-import com.example.agent.dtos.CommentDTO;
-import com.example.agent.dtos.CompanyInfoDTO;
-import com.example.agent.dtos.CompanyRegistrationRequestDTO;
-import com.example.agent.dtos.UserRegistrationDTO;
+import com.example.agent.dtos.*;
 import com.example.agent.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,6 +58,13 @@ public class AgentController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveComment(@RequestBody CommentDTO dto){
         agentService.saveComment(dto);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping("/addSallary")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addSallary(@RequestBody SallaryDTO dto){
+        agentService.addSallary(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 }

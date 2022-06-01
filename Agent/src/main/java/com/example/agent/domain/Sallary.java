@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Sallary {
 
     @Id
-    @SequenceGenerator(name = "sallaryIddSeqGen", sequenceName = "sallaryIdSeq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "sallaryIdSeqGen", sequenceName = "sallaryIdSeq", initialValue = 2, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sallaryIdSeqGen")
     private Long id;
 
@@ -20,5 +20,9 @@ public class Sallary {
 
 
     public Sallary() {
+    }
+
+    public Sallary(Double sallaryValue) {
+        this.sallaryValue = sallaryValue;
     }
 }
