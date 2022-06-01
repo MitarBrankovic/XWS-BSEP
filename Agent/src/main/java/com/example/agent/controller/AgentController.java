@@ -87,9 +87,16 @@ public class AgentController {
     }
 
     @RequestMapping("/findAllCompanies")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Company>> findAllCompanies(){
         List<Company> companies = agentService.findAllCompanies();
         return new ResponseEntity<List<Company>>(companies, HttpStatus.FOUND);
+    }
+
+    @RequestMapping("/findOneCompany")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Company> findOneCompany(@PathParam("companyId") Long companyId){
+        Company company = agentService.findOneCompany(companyId);
+        return new ResponseEntity<Company>(company, HttpStatus.FOUND);
     }
 }

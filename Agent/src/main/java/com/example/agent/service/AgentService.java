@@ -26,4 +26,6 @@ public interface AgentService {
     void addMark(MarkDTO dto);
 
     List<Company> findAllCompanies();
+
+    Company findOneCompany(Long companyId);
 }
