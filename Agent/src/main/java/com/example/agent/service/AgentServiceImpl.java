@@ -6,6 +6,9 @@ import com.example.agent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class AgentServiceImpl implements AgentService {
 
@@ -136,6 +139,11 @@ public class AgentServiceImpl implements AgentService {
         company.getMarks().add(newMark);
         companyRepository.save(company);
 
+    }
+
+    @Override
+    public List<Company> findAllCompanies() {
+        return companyRepository.findAll();
     }
 
     private boolean userIsNotCommon(Long userId){

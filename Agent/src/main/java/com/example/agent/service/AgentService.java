@@ -1,6 +1,10 @@
 package com.example.agent.service;
 
+import com.example.agent.domain.Company;
 import com.example.agent.dtos.*;
+
+import java.util.List;
+import java.util.Set;
 
 public interface AgentService {
     void saveUser(UserRegistrationDTO userRegistrationDTO);
@@ -20,4 +24,6 @@ public interface AgentService {
     void addInterviewProcess(InterviewProcessDTO dto);
 
     void addMark(MarkDTO dto);
+
+    List<Company> findAllCompanies();
 }

@@ -1,5 +1,6 @@
 package com.example.agent.controller;
 
+import com.example.agent.domain.Company;
 import com.example.agent.domain.InterviewProcess;
 import com.example.agent.dtos.*;
 import com.example.agent.service.AgentService;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
@@ -81,5 +84,12 @@ public class AgentController {
     public ResponseEntity addMark(@RequestBody MarkDTO dto){
         agentService.addMark(dto);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping("/findAllCompanies")
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Company>> findAllCompanies(){
+        List<Company> companies = agentService.findAllCompanies();
+        return new ResponseEntity<List<Company>>(companies, HttpStatus.FOUND);
     }
 }
