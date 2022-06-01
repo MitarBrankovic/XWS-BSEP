@@ -30,6 +30,9 @@ public class Company {
     @OneToMany(fetch = FetchType.EAGER)
     private Set<OpenPosition> openPositions;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Mark> marks;
+
     public Company() {
     }
 

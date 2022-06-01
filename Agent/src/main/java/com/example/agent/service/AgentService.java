@@ -18,4 +18,6 @@ public interface AgentService {
     void addSallary(SallaryDTO dto);
 
     void addInterviewProcess(InterviewProcessDTO dto);
+
+    void addMark(MarkDTO dto);
 }

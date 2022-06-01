@@ -75,4 +75,11 @@ public class AgentController {
         agentService.addInterviewProcess(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
+    @RequestMapping("/addMark")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addMark(@RequestBody MarkDTO dto){
+        agentService.addMark(dto);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 }

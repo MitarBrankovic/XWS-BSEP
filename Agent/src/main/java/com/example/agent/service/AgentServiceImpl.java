@@ -30,6 +30,9 @@ public class AgentServiceImpl implements AgentService {
     @Autowired
     private InterviewProcessRepository interviewProcessRepository;
 
+    @Autowired
+    private MarkRepository markRepository;
+
     @Override
     public void saveUser(UserRegistrationDTO userRegistrationDTO) {
         agentUserRepository.save(new AgentUser(userRegistrationDTO.getUsername(),
@@ -119,6 +122,20 @@ public class AgentServiceImpl implements AgentService {
         company.getInterviewProcesses().add(newInterviewProcess);
 
         companyRepository.save(company);
+    }
+
+    @Override
+    public void addMark(MarkDTO dto) {
+        if(userIsNotCommon(dto.getUserId()))
+            return;
+        Mark newMark = new Mark(dto.getMark());
+        Company company = companyRepository.findById(dto.getCompanyId()).orElseGet(null);
+
+        markRepository.save(newMark);
+
+        company.getMarks().add(newMark);
+        companyRepository.save(company);
+
     }
 
     private boolean userIsNotCommon(Long userId){
