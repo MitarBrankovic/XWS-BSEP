@@ -1,13 +1,11 @@
 package com.example.agent.service;
 
 import com.example.agent.domain.*;
+import com.example.agent.dtos.CommentDTO;
 import com.example.agent.dtos.CompanyInfoDTO;
 import com.example.agent.dtos.CompanyRegistrationRequestDTO;
 import com.example.agent.dtos.UserRegistrationDTO;
-import com.example.agent.repository.AgentUserRepository;
-import com.example.agent.repository.CompanyRegistrationRequestRepository;
-import com.example.agent.repository.CompanyRepository;
-import com.example.agent.repository.OpenPositionRepository;
+import com.example.agent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +23,9 @@ public class AgentServiceImpl implements AgentService {
 
     @Autowired
     private OpenPositionRepository openPositionRepository;
+
+    @Autowired
+    private CommentOnCompanyRepository commentOnCompanyRepository;
 
     @Override
     public void saveUser(UserRegistrationDTO userRegistrationDTO) {
@@ -71,6 +72,21 @@ public class AgentServiceImpl implements AgentService {
 
         Company company = companyRepository.findById(companyId).orElseGet(null);
         company.getOpenPositions().add(newOpenPosition);
+
+        companyRepository.save(company);
+    }
+
+    @Override
+    public void saveComment(CommentDTO dto) {
+        AgentUser user = agentUserRepository.findById(dto.getUserId()).orElseGet(null);
+        if(user.getRole().equals(UserRole.CompanyOwner) || user.getRole().equals(UserRole.Admin))
+            return;
+
+        CommentOnCompany newComment = new CommentOnCompany(dto.getContent(), dto.getUserSignature());
+        commentOnCompanyRepository.save(newComment);
+
+        Company company = companyRepository.findById(dto.getCompanyId()).orElseGet(null);
+        company.getComments().add(newComment);
 
         companyRepository.save(company);
     }

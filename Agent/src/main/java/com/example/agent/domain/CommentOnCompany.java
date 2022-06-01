@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 public class CommentOnCompany {
     @Id
-    @SequenceGenerator(name = "commentIdSeqGen", sequenceName = "commentIdSeq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "commentIdSeqGen", sequenceName = "commentIdSeq", initialValue = 2, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentIdSeqGen")
     private Long id;
 
@@ -21,5 +21,10 @@ public class CommentOnCompany {
     private String userSignature;
 
     public CommentOnCompany() {
+    }
+
+    public CommentOnCompany(String comment, String userSignature) {
+        this.comment = comment;
+        this.userSignature = userSignature;
     }
 }

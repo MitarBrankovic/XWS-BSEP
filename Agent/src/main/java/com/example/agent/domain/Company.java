@@ -24,7 +24,7 @@ public class Company {
     @OneToMany
     private Set<InterviewProcess> interviewProcesses;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<CommentOnCompany> comments;
 
     @OneToMany(fetch = FetchType.EAGER)

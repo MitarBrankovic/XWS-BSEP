@@ -1,5 +1,6 @@
 package com.example.agent.controller;
 
+import com.example.agent.dtos.CommentDTO;
 import com.example.agent.dtos.CompanyInfoDTO;
 import com.example.agent.dtos.CompanyRegistrationRequestDTO;
 import com.example.agent.dtos.UserRegistrationDTO;
@@ -53,6 +54,13 @@ public class AgentController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addOpenPosition(@PathParam("companyId") Long companyId, @PathParam("positionName") String positionName){
         agentService.addOpenPosition(companyId, positionName);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping("/saveComment")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity saveComment(@RequestBody CommentDTO dto){
+        agentService.saveComment(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 }
