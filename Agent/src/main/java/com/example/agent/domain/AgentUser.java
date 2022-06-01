@@ -13,7 +13,7 @@ import java.util.Date;
 public class AgentUser {
 
     @Id
-    @SequenceGenerator(name = "agentUserIdSeqGen", sequenceName = "agentUserIdSeq", initialValue = 4, allocationSize = 1)
+    @SequenceGenerator(name = "agentUserIdSeqGen", sequenceName = "agentUserIdSeq", initialValue = 5, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agentUserIdSeqGen")
     private Long id;
 

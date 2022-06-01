@@ -1,0 +1,22 @@
+<div class="box">
+
+    <p class="title mb-10">Sign up</p>
+
+    <input class="input mb-5" placeholder="username" [(ngModel)]="newUser.username">
+
+    <input class="input mb-5" placeholder="password" [(ngModel)]="newUser.password">
+
+    <input class="input mb-5" placeholder="first name" [(ngModel)]="newUser.firstName">
+
+    <input class="input mb-5" placeholder="last name" [(ngModel)]="newUser.lastName">
+
+    <input class="input mb-5" type="date" placeholder="date of birth" 
+    [(ngModel)]="newUser.dateOfBirth"
+    name="dateOfBirthInput" 
+    #dateOfBirthInput="ngModel"
+    [max]="todayDate">
+
+    <button class="button is-primary" (click)="registerUser()">Create account</button>
+
+
+</div>
