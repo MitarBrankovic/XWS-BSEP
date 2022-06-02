@@ -101,12 +101,13 @@ public class AgentController {
         return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
-    @RequestMapping("/findOneCompany")
+    @RequestMapping("/findOneCompanyById")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Company> findOneCompany(@PathParam("companyId") Long companyId){
-        Company company = agentService.findOneCompany(companyId);
-        return new ResponseEntity<Company>(company, HttpStatus.FOUND);
+    public ResponseEntity<Company> findOneCompanyById(@PathParam("companyId") Long companyId){
+        Company company = agentService.findOneCompanyById(companyId);
+        return new ResponseEntity<Company>(company, HttpStatus.OK);
     }
+
 
     @RequestMapping("/findUser")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -1,5 +1,9 @@
-<div *ngIf="userIsCommon()" name="commonUserDiv" class="box">
+<div *ngIf="userIsCommon()" class="box">
     <button class="button is-primary" (click)="this.router.navigate(['/companyRegistration'])">Register company</button>
+</div>
+
+<div *ngIf="userIsCompanyOwner()" class="box">
+    <button class="button is-info" (click)="this.router.navigate(['/company', user?.company.id])">My company</button>
 </div>
 
 <div class="box mt-5" *ngIf="!userIsAdmin()">

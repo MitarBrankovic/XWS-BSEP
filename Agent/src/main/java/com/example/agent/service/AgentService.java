@@ -28,7 +28,7 @@ public interface AgentService {
 
     List<Company> findAllCompanies();
 
-    Company findOneCompany(Long companyId);
+    Company findOneCompanyById(Long companyId);
 
     AgentUser findUser(String username, String password);
 

@@ -152,7 +152,7 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    public Company findOneCompany(Long companyId) {
+    public Company findOneCompanyById(Long companyId) {
         return companyRepository.findById(companyId).orElseGet(null);
     }
 

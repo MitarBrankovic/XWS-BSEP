@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AgentService {
-
   private _url = 'http://localhost:8081/api/agent/';
 
   public loggedUser: any
@@ -34,8 +33,16 @@ export class AgentService {
     return this.http.get<any>(this._url + 'findAllCompanyRegistrationRequests');
   }
 
-  registerCompany(companyRegistrationRequest: any) {
+  public registerCompany(companyRegistrationRequest: any) {
     return this.http.post(this._url + 'saveCompany', companyRegistrationRequest);
+  }
+
+  public findOneCompanyById(id: number): Observable<any> {
+    return this.http.get<any>(this._url + 'findOneCompanyById?companyId=' + id);
+  }
+
+  editCompanyInfo(data: any) {
+    return this.http.post(this._url + 'editCompanyInfo', data);
   }
 
 }

@@ -16,7 +16,7 @@ export class HomePageComponent implements OnInit {
   constructor(private agentService: AgentService, public router: Router) { }
 
   ngOnInit(): void {
-    this.user = this.agentService.loggedUser
+    this.getLoggedUser()
     this.findAllCompanyRegistrationRequests()
   }
 
@@ -28,6 +28,10 @@ export class HomePageComponent implements OnInit {
     return this.user?.role == 'Admin'
   }
 
+  userIsCompanyOwner(): boolean{
+    return this.user?.role == 'CompanyOwner'
+  }
+
   findAllCompanyRegistrationRequests(){
     this.agentService.findAllCompanyRegistrationRequests().subscribe(data => this.companyRegistrationRequests = data)
   }
@@ -36,7 +40,11 @@ export class HomePageComponent implements OnInit {
     this.agentService.registerCompany(companyRegistrationRequest).subscribe(() => {
       alert('Company registered successfully')
       this.findAllCompanyRegistrationRequests()
+      this.getLoggedUser()
     })
   }
 
+  getLoggedUser(){
+    this.user = this.agentService.loggedUser
+  }
 }
