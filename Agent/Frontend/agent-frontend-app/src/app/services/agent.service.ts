@@ -19,13 +19,15 @@ export class AgentService {
   }
 
   public login(username: string, password: string): Observable<any> {
-    this.loggedUser = this.http.get<any>(this._url + 'findUser?username=' + username + '&password=' + password);
-
-    return this.loggedUser;
+    return this.http.get<any>(this._url + 'findUser?username=' + username + '&password=' + password);
   }
 
   public findAllCompanies(): Observable<any> {
     return this.http.get<any>(this._url + 'findAllCompanies');
+  }
+
+  sendRegistrationRequest(request: any) {
+    return this.http.post(this._url + 'saveCompanyRegistrationRequest', request);
   }
 
 }

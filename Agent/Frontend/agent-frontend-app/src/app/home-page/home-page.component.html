@@ -1,1 +1,7 @@
-<p>home-page works!</p>
+<div *ngIf="userIsCommon()" name="commonUserDiv" class="box">
+    <button class="button is-primary" (click) = "this.router.navigate(['/companyRegistration'])">Register company</button>
+</div>
+
+<div class="box mt-5">
+    Their will be companies.
+</div>

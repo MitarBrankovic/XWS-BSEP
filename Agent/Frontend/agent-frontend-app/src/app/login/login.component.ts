@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
         alert("Invalid username or password!")
       else{
         alert('User logged in successfully. ')
+        this.agentService.loggedUser = user
         this.router.navigate(['/homePage'])
       }
     })
