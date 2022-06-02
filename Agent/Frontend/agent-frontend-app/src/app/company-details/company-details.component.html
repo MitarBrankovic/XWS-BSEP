@@ -1,21 +1,48 @@
-<p class="sub-title mb-2 ml-3">Info:</p>
-<input class="input mb-5 ml-3" [(ngModel)]="company.contactInfo">
 
-<p class="sub-title mb-2 ml-3">Description:</p>
-<input class="input mb-5 ml-3" [(ngModel)]="company.description">
+<div class="tile is-ancestor">
+    <div class="tile is-4 is-vertical is-parent">
+      <div class="tile is-child box">
+        <img src="https://cdn-icons-png.flaticon.com/512/2083/2083417.png" style="width: 300px; height:300px" alt="">
+        <p class="sub-title mt-5 ml-3">Average mark: {{averageMark}}</p>
+      </div>
+      <div class="tile is-child box">
+        <p class="sub-title mb-2 ml-3">Info:</p>
+        <input class="input mb-5 ml-3" [(ngModel)]="company.contactInfo">
+        <p class="sub-title mb-2 ml-3">Description:</p>
+        <input class="input mb-5 ml-3" [(ngModel)]="company.description">
+        <button class="button is-link mb-5 ml-3" (click)="editCompanyInfo()">Edit</button>
 
-<button class="button is-link mb-5 ml-3" (click)="editCompanyInfo()">Edit</button>
-
-<p class="sub-title mb-5 ml-3">Average mark:</p>
-
-<div class="box">
-    Their will be comments.
-</div>
-
-<div class="box">
-    Their will be interview processes.
-</div>
-
-<div class="box">
-    Their will be open positions.
-</div>
+      </div>
+    </div>
+    <div class="tile is-parent">
+      <div class="tile is-child box">
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" (click) = "openCommentsDiv()">
+                    Comments
+                </a>
+        
+                <a class="navbar-item" (click) = "openInterviewsDiv()">
+                    Open positions
+                </a>
+        
+                <a class="navbar-item" (click) = "openOpenPositonsDiv()">
+                    Interview processes
+                </a>
+            </div>
+        </div>
+        
+        <div *ngIf="commentsChecked" class="box mt-10">
+            Their will be comments.
+        </div>
+        
+        <div *ngIf="interviewsChecked" class="box">
+            Their will be interview processes.
+        </div>
+        
+        <div *ngIf="openPositionsChecked" class="box">
+            Their will be open positions.
+        </div>
+      </div>
+    </div>
+  </div>

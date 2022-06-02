@@ -5,6 +5,7 @@ export class Company {
     interviewProcesses: [];
     comments: [];
     openPositions = [];
+    marks = [];
 
     constructor() {
         this.id = 0;
@@ -13,5 +14,6 @@ export class Company {
         this.interviewProcesses = [];
         this.comments = [];
         this.openPositions = [];
+        this.marks = []
     }
 }
