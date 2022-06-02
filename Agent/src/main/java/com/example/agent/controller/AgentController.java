@@ -94,6 +94,13 @@ public class AgentController {
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
+    @RequestMapping("/findAllCompanyRegistrationRequests")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CompanyRegistrationRequestDTO>> findAllCompanyRegistrationRequests(){
+        List<CompanyRegistrationRequestDTO> request = agentService.findAllCompanyRegistrationRequests();
+        return new ResponseEntity<>(request, HttpStatus.OK);
+    }
+
     @RequestMapping("/findOneCompany")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Company> findOneCompany(@PathParam("companyId") Long companyId){

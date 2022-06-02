@@ -9,16 +9,34 @@ import { AgentService } from '../services/agent.service';
 })
 export class HomePageComponent implements OnInit {
 
-  private user: any
+  user: any
+
+  companyRegistrationRequests : any = []
 
   constructor(private agentService: AgentService, public router: Router) { }
 
   ngOnInit(): void {
     this.user = this.agentService.loggedUser
+    this.findAllCompanyRegistrationRequests()
   }
 
   userIsCommon(): boolean{
     return this.user?.role == 'Common'
+  }
+
+  userIsAdmin(): boolean{
+    return this.user?.role == 'Admin'
+  }
+
+  findAllCompanyRegistrationRequests(){
+    this.agentService.findAllCompanyRegistrationRequests().subscribe(data => this.companyRegistrationRequests = data)
+  }
+
+  registerCompany(companyRegistrationRequest: any){
+    this.agentService.registerCompany(companyRegistrationRequest).subscribe(() => {
+      alert('Company registered successfully')
+      this.findAllCompanyRegistrationRequests()
+    })
   }
 
 }

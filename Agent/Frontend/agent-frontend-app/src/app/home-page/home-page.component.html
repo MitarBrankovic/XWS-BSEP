@@ -1,7 +1,32 @@
 <div *ngIf="userIsCommon()" name="commonUserDiv" class="box">
-    <button class="button is-primary" (click) = "this.router.navigate(['/companyRegistration'])">Register company</button>
+    <button class="button is-primary" (click)="this.router.navigate(['/companyRegistration'])">Register company</button>
 </div>
 
-<div class="box mt-5">
+<div class="box mt-5" *ngIf="!userIsAdmin()">
     Their will be companies.
+</div>
+
+<div *ngIf="userIsAdmin()" class="box">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username of potential owner</th>
+                <th>Name of potential owner</th>
+                <th>Company informations</th>
+                <th>Company description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let request of companyRegistrationRequests">
+            <tr>
+                <td>{{request.companyOwnerUsername}}</td>
+                <td>{{request.companyOwnerName}}</td>
+                <td>{{request.companyContactInfo}}</td>
+                <td>{{request.companyDescription}}</td>
+                <td>
+                    <button class="button is-primary is-small" (click)="registerCompany(request)">Accept</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -6,6 +6,8 @@ import com.example.agent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -55,6 +57,7 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
+    @Transactional
     public void saveCompany(CompanyRegistrationRequestDTO dto) {
         AgentUser commonUser = agentUserRepository.findAgentUserByUsername(dto.getCompanyOwnerUsername());
         Company newCompany = new Company(dto.getCompanyContactInfo(), dto.getCompanyDescription());
@@ -64,6 +67,8 @@ public class AgentServiceImpl implements AgentService {
 
         companyRepository.save(newCompany);
         agentUserRepository.save(commonUser);
+
+        companyRegistrationRequestRepository.removeAllByCompanyOwnerUsername(dto.getCompanyOwnerUsername());
     }
 
     @Override
@@ -154,6 +159,15 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public AgentUser findUser(String username, String password) {
         return agentUserRepository.findAgentUserByUsernameAndPassword(username, password);
+    }
+
+    @Override
+    public List<CompanyRegistrationRequestDTO> findAllCompanyRegistrationRequests() {
+        List<CompanyRegistrationRequestDTO> requests = new ArrayList<>();
+        for(CompanyRegistrationRequest request : companyRegistrationRequestRepository.findAll()) {
+            requests.add(new CompanyRegistrationRequestDTO(request.getCompanyOwnerUsername(), request.getCompanyOwnerName(), request.getCompanyContactInfo(), request.getCompanyDescription()));
+        }
+        return requests;
     }
 
     private boolean userIsNotCommon(Long userId){

@@ -13,4 +13,11 @@ public class CompanyRegistrationRequestDTO {
 
     public CompanyRegistrationRequestDTO() {
     }
+
+    public CompanyRegistrationRequestDTO(String companyOwnerUsername, String companyOwnerName, String companyContactInfo, String companyDescription) {
+        this.companyOwnerUsername = companyOwnerUsername;
+        this.companyOwnerName = companyOwnerName;
+        this.companyContactInfo = companyContactInfo;
+        this.companyDescription = companyDescription;
+    }
 }

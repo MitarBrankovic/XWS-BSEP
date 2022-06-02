@@ -31,4 +31,6 @@ public interface AgentService {
     Company findOneCompany(Long companyId);
 
     AgentUser findUser(String username, String password);
+
+    List<CompanyRegistrationRequestDTO> findAllCompanyRegistrationRequests();
 }

@@ -26,8 +26,16 @@ export class AgentService {
     return this.http.get<any>(this._url + 'findAllCompanies');
   }
 
-  sendRegistrationRequest(request: any) {
+  public sendRegistrationRequest(request: any) {
     return this.http.post(this._url + 'saveCompanyRegistrationRequest', request);
+  }
+
+  public findAllCompanyRegistrationRequests(): Observable<any> {
+    return this.http.get<any>(this._url + 'findAllCompanyRegistrationRequests');
+  }
+
+  registerCompany(companyRegistrationRequest: any) {
+    return this.http.post(this._url + 'saveCompany', companyRegistrationRequest);
   }
 
 }
