@@ -7,12 +7,16 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
-    UserRegistrationComponent
+    UserRegistrationComponent,
+    LoginComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,

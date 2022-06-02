@@ -1,5 +1,6 @@
 package com.example.agent.service;
 
+import com.example.agent.domain.AgentUser;
 import com.example.agent.domain.Company;
 import com.example.agent.dtos.*;
 
@@ -28,4 +29,6 @@ public interface AgentService {
     List<Company> findAllCompanies();
 
     Company findOneCompany(Long companyId);
+
+    AgentUser findUser(String username, String password);
 }

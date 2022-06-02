@@ -8,12 +8,8 @@ import { Router } from '@angular/router';
 })
 export class LandingPageComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(public router: Router) { }
 
   ngOnInit(): void {
-  }
-
-  redirectToRegistration() {
-    this.router.navigate(['/registration'])
   }
 }

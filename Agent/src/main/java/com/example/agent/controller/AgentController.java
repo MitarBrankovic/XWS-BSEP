@@ -1,5 +1,6 @@
 package com.example.agent.controller;
 
+import com.example.agent.domain.AgentUser;
 import com.example.agent.domain.Company;
 import com.example.agent.domain.InterviewProcess;
 import com.example.agent.dtos.*;
@@ -90,7 +91,7 @@ public class AgentController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Company>> findAllCompanies(){
         List<Company> companies = agentService.findAllCompanies();
-        return new ResponseEntity<List<Company>>(companies, HttpStatus.FOUND);
+        return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
     @RequestMapping("/findOneCompany")
@@ -98,5 +99,12 @@ public class AgentController {
     public ResponseEntity<Company> findOneCompany(@PathParam("companyId") Long companyId){
         Company company = agentService.findOneCompany(companyId);
         return new ResponseEntity<Company>(company, HttpStatus.FOUND);
+    }
+
+    @RequestMapping("/findUser")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AgentUser> findUser(@PathParam("username") String username, @PathParam("password") String password){
+        AgentUser agentUser = agentService.findUser(username, password);
+        return new ResponseEntity<>(agentUser, HttpStatus.OK);
     }
 }

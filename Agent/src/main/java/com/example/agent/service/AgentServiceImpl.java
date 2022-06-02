@@ -151,6 +151,11 @@ public class AgentServiceImpl implements AgentService {
         return companyRepository.findById(companyId).orElseGet(null);
     }
 
+    @Override
+    public AgentUser findUser(String username, String password) {
+        return agentUserRepository.findAgentUserByUsernameAndPassword(username, password);
+    }
+
     private boolean userIsNotCommon(Long userId){
         AgentUser user = agentUserRepository.findById(userId).orElseGet(null);
         return !user.getRole().equals(UserRole.Common);
