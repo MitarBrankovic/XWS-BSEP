@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
 import { CompanyDetailsComponent } from './company-details/company-details.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CompanyDetailsComponent } from './company-details/company-details.compo
     LoginComponent,
     HomePageComponent,
     CompanyRegistrationComponent,
-    CompanyDetailsComponent
+    CompanyDetailsComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
