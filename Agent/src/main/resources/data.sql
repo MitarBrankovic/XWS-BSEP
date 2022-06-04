@@ -6,11 +6,11 @@ insert into open_position_sallarys (open_position_id, sallarys_id) values (1, 1)
 
 insert into interview_process (id, description, user_signature) values (1, 'Interview process', 'Vue.js developer (Junior)')
 
-insert into comment_on_company (id, comment, user_signature) values (1, 'Comment on company', 'Software developer (Medior)')
+insert into comment_on_company (id, comment, user_signature, username) values (1, 'Comment on company', 'Software developer (Medior)', 'petaragent')
 
 insert into mark (id, mark) values (1, 5)
 
-insert into company (id, contact_info, description) values (1, 'Company contact info', 'Company description')
+insert into company (id, name, contact_info, description, username) values (1, 'Majkrosoft za sirotinju', 'Company contact info', 'Company description', 'stevanagent')
 
 insert into company_comments (company_id, comments_id) values (1, 1)
 

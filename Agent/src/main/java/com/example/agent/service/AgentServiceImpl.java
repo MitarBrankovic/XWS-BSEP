@@ -52,15 +52,16 @@ public class AgentServiceImpl implements AgentService {
     public void saveCompanyRegistrationRequest(CompanyRegistrationRequestDTO dto) {
         companyRegistrationRequestRepository.save(new CompanyRegistrationRequest(dto.getCompanyOwnerUsername(),
                 dto.getCompanyOwnerName(),
+                dto.getCompanyName(),
                 dto.getCompanyContactInfo(),
-                dto.getCompanyDescription()));
+                dto.getCompanyDescription(), dto.getUsername()));
     }
 
     @Override
     @Transactional
     public void saveCompany(CompanyRegistrationRequestDTO dto) {
         AgentUser commonUser = agentUserRepository.findAgentUserByUsername(dto.getCompanyOwnerUsername());
-        Company newCompany = new Company(dto.getCompanyContactInfo(), dto.getCompanyDescription());
+        Company newCompany = new Company(dto.getCompanyName(), dto.getCompanyContactInfo(), dto.getCompanyDescription(), dto.getUsername());
 
         commonUser.setCompany(newCompany);
         commonUser.setRole(UserRole.CompanyOwner);
@@ -95,7 +96,7 @@ public class AgentServiceImpl implements AgentService {
         if(userIsNotCommon(dto.getUserId()))
             return;
 
-        CommentOnCompany newComment = new CommentOnCompany(dto.getContent(), dto.getUserSignature());
+        CommentOnCompany newComment = new CommentOnCompany(dto.getContent(), dto.getUserSignature(), dto.getUsername());
         commentOnCompanyRepository.save(newComment);
 
         Company company = companyRepository.findById(dto.getCompanyId()).orElseGet(null);
@@ -165,7 +166,7 @@ public class AgentServiceImpl implements AgentService {
     public List<CompanyRegistrationRequestDTO> findAllCompanyRegistrationRequests() {
         List<CompanyRegistrationRequestDTO> requests = new ArrayList<>();
         for(CompanyRegistrationRequest request : companyRegistrationRequestRepository.findAll()) {
-            requests.add(new CompanyRegistrationRequestDTO(request.getCompanyOwnerUsername(), request.getCompanyOwnerName(), request.getCompanyContactInfo(), request.getCompanyDescription()));
+            requests.add(new CompanyRegistrationRequestDTO(request.getCompanyOwnerUsername(), request.getCompanyOwnerName(), request.getCompanyName(), request.getCompanyContactInfo(), request.getCompanyDescription(), request.getUsername()));
         }
         return requests;
     }
@@ -173,5 +174,10 @@ public class AgentServiceImpl implements AgentService {
     private boolean userIsNotCommon(Long userId){
         AgentUser user = agentUserRepository.findById(userId).orElseGet(null);
         return !user.getRole().equals(UserRole.Common);
+    }
+
+    public Set<CommentOnCompany> findAllCommentsByCompanyId(Long companyId){
+        Company company = companyRepository.findById(companyId).orElseGet(null);
+        return company.getComments();
     }
 }

@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
   constructor(public router: Router, private agentService: AgentService) { }
 
   ngOnInit(): void {
-    //this.getLoggedUser()
+    this.user = this.agentService.loggedUser
   }
 
   checkIfLoggedIn() {
@@ -29,16 +29,14 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.agentService.loggedUser = null;
+    localStorage.removeItem('agentUser');
     this.router.navigate(['/']);
   }
 
-  getLoggedUser(){
-    this.user = this.agentService.loggedUser
-    alert()
-  }
 
   userIsCompanyOwner(): boolean{
-    return this.user?.role == 'CompanyOwner'
+    let a = this.agentService.loggedUser.username
+    return this.agentService.loggedUser.role == 'CompanyOwner'
   }
 
 }

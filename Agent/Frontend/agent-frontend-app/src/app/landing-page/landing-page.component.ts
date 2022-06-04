@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AgentService } from '../services/agent.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -8,8 +9,17 @@ import { Router } from '@angular/router';
 })
 export class LandingPageComponent implements OnInit {
 
-  constructor(public router: Router) { }
+  companies:any
+
+  constructor(public router: Router, public agentService: AgentService) { }
 
   ngOnInit(): void {
+    this.getAllCompanies()
+  }
+
+  getAllCompanies() {
+    this.agentService.getAllCompanies().subscribe(companies => {
+      this.companies = companies
+    })
   }
 }

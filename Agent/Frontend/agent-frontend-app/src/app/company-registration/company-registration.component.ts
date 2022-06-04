@@ -9,6 +9,7 @@ import { AgentService } from '../services/agent.service';
 })
 export class CompanyRegistrationComponent implements OnInit {
 
+  companyName: string = ''
   companyContactInfo: string = ''
   companyDescription : string = ''
 
@@ -21,6 +22,7 @@ export class CompanyRegistrationComponent implements OnInit {
     let request = {
       companyOwnerUsername: this.agentService.loggedUser.username,
       companyOwnerName: this.agentService.loggedUser.firstName + ' ' + this.agentService.loggedUser.lastName,
+      companyName: this.companyName,
       companyContactInfo: this.companyContactInfo,
       companyDescription: this.companyDescription
     }

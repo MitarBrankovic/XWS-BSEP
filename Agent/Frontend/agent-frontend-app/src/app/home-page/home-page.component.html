@@ -1,3 +1,22 @@
+<div class="container" *ngIf="!userIsAdmin()">
+
+    <table class="table mt-5 cenetr" style="justify-content: center;">
+        <thead>
+          <th>Name</th>
+          <th>Description</th>
+          <th></th>
+          <th>
+          <th>
+        </thead>
+        <tr *ngFor="let c of companies" (click)="this.router.navigate(['/company', c.id])">
+          <td>{{c.name}}</td>
+          <td>{{c.description}}</td>
+        </tr>
+      </table>
+</div><br><br><br>
+
+
+
 <div *ngIf="userIsCommon()" class="box">
     <button class="button is-primary" (click)="this.router.navigate(['/companyRegistration'])">Register company</button>
 </div>
@@ -6,9 +25,6 @@
     <button class="button is-info" (click)="this.router.navigate(['/company', user?.company.id])">My company</button>
 </div>
 
-<div class="box mt-5" *ngIf="!userIsAdmin()">
-    Their will be companies.
-</div>
 
 <div *ngIf="userIsAdmin()" class="box">
     <table class="table">

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,10 +17,16 @@ public class Company {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     private String contactInfo;
 
     @Column
     private String description;
+
+    @Column
+    private String username;
 
     @OneToMany(fetch = FetchType.EAGER)
     private Set<InterviewProcess> interviewProcesses;
@@ -36,9 +43,11 @@ public class Company {
     public Company() {
     }
 
-    public Company(String contactInfo, String description) {
+    public Company(String name, String contactInfo, String description, String username) {
+        this.name = name;
         this.contactInfo = contactInfo;
         this.description = description;
+        this.username = username;
     }
 
 

@@ -2,6 +2,7 @@ export class Company {
     id: number;
     contactInfo: string;
     description: string;
+    username: string;
     interviewProcesses: [];
     comments: [];
     openPositions = [];
@@ -11,6 +12,7 @@ export class Company {
         this.id = 0;
         this.contactInfo = "";
         this.description = "";
+        this.username = "";
         this.interviewProcesses = [];
         this.comments = [];
         this.openPositions = [];

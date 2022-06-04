@@ -20,6 +20,7 @@
     "@angular/router": "~13.0.0",
     "bulma": "^0.9.4",
     "rxjs": "~7.4.0",
+    "sweetalert2": "^11.4.17",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

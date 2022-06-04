@@ -1,8 +1,8 @@
 package com.example.agent.controller;
 
 import com.example.agent.domain.AgentUser;
+import com.example.agent.domain.CommentOnCompany;
 import com.example.agent.domain.Company;
-import com.example.agent.domain.InterviewProcess;
 import com.example.agent.dtos.*;
 import com.example.agent.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,9 +61,9 @@ public class AgentController {
 
     @RequestMapping("/saveComment")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity saveComment(@RequestBody CommentDTO dto){
+    public ResponseEntity<CommentOnCompany> saveComment(@RequestBody CommentDTO dto){
         agentService.saveComment(dto);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping("/addSallary")
@@ -114,5 +114,12 @@ public class AgentController {
     public ResponseEntity<AgentUser> findUser(@PathParam("username") String username, @PathParam("password") String password){
         AgentUser agentUser = agentService.findUser(username, password);
         return new ResponseEntity<>(agentUser, HttpStatus.OK);
+    }
+
+    @RequestMapping("/findAllCommentsByCompanyId/{companyId}")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<CommentOnCompany>> findAllCommentsByCompanyId(@PathVariable("companyId") Long companyId){
+        Set<CommentOnCompany> comments = agentService.findAllCommentsByCompanyId(companyId);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 }

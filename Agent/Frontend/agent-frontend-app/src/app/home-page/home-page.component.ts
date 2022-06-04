@@ -10,6 +10,7 @@ import { AgentService } from '../services/agent.service';
 export class HomePageComponent implements OnInit {
 
   user: any
+  companies:any
 
   companyRegistrationRequests : any = []
 
@@ -18,6 +19,7 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
     this.getLoggedUser()
     this.findAllCompanyRegistrationRequests()
+    this.getAllCompanies()
   }
 
   userIsCommon(): boolean{
@@ -45,6 +47,13 @@ export class HomePageComponent implements OnInit {
   }
 
   getLoggedUser(){
-    this.user = this.agentService.loggedUser
+    //this.user = this.agentService.loggedUser
+    this.user = localStorage.getItem('agentUser')
+  }
+
+  getAllCompanies() {
+    this.agentService.getAllCompanies().subscribe(companies => {
+      this.companies = companies
+    })
   }
 }

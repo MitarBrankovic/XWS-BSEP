@@ -20,11 +20,15 @@ public class CommentOnCompany {
     @Column
     private String userSignature;
 
+    @Column
+    private String username;
+
     public CommentOnCompany() {
     }
 
-    public CommentOnCompany(String comment, String userSignature) {
+    public CommentOnCompany(String comment, String userSignature, String username) {
         this.comment = comment;
         this.userSignature = userSignature;
+        this.username = username;
     }
 }

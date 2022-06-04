@@ -5,13 +5,19 @@
         <img src="https://cdn-icons-png.flaticon.com/512/2083/2083417.png" style="width: 300px; height:300px" alt="">
         <p class="sub-title mt-5 ml-3">Average mark: {{averageMark}}</p>
       </div>
-      <div class="tile is-child box">
+      <div *ngIf="checkOwnership()" class="tile is-child box">
         <p class="sub-title mb-2 ml-3">Info:</p>
         <input class="input mb-5 ml-3" [(ngModel)]="company.contactInfo">
         <p class="sub-title mb-2 ml-3">Description:</p>
         <input class="input mb-5 ml-3" [(ngModel)]="company.description">
         <button class="button is-link mb-5 ml-3" (click)="editCompanyInfo()">Edit</button>
+      </div>
 
+      <div *ngIf="!checkOwnership()" class="tile is-child box">
+        <p class="sub-title mb-2 ml-3">Info:</p>
+        <label class="label mb-5 ml-3">{{company.contactInfo}}</label>
+        <p class="sub-title mb-2 ml-3">Description:</p>
+        <label class="label mb-5 ml-3">{{company.description}}</label>
       </div>
     </div>
     <div class="tile is-parent">
@@ -33,7 +39,31 @@
         </div>
         
         <div *ngIf="commentsChecked" class="box mt-10">
-            Their will be comments.
+
+          <div class="card mb-5">
+              <div class="card-content" *ngIf="!checkOwnership()">
+                  <div class="content">
+                      <div style="text-align: center;">
+                          <textarea [(ngModel)]="content" class="mb-3 textarea" style="border-radius: 0px; object-fit: contain;"></textarea>
+                      </div>
+                  </div>
+                  <footer class="card-footer">
+                      <button href="#" class="card-footer-item button is-info" (click)="createComment()">Comment</button>
+                  </footer>
+              </div>
+          </div>
+
+          
+          <div class="card mt-5" *ngFor="let c of comments; let i = index">
+            <div class="card-content">
+              <div class="content">
+                {{c.comment}}
+                <footer class="card-footer mt-5">
+                  <label><i>{{c.userSignature}} {{c.username}}</i></label>
+              </footer>
+              </div>
+            </div>
+          </div>
         </div>
         
         <div *ngIf="interviewsChecked" class="box">

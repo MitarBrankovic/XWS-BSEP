@@ -21,18 +21,26 @@ public class CompanyRegistrationRequest {
     private String companyOwnerName;
 
     @Column
+    private String companyName;
+
+    @Column
     private String companyContactInfo;
 
     @Column
     private String companyDescription;
 
+    @Column
+    private String username;
+
     public CompanyRegistrationRequest() {
     }
 
-    public CompanyRegistrationRequest(String companyOwnerUsername, String companyOwnerName, String companyContactInfo, String companyDescription) {
+    public CompanyRegistrationRequest(String companyOwnerUsername, String companyOwnerName, String companyName, String companyContactInfo, String companyDescription, String username) {
         this.companyOwnerUsername = companyOwnerUsername;
         this.companyOwnerName = companyOwnerName;
+        this.companyName = companyName;
         this.companyContactInfo = companyContactInfo;
         this.companyDescription = companyDescription;
+        this.username = username;
     }
 }

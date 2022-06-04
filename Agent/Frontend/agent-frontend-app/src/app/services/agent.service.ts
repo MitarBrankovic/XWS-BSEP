@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 export class AgentService {
   private _url = 'http://localhost:8081/api/agent/';
 
-  public loggedUser: any
+  private helper :any = localStorage.getItem('agentUser')
+  public loggedUser: any = JSON.parse(this.helper)
 
   constructor(private http: HttpClient) { }
 
@@ -43,6 +44,18 @@ export class AgentService {
 
   editCompanyInfo(data: any) {
     return this.http.post(this._url + 'editCompanyInfo', data);
+  }
+
+  public findAllCommentsByCompanyId(companyId: number): Observable<any> {
+    return this.http.get<any>(this._url + 'findAllCommentsByCompanyId/' + companyId);
+  }
+
+  public getAllCompanies(){
+    return this.http.get<any>(this._url + 'findAllCompanies');
+  }
+
+  public saveComment(dto:any){
+    return this.http.post(this._url + 'saveComment', dto);
   }
 
 }
