@@ -10,6 +10,15 @@ public class InterviewProcessDTO {
     private Long companyId;
     private String interviewDescription;
     private String userSignature;
+    private String username;
 
     public InterviewProcessDTO(){}
+
+    public InterviewProcessDTO(Long userId, Long companyId, String interviewDescription, String userSignature, String username) {
+        this.userId = userId;
+        this.companyId = companyId;
+        this.interviewDescription = interviewDescription;
+        this.userSignature = userSignature;
+        this.username = username;
+    }
 }

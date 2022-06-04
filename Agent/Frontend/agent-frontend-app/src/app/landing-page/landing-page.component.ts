@@ -22,4 +22,10 @@ export class LandingPageComponent implements OnInit {
       this.companies = companies
     })
   }
+
+  redirectToCompany(companyId: number) {
+    if(this.agentService.loggedUser != null) {
+      this.router.navigate(['/company', companyId])
+    }
+  }
 }

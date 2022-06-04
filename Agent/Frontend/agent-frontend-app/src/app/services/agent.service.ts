@@ -50,12 +50,20 @@ export class AgentService {
     return this.http.get<any>(this._url + 'findAllCommentsByCompanyId/' + companyId);
   }
 
+  public findAllInterviewsByCompanyId(companyId: number): Observable<any> {
+    return this.http.get<any>(this._url + 'findAllInterviewsByCompanyId/' + companyId);
+  }
+
   public getAllCompanies(){
     return this.http.get<any>(this._url + 'findAllCompanies');
   }
 
   public saveComment(dto:any){
     return this.http.post(this._url + 'saveComment', dto);
+  }
+
+  public saveInterview(dto:any){
+    return this.http.post(this._url + 'addInterviewProcess', dto);
   }
 
 }

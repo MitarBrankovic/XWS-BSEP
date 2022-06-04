@@ -8,7 +8,7 @@
           <th>
           <th>
         </thead>
-        <tr *ngFor="let c of companies" (click)="this.router.navigate(['/company', c.id])">
+        <tr *ngFor="let c of companies" (click)="redirectToCompany(c.id)">
           <td>{{c.name}}</td>
           <td>{{c.description}}</td>
         </tr>

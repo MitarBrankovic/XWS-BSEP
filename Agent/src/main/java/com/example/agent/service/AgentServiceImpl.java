@@ -124,7 +124,7 @@ public class AgentServiceImpl implements AgentService {
         if(userIsNotCommon(dto.getUserId()))
             return;
 
-        InterviewProcess newInterviewProcess = new InterviewProcess(dto.getInterviewDescription(), dto.getUserSignature());
+        InterviewProcess newInterviewProcess = new InterviewProcess(dto.getInterviewDescription(), dto.getUserSignature(), dto.getUsername());
         interviewProcessRepository.save(newInterviewProcess);
 
         Company company = companyRepository.findById(dto.getCompanyId()).orElseGet(null);
@@ -179,5 +179,10 @@ public class AgentServiceImpl implements AgentService {
     public Set<CommentOnCompany> findAllCommentsByCompanyId(Long companyId){
         Company company = companyRepository.findById(companyId).orElseGet(null);
         return company.getComments();
+    }
+
+    public Set<InterviewProcess> findAllInterviewsByCompanyId(Long companyId){
+        Company company = companyRepository.findById(companyId).orElseGet(null);
+        return company.getInterviewProcesses();
     }
 }

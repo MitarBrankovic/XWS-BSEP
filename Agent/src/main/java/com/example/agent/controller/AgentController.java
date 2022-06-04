@@ -3,6 +3,7 @@ package com.example.agent.controller;
 import com.example.agent.domain.AgentUser;
 import com.example.agent.domain.CommentOnCompany;
 import com.example.agent.domain.Company;
+import com.example.agent.domain.InterviewProcess;
 import com.example.agent.dtos.*;
 import com.example.agent.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,5 +122,12 @@ public class AgentController {
     public ResponseEntity<Set<CommentOnCompany>> findAllCommentsByCompanyId(@PathVariable("companyId") Long companyId){
         Set<CommentOnCompany> comments = agentService.findAllCommentsByCompanyId(companyId);
         return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+
+    @RequestMapping("/findAllInterviewsByCompanyId/{companyId}")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<InterviewProcess>> findAllInterviewsByCompanyId(@PathVariable("companyId") Long companyId){
+        Set<InterviewProcess> interviews = agentService.findAllInterviewsByCompanyId(companyId);
+        return new ResponseEntity<>(interviews, HttpStatus.OK);
     }
 }

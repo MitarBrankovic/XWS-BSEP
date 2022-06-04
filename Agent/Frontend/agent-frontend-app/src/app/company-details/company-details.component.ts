@@ -14,6 +14,7 @@ export class CompanyDetailsComponent implements OnInit {
   company: Company = new Company
   averageMark = 0
   content:string = ''
+  contentInterview:string = ''
   user: any
   id: number = 0
 
@@ -22,6 +23,7 @@ export class CompanyDetailsComponent implements OnInit {
   openPositionsChecked: boolean = false
 
   comments:any
+  interviews:any
 
   constructor(private agentService: AgentService, private route: ActivatedRoute) { }
 
@@ -34,11 +36,18 @@ export class CompanyDetailsComponent implements OnInit {
       }
       )
     this.findAllCommentsByCompanyId(this.id)
+    this.findAllInterviewsByCompanyId(this.id)
   }
 
   findAllCommentsByCompanyId(companyId: any) {
     this.agentService.findAllCommentsByCompanyId(companyId).subscribe(comments => {
       this.comments = comments
+    })
+  }
+
+  findAllInterviewsByCompanyId(companyId: any) {
+    this.agentService.findAllInterviewsByCompanyId(companyId).subscribe(interviews => {
+      this.interviews = interviews
     })
   }
 
@@ -102,7 +111,25 @@ export class CompanyDetailsComponent implements OnInit {
     }else{
       this.swalError('Write comment first!')
     }
+  }
 
+  createInterview(){
+    if(this.contentInterview != ''){
+      let interviewDto = {
+        userId : this.agentService.loggedUser.id,
+        companyId : this.company.id,
+        interviewDescription : this.contentInterview,
+        userSignature : 'Software developer (Medior)',
+        username : this.agentService.loggedUser.username
+      }
+      this.agentService.saveInterview(interviewDto).subscribe(() => {
+        this.findAllInterviewsByCompanyId(this.id);
+        this.contentInterview = ''
+      })
+
+    }else{
+      this.swalError('Write interview description first!')
+    }
   }
 
   swalError(title: string) {

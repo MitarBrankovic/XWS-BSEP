@@ -29,11 +29,11 @@
                 </a>
         
                 <a class="navbar-item" (click) = "openInterviewsDiv()">
-                    Open positions
+                    Interview processes
                 </a>
         
                 <a class="navbar-item" (click) = "openOpenPositonsDiv()">
-                    Interview processes
+                    Open positions
                 </a>
             </div>
         </div>
@@ -67,7 +67,30 @@
         </div>
         
         <div *ngIf="interviewsChecked" class="box">
-            Their will be interview processes.
+          <div class="card mb-5">
+              <div class="card-content" *ngIf="!checkOwnership()">
+                  <div class="content">
+                      <div style="text-align: center;">
+                          <textarea [(ngModel)]="contentInterview" class="mb-3 textarea" style="border-radius: 0px; object-fit: contain;"></textarea>
+                      </div>
+                  </div>
+                  <footer class="card-footer">
+                      <button href="#" class="card-footer-item button is-info" (click)="createInterview()">Create interview proccess</button>
+                  </footer>
+              </div>
+          </div>
+
+          
+          <div class="card mt-5" *ngFor="let c of interviews; let i = index">
+            <div class="card-content">
+              <div class="content">
+                {{c.description}}
+                <footer class="card-footer mt-5">
+                  <label><i>{{c.userSignature}} {{c.username}}</i></label>
+              </footer>
+              </div>
+            </div>
+          </div>
         </div>
         
         <div *ngIf="openPositionsChecked" class="box">

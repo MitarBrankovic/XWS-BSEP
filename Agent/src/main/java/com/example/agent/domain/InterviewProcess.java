@@ -20,11 +20,15 @@ public class InterviewProcess {
     @Column
     private String userSignature;
 
+    @Column
+    private String username;
+
     public InterviewProcess() {
     }
 
-    public InterviewProcess(String description, String userSignature) {
+    public InterviewProcess(String description, String userSignature, String username) {
         this.description = description;
         this.userSignature = userSignature;
+        this.username = username;
     }
 }
