@@ -18,11 +18,14 @@ public class Sallary {
     @Column
     private Double sallaryValue;
 
+    @Column
+    private Long userId;
 
     public Sallary() {
     }
 
-    public Sallary(Double sallaryValue) {
+    public Sallary(Double sallaryValue, Long userId) {
         this.sallaryValue = sallaryValue;
+        this.userId = userId;
     }
 }

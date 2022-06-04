@@ -1,4 +1,4 @@
-insert into sallary (id, sallary_value) values (1, 500)
+insert into sallary (id, sallary_value, user_id) values (1, 500, 3)
 
 insert into open_position (id, position_name) values (1, 'React developer')
 

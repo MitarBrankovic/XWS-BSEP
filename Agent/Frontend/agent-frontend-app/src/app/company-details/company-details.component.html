@@ -94,7 +94,30 @@
         </div>
         
         <div *ngIf="openPositionsChecked" class="box">
-            Their will be open positions.
+          <div class="card mb-5">
+              <div class="card-content" *ngIf="checkOwnership()">
+                  <div class="content">
+                      <div style="text-align: center;">
+                          <textarea [(ngModel)]="contentPosition" class="mb-3 textarea" style="border-radius: 0px; object-fit: contain;"></textarea>
+                      </div>
+                  </div>
+                  <footer class="card-footer">
+                      <button href="#" class="card-footer-item button is-info" (click)="createPosition()">Create open position</button>
+                  </footer>
+              </div>
+          </div>
+
+          
+          <div class="card mt-5" *ngFor="let c of positions; let i = index">
+            <div class="card-content">
+              <div class="content">
+                {{c.positionName}} (<i>Avg. salary:</i> {{calculateAverageSalary(c)}}e) ({{calculateMinimumSalary(c)}}e ~ {{calculateMaximumSalary(c)}}e)
+                <button *ngIf="!checkOwnership() && !checkIfAlreadySentSalary(c)" class="button is-primary" style="float: right;" (click)="addSalary(c)">Add salary</button>
+                <label *ngIf="!checkOwnership() && checkIfAlreadySentSalary(c)" class="label is-primary" style="float: right;">Sent</label>
+                <footer class="card-footer mt-5"></footer>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

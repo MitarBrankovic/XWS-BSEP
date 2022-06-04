@@ -1,9 +1,6 @@
 package com.example.agent.service;
 
-import com.example.agent.domain.AgentUser;
-import com.example.agent.domain.CommentOnCompany;
-import com.example.agent.domain.Company;
-import com.example.agent.domain.InterviewProcess;
+import com.example.agent.domain.*;
 import com.example.agent.dtos.*;
 
 import java.util.List;
@@ -39,4 +36,6 @@ public interface AgentService {
     Set<CommentOnCompany> findAllCommentsByCompanyId(Long companyId);
 
     Set<InterviewProcess> findAllInterviewsByCompanyId(Long companyId);
+
+    Set<OpenPosition> findAllPositionsByCompanyId(Long companyId);
 }

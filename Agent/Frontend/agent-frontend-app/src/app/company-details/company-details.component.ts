@@ -15,6 +15,7 @@ export class CompanyDetailsComponent implements OnInit {
   averageMark = 0
   content:string = ''
   contentInterview:string = ''
+  contentPosition:string = ''
   user: any
   id: number = 0
 
@@ -24,6 +25,7 @@ export class CompanyDetailsComponent implements OnInit {
 
   comments:any
   interviews:any
+  positions:any
 
   constructor(private agentService: AgentService, private route: ActivatedRoute) { }
 
@@ -37,6 +39,7 @@ export class CompanyDetailsComponent implements OnInit {
       )
     this.findAllCommentsByCompanyId(this.id)
     this.findAllInterviewsByCompanyId(this.id)
+    this.findAllPositionsByCompanyId(this.id)
   }
 
   findAllCommentsByCompanyId(companyId: any) {
@@ -48,6 +51,12 @@ export class CompanyDetailsComponent implements OnInit {
   findAllInterviewsByCompanyId(companyId: any) {
     this.agentService.findAllInterviewsByCompanyId(companyId).subscribe(interviews => {
       this.interviews = interviews
+    })
+  }
+
+  findAllPositionsByCompanyId(companyId: any) {
+    this.agentService.findAllPositionsByCompanyId(companyId).subscribe(positions => {
+      this.positions = positions
     })
   }
 
@@ -129,6 +138,84 @@ export class CompanyDetailsComponent implements OnInit {
 
     }else{
       this.swalError('Write interview description first!')
+    }
+  }
+
+  createPosition(){
+    if(this.contentPosition != ''){
+      this.agentService.savePosition(this.company.id, this.contentPosition).subscribe(() => {
+        this.findAllPositionsByCompanyId(this.id);
+        this.contentPosition = ''
+      })
+    }
+    else{
+      this.swalError('Write position name first!')
+    }
+  }
+
+  calculateAverageSalary(position:any){
+    let sum = 0
+    for (let mark of position.sallarys)
+      sum += mark.sallaryValue
+    if (sum == 0)
+      return 0
+    return (sum / position.sallarys.length).toFixed(2)
+  }
+
+  calculateMinimumSalary(position:any){
+    if(position.sallarys.length != 0){
+      let min = position.sallarys[0].sallaryValue
+      for (let mark of position.sallarys)
+        if(mark.sallaryValue < min)
+          min = mark.sallaryValue
+      return min
+    }else{return 0}
+  }
+
+  calculateMaximumSalary(position:any){
+    if(position.sallarys.length != 0){
+      let max = position.sallarys[0].sallaryValue
+      for (let mark of position.sallarys)
+        if(mark.sallaryValue > max)
+          max = mark.sallaryValue
+      return max
+    }else{return 0}
+  }
+
+  checkIfAlreadySentSalary(position:any){
+    for (let mark of position.sallarys)
+      if(mark.userId == this.agentService.loggedUser.id)
+        return true
+    return false
+  }
+
+  
+
+  async addSalary(position:any){
+    
+    const { value: salaryValue } = await Swal.fire({
+      title: 'How much do you earn?',
+      icon: 'question',
+      input: 'range',
+      inputLabel: 'Your salary',
+      inputAttributes: {
+        min: '0',
+        max: '3000',
+        step: '5'
+      },
+      inputValue: 800
+    })
+
+    if (salaryValue) {
+      let dto = {
+        userId: this.agentService.loggedUser.id,
+        positionId: position.id,
+        sallary: salaryValue
+      }
+
+      this.agentService.saveSalary(dto).subscribe(() => {
+        this.findAllPositionsByCompanyId(this.id);
+      })
     }
   }
 

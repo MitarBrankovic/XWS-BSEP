@@ -110,7 +110,7 @@ public class AgentServiceImpl implements AgentService {
         if(userIsNotCommon(dto.getUserId()))
             return;
 
-        Sallary newSallary = new Sallary(dto.getSallary());
+        Sallary newSallary = new Sallary(dto.getSallary(), dto.getUserId());
         sallaryRepository.save(newSallary);
 
         OpenPosition openPosition = openPositionRepository.findById(dto.getPositionId()).orElseGet(null);
@@ -184,5 +184,10 @@ public class AgentServiceImpl implements AgentService {
     public Set<InterviewProcess> findAllInterviewsByCompanyId(Long companyId){
         Company company = companyRepository.findById(companyId).orElseGet(null);
         return company.getInterviewProcesses();
+    }
+
+    public Set<OpenPosition> findAllPositionsByCompanyId(Long companyId){
+        Company company = companyRepository.findById(companyId).orElseGet(null);
+        return company.getOpenPositions();
     }
 }

@@ -54,6 +54,10 @@ export class AgentService {
     return this.http.get<any>(this._url + 'findAllInterviewsByCompanyId/' + companyId);
   }
 
+  public findAllPositionsByCompanyId(companyId: number): Observable<any> {
+    return this.http.get<any>(this._url + 'findAllPositionsByCompanyId/' + companyId);
+  }
+
   public getAllCompanies(){
     return this.http.get<any>(this._url + 'findAllCompanies');
   }
@@ -64,6 +68,14 @@ export class AgentService {
 
   public saveInterview(dto:any){
     return this.http.post(this._url + 'addInterviewProcess', dto);
+  }
+
+  public savePosition(companyId:any, positionName:string){
+    return this.http.post(this._url + 'addOpenPosition/' + companyId + '/' + positionName, null);
+  }
+
+  public saveSalary(dto:any){
+    return this.http.post(this._url + 'addSallary', dto);
   }
 
 }

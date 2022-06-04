@@ -1,9 +1,6 @@
 package com.example.agent.controller;
 
-import com.example.agent.domain.AgentUser;
-import com.example.agent.domain.CommentOnCompany;
-import com.example.agent.domain.Company;
-import com.example.agent.domain.InterviewProcess;
+import com.example.agent.domain.*;
 import com.example.agent.dtos.*;
 import com.example.agent.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +50,9 @@ public class AgentController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping("/addOpenPosition")
+    @RequestMapping("/addOpenPosition/{companyId}/{positionName}")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addOpenPosition(@PathParam("companyId") Long companyId, @PathParam("positionName") String positionName){
+    public ResponseEntity addOpenPosition(@PathVariable("companyId") Long companyId, @PathVariable("positionName") String positionName){
         agentService.addOpenPosition(companyId, positionName);
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -129,5 +126,12 @@ public class AgentController {
     public ResponseEntity<Set<InterviewProcess>> findAllInterviewsByCompanyId(@PathVariable("companyId") Long companyId){
         Set<InterviewProcess> interviews = agentService.findAllInterviewsByCompanyId(companyId);
         return new ResponseEntity<>(interviews, HttpStatus.OK);
+    }
+
+    @RequestMapping("/findAllPositionsByCompanyId/{companyId}")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<OpenPosition>> findAllPositionsByCompanyId(@PathVariable("companyId") Long companyId){
+        Set<OpenPosition> positions = agentService.findAllPositionsByCompanyId(companyId);
+        return new ResponseEntity<>(positions, HttpStatus.OK);
     }
 }
