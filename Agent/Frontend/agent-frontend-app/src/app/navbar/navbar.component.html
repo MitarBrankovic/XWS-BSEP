@@ -13,7 +13,7 @@
   
     <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item" *ngIf="checkIfLoggedIn() && userIsCompanyOwner()" (click)="this.router.navigate(['/company', this.user?.company.id])">My company</a>
+        <a class="navbar-item" *ngIf="checkIfLoggedIn() && userIsCompanyOwner()" (click)="redirectToCompany()">My company</a>
 
       </div>
   

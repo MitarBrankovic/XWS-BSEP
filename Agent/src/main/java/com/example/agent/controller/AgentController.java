@@ -66,7 +66,7 @@ public class AgentController {
 
     @RequestMapping("/addSallary")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addSallary(@RequestBody SallaryDTO dto){
+    public ResponseEntity addSallary(@RequestBody SalaryDTO dto){
         agentService.addSallary(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }

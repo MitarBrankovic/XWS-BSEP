@@ -155,35 +155,35 @@ export class CompanyDetailsComponent implements OnInit {
 
   calculateAverageSalary(position:any){
     let sum = 0
-    for (let mark of position.sallarys)
-      sum += mark.sallaryValue
+    for (let mark of position.salaries)
+      sum += mark.salaryValue
     if (sum == 0)
       return 0
-    return (sum / position.sallarys.length).toFixed(2)
+    return (sum / position.salaries.length).toFixed(2)
   }
 
   calculateMinimumSalary(position:any){
-    if(position.sallarys.length != 0){
-      let min = position.sallarys[0].sallaryValue
-      for (let mark of position.sallarys)
-        if(mark.sallaryValue < min)
-          min = mark.sallaryValue
+    if(position.salaries.length != 0){
+      let min = position.salaries[0].salaryValue
+      for (let mark of position.salaries)
+        if(mark.salaryValue < min)
+          min = mark.salaryValue
       return min
     }else{return 0}
   }
 
   calculateMaximumSalary(position:any){
-    if(position.sallarys.length != 0){
-      let max = position.sallarys[0].sallaryValue
-      for (let mark of position.sallarys)
-        if(mark.sallaryValue > max)
-          max = mark.sallaryValue
+    if(position.salaries.length != 0){
+      let max = position.salaries[0].salaryValue
+      for (let mark of position.salaries)
+        if(mark.salaryValue > max)
+          max = mark.salaryValue
       return max
     }else{return 0}
   }
 
   checkIfAlreadySentSalary(position:any){
-    for (let mark of position.sallarys)
+    for (let mark of position.salaries)
       if(mark.userId == this.agentService.loggedUser.id)
         return true
     return false
@@ -210,7 +210,7 @@ export class CompanyDetailsComponent implements OnInit {
       let dto = {
         userId: this.agentService.loggedUser.id,
         positionId: position.id,
-        sallary: salaryValue
+        salary: salaryValue
       }
 
       this.agentService.saveSalary(dto).subscribe(() => {

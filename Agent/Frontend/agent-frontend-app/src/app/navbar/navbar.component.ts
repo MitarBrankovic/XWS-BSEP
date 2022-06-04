@@ -39,4 +39,10 @@ export class NavbarComponent implements OnInit {
     return this.agentService.loggedUser.role == 'CompanyOwner'
   }
 
+  redirectToCompany() {
+    if(this.agentService.loggedUser != null) {
+      this.router.navigate(['/company', this.agentService.loggedUser.company.id])
+    }
+  }
+
 }

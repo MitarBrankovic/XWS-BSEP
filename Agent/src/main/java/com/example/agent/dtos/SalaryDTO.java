@@ -5,11 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SallaryDTO {
+public class SalaryDTO {
     private Long userId;
     private Long positionId;
-    private Double sallary;
+    private Double salary;
 
-    public SallaryDTO() {
+    public SalaryDTO() {
     }
 }

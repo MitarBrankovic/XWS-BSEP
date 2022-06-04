@@ -11,15 +11,15 @@ import java.util.Set;
 @Getter
 public class OpenPosition {
     @Id
-    @SequenceGenerator(name = "positonIdSeqGen", sequenceName = "positonIdSeq", initialValue = 2, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "positonIdSeqGen")
+    @SequenceGenerator(name = "positionIdSeqGen", sequenceName = "positionIdSeq", initialValue = 2, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "positionIdSeqGen")
     private Long id;
 
     @Column
     private String positionName;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Sallary> sallarys;
+    private Set<Salary> salaries;
 
     public OpenPosition() {
     }

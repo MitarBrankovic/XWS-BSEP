@@ -1,8 +1,8 @@
-insert into sallary (id, sallary_value, user_id) values (1, 500, 3)
+insert into salary (id, salary_value, user_id) values (1, 500, 3)
 
 insert into open_position (id, position_name) values (1, 'React developer')
 
-insert into open_position_sallarys (open_position_id, sallarys_id) values (1, 1)
+insert into open_position_salaries (open_position_id, salaries_id) values (1, 1)
 
 insert into interview_process (id, description, user_signature, username) values (1, 'Interview process', 'Vue.js developer (Junior)', 'petaragent')
 

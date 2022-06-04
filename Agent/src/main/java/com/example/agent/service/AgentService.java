@@ -19,7 +19,7 @@ public interface AgentService {
 
     void saveComment(CommentDTO dto);
 
-    void addSallary(SallaryDTO dto);
+    void addSallary(SalaryDTO dto);
 
     void addInterviewProcess(InterviewProcessDTO dto);
 
