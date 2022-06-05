@@ -164,17 +164,15 @@ export class UserProfilePageComponent implements OnInit {
       }
       
       this.postService.sendComment(data).subscribe(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: 'Comment is sent',
-        })
+        this.commentContent = "";
+        window.location.reload();
+        this.isClickedOnCommentButton[i] = false
       },
         () => { }
       );
-      this.commentContent = "";
+      /*this.commentContent = "";
       window.location.reload();
-      this.isClickedOnCommentButton[i] = false
+      this.isClickedOnCommentButton[i] = false*/
     }else{
       const Toast = Swal.mixin({
         toast: true,
