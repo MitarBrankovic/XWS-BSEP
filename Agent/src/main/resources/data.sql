@@ -26,4 +26,4 @@ insert into agent_user (id, first_name, last_name, username, password, date_of_b
 insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role, company_id) values (4, 'Stevan', 'Stevanovic', 'stevanagent', 'stevanagent', '2002-01-01', 2, 1)
 
 
-insert into company_registration_request (id, company_owner_username, company_owner_name, company_contact_info, company_description) values (1, 'simakesic', 'Sima Kesic', 'Company name', 'Company description')
+insert into company_registration_request (id, company_owner_username, company_owner_name, company_name, company_contact_info, company_description, username) values (1, 'simakesic', 'Sima Kesic', 'Microsoft', 'Company contact info', 'Company description', 'simakesic')
