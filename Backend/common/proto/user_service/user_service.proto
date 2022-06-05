@@ -109,7 +109,11 @@ service UserService{
       body : "*"
     };
   };
-
+  rpc CheckApiToken(CheckApiTokenRequest) returns (CheckApiTokenResponse) {
+    option (google.api.http) = {
+      get : "/checkApiToken/{token}"
+    };
+  };
 }
 
 message FindByUsernameRequest {
@@ -221,6 +225,14 @@ message GenerataApiTokenRequest{
 
 message GenerateApiTokenResponse{
   string token = 1;
+}
+
+message CheckApiTokenRequest{
+  string token = 1;
+}
+
+message CheckApiTokenResponse{
+  bool valid = 1;
 }
 
 message User {

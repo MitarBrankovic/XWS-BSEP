@@ -32,6 +32,12 @@ service OfferService{
       body: "offer"
     };
   }
+  rpc CreateMono(CreateMonoRequest) returns(CreateMonoResponse) {
+    option (google.api.http) = {
+      post: "/offer/mono/{token}"
+      body: "offer"
+    };
+  }
 
 }
 
@@ -64,6 +70,15 @@ message UpdateRequest {
 }
 
 message UpdateResponse {
+  Offer offer = 1;
+}
+
+message CreateMonoRequest {
+  string token = 1;
+  Offer offer = 2;
+}
+
+message CreateMonoResponse {
   Offer offer = 1;
 }
 

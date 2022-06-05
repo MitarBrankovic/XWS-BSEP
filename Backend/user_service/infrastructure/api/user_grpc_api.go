@@ -303,6 +303,16 @@ func (handler UserHandler) GenerateApiToken(ctx context.Context, request *pb.Gen
 	}, nil
 }
 
+func (handler UserHandler) CheckApiToken(ctx context.Context, request *pb.CheckApiTokenRequest) (*pb.CheckApiTokenResponse, error) {
+	valid, err := handler.service.CheckApiToken(request.Token)
+	if err != nil {
+		return &pb.CheckApiTokenResponse{Valid: valid}, status.Errorf(codes.Internal, "cannot generate access token")
+	}
+	return &pb.CheckApiTokenResponse{
+		Valid: valid,
+	}, nil
+}
+
 func GenerateSecureToken(length int) string {
 	b := make([]byte, length)
 	if _, err := rand.Read(b); err != nil {

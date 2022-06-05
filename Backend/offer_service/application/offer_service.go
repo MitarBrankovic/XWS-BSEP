@@ -1,6 +1,8 @@
 package application
 
-import "dislinkt/offer_service/domain"
+import (
+	"dislinkt/offer_service/domain"
+)
 
 type OfferService struct {
 	store domain.OfferStore

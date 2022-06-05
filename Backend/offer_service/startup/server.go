@@ -1,7 +1,9 @@
 package startup
 
 import (
+	"dislinkt/common/clients"
 	pbOffer "dislinkt/common/proto/offer_service"
+	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/offer_service/application"
 	"dislinkt/offer_service/domain"
 	"dislinkt/offer_service/infrastructure/api"
@@ -36,16 +38,18 @@ func accessibleRoles() map[string][]string {
 }
 
 func (server *Server) Start() {
-	/*userClient, err := clients.NewPostClient(fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort))
-	if err != nil {
-		log.Fatal(err)
-	}*/
 
 	jwtManager := auth.NewJWTManager("secretKey", 15*time.Minute)
 	mongoClient := server.initMongoClient()
 	offerStore := server.initOfferStore(mongoClient)
 	offerService := server.initOfferService(offerStore)
-	offerHandler := server.initOfferHandler(offerService)
+
+	userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	offerHandler := server.initOfferHandler(offerService, userClient)
 	server.startGrpcServer(offerHandler, jwtManager)
 }
 
@@ -76,8 +80,8 @@ func (server *Server) initOfferService(store domain.OfferStore) *application.Off
 	return application.NewOfferService(store)
 }
 
-func (server *Server) initOfferHandler(service *application.OfferService) *api.OfferHandler {
-	return api.NewOfferHandler(service)
+func (server *Server) initOfferHandler(service *application.OfferService, userClient pbUser.UserServiceClient) *api.OfferHandler {
+	return api.NewOfferHandler(service, userClient)
 }
 
 func (server *Server) startGrpcServer(offerHandler *api.OfferHandler, jwtManager *auth.JWTManager) {

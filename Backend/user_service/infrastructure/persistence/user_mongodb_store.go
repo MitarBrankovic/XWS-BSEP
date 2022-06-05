@@ -173,12 +173,12 @@ func (store *UserMongoDBStore) GenerateApiToken(username string, password string
 	return user, nil
 }
 
-func (store *UserMongoDBStore) CheckApiToken(token string) (*domain.User, error) {
-	user, err := store.filterOne(bson.M{"apiToken": token})
+func (store *UserMongoDBStore) CheckApiToken(token string) (bool, error) {
+	_, err := store.filterOne(bson.M{"apiToken": token})
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return user, nil
+	return true, nil
 
 }
 

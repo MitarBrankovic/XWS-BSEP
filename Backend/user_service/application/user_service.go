@@ -60,6 +60,6 @@ func (service *UserService) GenerateApiToken(username string, password string) (
 	return service.store.GenerateApiToken(username, password)
 }
 
-func (service *UserService) CheckApiToken(token string) (*domain.User, error) {
+func (service *UserService) CheckApiToken(token string) (bool, error) {
 	return service.store.CheckApiToken(token)
 }

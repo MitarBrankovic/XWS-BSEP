@@ -2,6 +2,8 @@ package api
 
 import (
 	pb "dislinkt/common/proto/offer_service"
+	pbUser "dislinkt/common/proto/user_service"
+
 	//pbOffer "dislinkt/common/proto/offer_service"
 	"context"
 	"dislinkt/offer_service/application"
@@ -9,12 +11,14 @@ import (
 
 type OfferHandler struct {
 	pb.UnimplementedOfferServiceServer
-	service *application.OfferService
+	service    *application.OfferService
+	userClient pbUser.UserServiceClient
 }
 
-func NewOfferHandler(service *application.OfferService) *OfferHandler {
+func NewOfferHandler(service *application.OfferService, userClient pbUser.UserServiceClient) *OfferHandler {
 	return &OfferHandler{
-		service: service,
+		service:    service,
+		userClient: userClient,
 	}
 }
 
@@ -65,6 +69,21 @@ func (handler OfferHandler) Update(ctx context.Context, request *pb.UpdateReques
 		return nil, err
 	}
 	return &pb.UpdateResponse{
+		Offer: mapOfferToPb(offer),
+	}, nil
+}
+
+func (handler OfferHandler) CreateMono(ctx context.Context, request *pb.CreateMonoRequest) (*pb.CreateMonoResponse, error) {
+	offer := mapPbToOffer(request.Offer)
+	_, err := handler.userClient.CheckApiToken(context.Background(), &pbUser.CheckApiTokenRequest{Token: request.Token})
+	if err != nil {
+		return nil, err
+	}
+	err = handler.service.Create(offer)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateMonoResponse{
 		Offer: mapOfferToPb(offer),
 	}, nil
 }

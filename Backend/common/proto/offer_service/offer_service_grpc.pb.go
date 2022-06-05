@@ -26,6 +26,7 @@ type OfferServiceClient interface {
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	CreateMono(ctx context.Context, in *CreateMonoRequest, opts ...grpc.CallOption) (*CreateMonoResponse, error)
 }
 
 type offerServiceClient struct {
@@ -72,6 +73,15 @@ func (c *offerServiceClient) Update(ctx context.Context, in *UpdateRequest, opts
 	return out, nil
 }
 
+func (c *offerServiceClient) CreateMono(ctx context.Context, in *CreateMonoRequest, opts ...grpc.CallOption) (*CreateMonoResponse, error) {
+	out := new(CreateMonoResponse)
+	err := c.cc.Invoke(ctx, "/offer.OfferService/CreateMono", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OfferServiceServer is the server API for OfferService service.
 // All implementations must embed UnimplementedOfferServiceServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type OfferServiceServer interface {
 	GetAll(context.Context, *GetAllRequest) (*GetAllResponse, error)
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	CreateMono(context.Context, *CreateMonoRequest) (*CreateMonoResponse, error)
 	mustEmbedUnimplementedOfferServiceServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedOfferServiceServer) Create(context.Context, *CreateRequest) (
 }
 func (UnimplementedOfferServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedOfferServiceServer) CreateMono(context.Context, *CreateMonoRequest) (*CreateMonoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMono not implemented")
 }
 func (UnimplementedOfferServiceServer) mustEmbedUnimplementedOfferServiceServer() {}
 
@@ -184,6 +198,24 @@ func _OfferService_Update_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OfferService_CreateMono_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMonoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OfferServiceServer).CreateMono(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/offer.OfferService/CreateMono",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OfferServiceServer).CreateMono(ctx, req.(*CreateMonoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OfferService_ServiceDesc is the grpc.ServiceDesc for OfferService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var OfferService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _OfferService_Update_Handler,
+		},
+		{
+			MethodName: "CreateMono",
+			Handler:    _OfferService_CreateMono_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
