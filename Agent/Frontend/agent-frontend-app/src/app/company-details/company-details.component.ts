@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -149,9 +150,20 @@ export class CompanyDetailsComponent implements OnInit {
       this.agentService.savePosition(this.company.id, this.contentPosition, this.description, this.criteria).subscribe(() => {
         this.findAllPositionsByCompanyId(this.id);
         this.contentPosition = ''
+        this.description = ''
+        this.criteria = ''
       })
       if(this.promoteBool){
-        this.agentService.promoteCompany(this.company.id).subscribe(() => {
+        let body = {
+          id: '1',
+          username: this.agentService.loggedUser.username,
+          company: this.company.name,
+          description: this.description,
+          position: this.contentPosition,
+          criteria: this.criteria,
+          createdAt: formatDate(new Date(), 'yyyy-MM-dd', 'en')+'T00:00:00Z'
+        }
+        this.agentService.promoteCompany(body, this.agentService.loggedUser.apiToken).subscribe(() => {
           this.promoteBool = false
         })
       }

@@ -78,8 +78,8 @@ export class AgentService {
     return this.http.post(this._url + 'addSallary', dto);
   }
 
-  public promoteCompany(dto:any){
-    return this.http.post(this._url + 'promoteCompany', dto);
+  public promoteCompany(dto:any, token:string){
+    return this.http.post('http://localhost:8000/offer/mono/' + token, dto);
   }
 
   public generateToken(username:string, password: string): Observable<any> {

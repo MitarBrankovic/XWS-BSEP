@@ -5,6 +5,7 @@ export class User {
     lastName: string;
     dateOfBirth: string;
     role: string;
+    apiToken:string;
 
     constructor(){
         this.username = "";
@@ -13,5 +14,6 @@ export class User {
         this.lastName = "";
         this.dateOfBirth = "";
         this.role = "";
+        this.apiToken = "";
     }
 }

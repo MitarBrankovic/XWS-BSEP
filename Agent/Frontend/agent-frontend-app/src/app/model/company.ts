@@ -1,5 +1,6 @@
 export class Company {
     id: number;
+    name: string;
     contactInfo: string;
     description: string;
     username: string;
@@ -10,6 +11,7 @@ export class Company {
 
     constructor() {
         this.id = 0;
+        this.name = '';
         this.contactInfo = "";
         this.description = "";
         this.username = "";
