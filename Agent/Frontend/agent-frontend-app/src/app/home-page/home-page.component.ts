@@ -23,15 +23,15 @@ export class HomePageComponent implements OnInit {
   }
 
   userIsCommon(): boolean{
-    return this.user?.role == 'Common'
+    return this.agentService.loggedUser.role == 'Common'
   }
 
   userIsAdmin(): boolean{
-    return this.user?.role == 'Admin'
+    return this.agentService.loggedUser.role == 'Admin'
   }
 
   userIsCompanyOwner(): boolean{
-    return this.user?.role == 'CompanyOwner'
+    return this.agentService.loggedUser.role == 'CompanyOwner'
   }
 
   findAllCompanyRegistrationRequests(){

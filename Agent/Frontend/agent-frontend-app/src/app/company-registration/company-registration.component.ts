@@ -24,7 +24,8 @@ export class CompanyRegistrationComponent implements OnInit {
       companyOwnerName: this.agentService.loggedUser.firstName + ' ' + this.agentService.loggedUser.lastName,
       companyName: this.companyName,
       companyContactInfo: this.companyContactInfo,
-      companyDescription: this.companyDescription
+      companyDescription: this.companyDescription,
+      username:  this.agentService.loggedUser.username
     }
     this.agentService.sendRegistrationRequest(request).subscribe(
       data => {

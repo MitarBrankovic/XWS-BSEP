@@ -40,9 +40,20 @@ export class NavbarComponent implements OnInit {
     return this.agentService.loggedUser.role == 'CompanyOwner'
   }
 
+  userIsCommon(): boolean{
+    let a = this.agentService.loggedUser.username
+    return this.agentService.loggedUser.role == 'Common'
+  }
+
   redirectToCompany() {
     if(this.agentService.loggedUser != null) {
       this.router.navigate(['/company', this.agentService.loggedUser.company.id])
+    }
+  }
+
+  redirectToCompanyRegistration(){
+    if(this.agentService.loggedUser != null) {
+      this.router.navigate(['/companyRegistration'])
     }
   }
 
@@ -51,7 +62,7 @@ export class NavbarComponent implements OnInit {
       title: 'Multiple inputs',
       html:
         '<input placeholder="username" id="swal-input1" [(ngModel)]="input1" class="swal2-input">' +
-        '<input placeholder="password" id="swal-input2" [(ngModel)]="input2" class="swal2-input">',
+        '<input type="password" placeholder="password" id="swal-input2" [(ngModel)]="input2" class="swal2-input">',
       focusConfirm: false,
       preConfirm: () => {
         return [
@@ -85,4 +96,12 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  hasToken(){
+    let user = localStorage.getItem('agentUser')
+    if(user != null){
+      return JSON.parse(user).apiToken !== ''
+    }
+    return false
+  }
+  
 }
