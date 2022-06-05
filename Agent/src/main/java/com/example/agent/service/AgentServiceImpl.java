@@ -166,7 +166,11 @@ public class AgentServiceImpl implements AgentService {
     public List<CompanyRegistrationRequestDTO> findAllCompanyRegistrationRequests() {
         List<CompanyRegistrationRequestDTO> requests = new ArrayList<>();
         for(CompanyRegistrationRequest request : companyRegistrationRequestRepository.findAll()) {
-            requests.add(new CompanyRegistrationRequestDTO(request.getCompanyOwnerUsername(), request.getCompanyOwnerName(), request.getCompanyName(), request.getCompanyContactInfo(), request.getCompanyDescription(), request.getUsername()));
+            requests.add(new CompanyRegistrationRequestDTO(request.getCompanyName(), request.getCompanyOwnerUsername(),
+                    request.getCompanyOwnerName(),
+                    request.getCompanyContactInfo(),
+                    request.getCompanyDescription(),
+                    request.getUsername()));
         }
         return requests;
     }
