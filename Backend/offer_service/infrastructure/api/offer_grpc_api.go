@@ -3,6 +3,7 @@ package api
 import (
 	pb "dislinkt/common/proto/offer_service"
 	pbUser "dislinkt/common/proto/user_service"
+	"errors"
 
 	//pbOffer "dislinkt/common/proto/offer_service"
 	"context"
@@ -78,6 +79,9 @@ func (handler OfferHandler) CreateMono(ctx context.Context, request *pb.CreateMo
 	_, err := handler.userClient.CheckApiToken(context.Background(), &pbUser.CheckApiTokenRequest{Token: request.Token})
 	if err != nil {
 		return nil, err
+	}
+	if request.Token == "" {
+		return nil, errors.New("token is empty")
 	}
 	err = handler.service.Create(offer)
 	if err != nil {

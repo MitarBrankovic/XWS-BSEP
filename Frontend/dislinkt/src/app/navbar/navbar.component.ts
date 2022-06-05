@@ -123,4 +123,8 @@ export class NavbarComponent implements OnInit {
     })
   }
 
+  jobOffersRedirect(){
+    this.router.navigate(['/jobOffers']);
+  }
+
 }

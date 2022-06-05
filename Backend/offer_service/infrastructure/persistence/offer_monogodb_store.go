@@ -35,7 +35,7 @@ func (store *OfferMongoDBStore) Get(offerId string) (*domain.Offer, error) {
 }
 
 func (store *OfferMongoDBStore) GetAll() ([]*domain.Offer, error) {
-	filter := bson.M{"role": "offer"}
+	filter := bson.M{}
 	return store.filter(filter)
 }
 

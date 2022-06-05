@@ -16,6 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserProfilePageComponent } from './user-profile-page/user-profile-page.component';
+import { JobOffersComponent } from './job-offers/job-offers.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { UserProfilePageComponent } from './user-profile-page/user-profile-page.
     EditProfileComponent,
     HomePageComponent,
     NavbarComponent,
-    UserProfilePageComponent
+    UserProfilePageComponent,
+    JobOffersComponent
   ],
   imports: [
     BrowserModule,

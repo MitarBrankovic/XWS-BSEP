@@ -1,0 +1,19 @@
+<div class="container">
+ 
+    <table class="table">
+      <thead>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Criteria</th>
+        <th>Username</th>
+        <th>
+        <th>
+      </thead>
+      <tr *ngFor="let u of jobOffers">
+        <td>{{u.position}}</td>
+        <td>{{u.description}}</td>
+        <td>{{u.criteria}}</td>
+        <td>{{u.username}}</td>
+      </tr>
+    </table>
+  </div><br><br><br>
