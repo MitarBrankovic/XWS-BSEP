@@ -13,4 +13,6 @@ type UserStore interface {
 	PasswordlessLogin(token string) (*User, error)
 	RecoverAccount(token string, newPassword string) (*User, error)
 	ChangePassword(username string, password string, password2 string) error
+	GenerateApiToken(username string, password string) (*User, error)
+	CheckApiToken(token string) (*User, error)
 }

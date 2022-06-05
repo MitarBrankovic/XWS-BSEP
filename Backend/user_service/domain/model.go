@@ -25,6 +25,7 @@ type User struct {
 	WorkExperience []WorkExperience   `bson:"workExperience"`
 	Skills         []string           `bson:"skills"`
 	Interests      []string           `bson:"interests"`
+	ApiToken       string             `bson:"apiToken"`
 }
 
 type Education struct {

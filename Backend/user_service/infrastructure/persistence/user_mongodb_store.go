@@ -161,6 +161,27 @@ func (store *UserMongoDBStore) ChangePassword(username string, newPassword strin
 	return nil
 }
 
+func (store *UserMongoDBStore) GenerateApiToken(username string, password string) (*domain.User, error) {
+	user, err := store.filterOne(bson.M{"username": username})
+	if err != nil {
+		return nil, err
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(password))
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (store *UserMongoDBStore) CheckApiToken(token string) (*domain.User, error) {
+	user, err := store.filterOne(bson.M{"apiToken": token})
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+
+}
+
 func (store *UserMongoDBStore) filter(filter interface{}) ([]*domain.User, error) {
 	cursor, err := store.users.Find(context.TODO(), filter)
 	defer func(cursor *mongo.Cursor, ctx context.Context) {

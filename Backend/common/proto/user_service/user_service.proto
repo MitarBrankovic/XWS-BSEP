@@ -103,6 +103,13 @@ service UserService{
     };
   };
 
+  rpc GenerateApiToken(GenerataApiTokenRequest) returns (GenerateApiTokenResponse) {
+    option (google.api.http) = {
+      post : "/generateApiToken"
+      body : "*"
+    };
+  };
+
 }
 
 message FindByUsernameRequest {
@@ -206,6 +213,15 @@ message ChangePasswordRequest{
 }
 
 message ChangePasswordResponse {}
+
+message GenerataApiTokenRequest{
+  string username = 1;
+  string password = 2;
+}
+
+message GenerateApiTokenResponse{
+  string token = 1;
+}
 
 message User {
   string id = 1;

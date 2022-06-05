@@ -55,3 +55,11 @@ func (service *UserService) RecoverAccount(token string, newPassword string) (*d
 func (service *UserService) ChangePassword(username string, newPassword string, oldPassword string) error {
 	return service.store.ChangePassword(username, newPassword, oldPassword)
 }
+
+func (service *UserService) GenerateApiToken(username string, password string) (*domain.User, error) {
+	return service.store.GenerateApiToken(username, password)
+}
+
+func (service *UserService) CheckApiToken(token string) (*domain.User, error) {
+	return service.store.CheckApiToken(token)
+}

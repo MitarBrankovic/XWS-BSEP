@@ -37,6 +37,7 @@ type UserServiceClient interface {
 	RecoverAccountDemand(ctx context.Context, in *RecoverAccountDemandRequest, opts ...grpc.CallOption) (*RecoverAccountDemandResponse, error)
 	RecoverAccount(ctx context.Context, in *RecoverAccountRequest, opts ...grpc.CallOption) (*RecoverAccountResponse, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error)
+	GenerateApiToken(ctx context.Context, in *GenerataApiTokenRequest, opts ...grpc.CallOption) (*GenerateApiTokenResponse, error)
 }
 
 type userServiceClient struct {
@@ -182,6 +183,15 @@ func (c *userServiceClient) ChangePassword(ctx context.Context, in *ChangePasswo
 	return out, nil
 }
 
+func (c *userServiceClient) GenerateApiToken(ctx context.Context, in *GenerataApiTokenRequest, opts ...grpc.CallOption) (*GenerateApiTokenResponse, error) {
+	out := new(GenerateApiTokenResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GenerateApiToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -201,6 +211,7 @@ type UserServiceServer interface {
 	RecoverAccountDemand(context.Context, *RecoverAccountDemandRequest) (*RecoverAccountDemandResponse, error)
 	RecoverAccount(context.Context, *RecoverAccountRequest) (*RecoverAccountResponse, error)
 	ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error)
+	GenerateApiToken(context.Context, *GenerataApiTokenRequest) (*GenerateApiTokenResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -252,6 +263,9 @@ func (UnimplementedUserServiceServer) RecoverAccount(context.Context, *RecoverAc
 }
 func (UnimplementedUserServiceServer) ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePassword not implemented")
+}
+func (UnimplementedUserServiceServer) GenerateApiToken(context.Context, *GenerataApiTokenRequest) (*GenerateApiTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateApiToken not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -536,6 +550,24 @@ func _UserService_ChangePassword_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GenerateApiToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerataApiTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GenerateApiToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GenerateApiToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GenerateApiToken(ctx, req.(*GenerataApiTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -602,6 +634,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangePassword",
 			Handler:    _UserService_ChangePassword_Handler,
+		},
+		{
+			MethodName: "GenerateApiToken",
+			Handler:    _UserService_GenerateApiToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

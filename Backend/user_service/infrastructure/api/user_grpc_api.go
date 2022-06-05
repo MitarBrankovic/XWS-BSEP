@@ -284,6 +284,25 @@ func (handler UserHandler) ChangePassword(ctx context.Context, request *pb.Chang
 	return &pb.ChangePasswordResponse{}, err
 }
 
+func (handler UserHandler) GenerateApiToken(ctx context.Context, request *pb.GenerataApiTokenRequest) (*pb.GenerateApiTokenResponse, error) {
+	user, err := handler.service.GenerateApiToken(request.Username, request.Password)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+	}
+	if user.ApiToken != "" {
+		return nil, status.Errorf(codes.Internal, "ApiToken already generated")
+	}
+	token := GenerateSecureToken(32)
+	user.ApiToken = token
+	err = handler.service.Update(user.Id.Hex(), user)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+	}
+	return &pb.GenerateApiTokenResponse{
+		Token: token,
+	}, nil
+}
+
 func GenerateSecureToken(length int) string {
 	b := make([]byte, length)
 	if _, err := rand.Read(b); err != nil {
