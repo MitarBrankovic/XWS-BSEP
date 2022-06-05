@@ -98,7 +98,10 @@
               <div class="card-content" *ngIf="checkOwnership()">
                   <div class="content">
                       <div style="text-align: center;">
-                          <textarea [(ngModel)]="contentPosition" class="mb-3 textarea" style="border-radius: 0px; object-fit: contain;"></textarea>
+                          <input [(ngModel)]="contentPosition" class="mb-3 input" placeholder="Name" style="border-radius: 0px; object-fit: contain;"/>
+                          <input [(ngModel)]="description" class="mb-3 input" placeholder="Description" style="border-radius: 0px; object-fit: contain;"/>
+                          <input [(ngModel)]="criteria" class="mb-3 input" placeholder="Criteria" style="border-radius: 0px; object-fit: contain;"/>
+                          <label class="checkbox"><input [(ngModel)]="promoteBool" type="checkbox">Promote job</label>
                       </div>
                   </div>
                   <footer class="card-footer">

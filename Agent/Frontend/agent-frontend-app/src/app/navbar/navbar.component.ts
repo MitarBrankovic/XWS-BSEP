@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { AgentService } from '../services/agent.service';
 
 @Component({
@@ -42,6 +43,45 @@ export class NavbarComponent implements OnInit {
   redirectToCompany() {
     if(this.agentService.loggedUser != null) {
       this.router.navigate(['/company', this.agentService.loggedUser.company.id])
+    }
+  }
+
+  async generateToken(){
+    const { value: formValues } = await Swal.fire({
+      title: 'Multiple inputs',
+      html:
+        '<input placeholder="username" id="swal-input1" [(ngModel)]="input1" class="swal2-input">' +
+        '<input placeholder="password" id="swal-input2" [(ngModel)]="input2" class="swal2-input">',
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          (<HTMLInputElement>document.getElementById("swal-input1")).value,
+          (<HTMLInputElement>document.getElementById("swal-input2")).value,
+        ]
+      }
+    })
+    
+    if (formValues) {
+      this.agentService.generateToken(formValues[0], formValues[1]).subscribe(
+        data => {
+          Swal.fire({
+            title: 'Token generated',
+            text: data.token,
+            icon: 'success'
+          });
+        this.agentService.saveToken(this.agentService.loggedUser.id, data.token).subscribe(
+          (user) => {        this.agentService.loggedUser = user;
+            localStorage.setItem('agentUser', JSON.stringify(user));}
+        )
+        },
+          ()=>{
+            Swal.fire({
+              title: 'Error',
+              text: 'Invalid credentials',
+              icon: 'error'
+            })},
+          () => {}    
+      )
     }
   }
 

@@ -16,6 +16,9 @@ export class CompanyDetailsComponent implements OnInit {
   content:string = ''
   contentInterview:string = ''
   contentPosition:string = ''
+  description:string = ''
+  criteria:string = ''
+  promoteBool: boolean = false
   user: any
   id: number = 0
 
@@ -142,11 +145,16 @@ export class CompanyDetailsComponent implements OnInit {
   }
 
   createPosition(){
-    if(this.contentPosition != ''){
-      this.agentService.savePosition(this.company.id, this.contentPosition).subscribe(() => {
+    if(this.contentPosition != '' && this.description != '' && this.criteria != ''){
+      this.agentService.savePosition(this.company.id, this.contentPosition, this.description, this.criteria).subscribe(() => {
         this.findAllPositionsByCompanyId(this.id);
         this.contentPosition = ''
       })
+      if(this.promoteBool){
+        this.agentService.promoteCompany(this.company.id).subscribe(() => {
+          this.promoteBool = false
+        })
+      }
     }
     else{
       this.swalError('Write position name first!')

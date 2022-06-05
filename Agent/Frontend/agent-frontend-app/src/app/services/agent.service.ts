@@ -70,12 +70,29 @@ export class AgentService {
     return this.http.post(this._url + 'addInterviewProcess', dto);
   }
 
-  public savePosition(companyId:any, positionName:string){
-    return this.http.post(this._url + 'addOpenPosition/' + companyId + '/' + positionName, null);
+  public savePosition(companyId:any, positionName:string, description:string, criteria:string){
+    return this.http.post(this._url + 'addOpenPosition/' + companyId + '/' + positionName + '/' + description + '/' + criteria, null);
   }
 
   public saveSalary(dto:any){
     return this.http.post(this._url + 'addSallary', dto);
+  }
+
+  public promoteCompany(dto:any){
+    return this.http.post(this._url + 'promoteCompany', dto);
+  }
+
+  public generateToken(username:string, password: string): Observable<any> {
+    let body = {
+      username: username,
+      password: password
+    }
+
+    return this.http.post('http://localhost:8000/generateApiToken', body);
+  }
+
+  public saveToken(userId:number, token:string){
+    return this.http.post(this._url + 'saveToken/' + userId + '/' + token, null);
   }
 
 }

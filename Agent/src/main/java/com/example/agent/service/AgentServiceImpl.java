@@ -81,8 +81,8 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    public void addOpenPosition(Long companyId, String positionName) {
-        OpenPosition newOpenPosition = new OpenPosition(positionName);
+    public void addOpenPosition(Long companyId, String positionName, String description, String criteria) {
+        OpenPosition newOpenPosition = new OpenPosition(positionName, description, criteria);
         openPositionRepository.save(newOpenPosition);
 
         Company company = companyRepository.findById(companyId).orElseGet(null);
@@ -106,7 +106,7 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    public void addSallary(SalaryDTO dto) {
+    public void addSalary(SalaryDTO dto) {
         if(userIsNotCommon(dto.getUserId()))
             return;
 
@@ -189,5 +189,12 @@ public class AgentServiceImpl implements AgentService {
     public Set<OpenPosition> findAllPositionsByCompanyId(Long companyId){
         Company company = companyRepository.findById(companyId).orElseGet(null);
         return company.getOpenPositions();
+    }
+
+    public AgentUser saveToken(Long userId, String token){
+        AgentUser agentUser = agentUserRepository.findById(userId).orElseGet(null);
+        agentUser.setApiToken(token);
+        agentUserRepository.save(agentUser);
+        return agentUser;
     }
 }

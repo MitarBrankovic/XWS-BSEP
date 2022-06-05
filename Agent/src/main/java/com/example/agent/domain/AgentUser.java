@@ -35,6 +35,9 @@ public class AgentUser {
     @Column
     private UserRole role;
 
+    @Column
+    private String apiToken;
+
     @OneToOne
     @JoinColumn(name="companyId", referencedColumnName="id")
     private Company company;

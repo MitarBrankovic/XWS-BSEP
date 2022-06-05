@@ -15,11 +15,11 @@ public interface AgentService {
 
     void editCompanyInfo(CompanyInfoDTO dto);
 
-    void addOpenPosition(Long companyId, String positionName);
+    void addOpenPosition(Long companyId, String positionName, String description, String criteria);
 
     void saveComment(CommentDTO dto);
 
-    void addSallary(SalaryDTO dto);
+    void addSalary(SalaryDTO dto);
 
     void addInterviewProcess(InterviewProcessDTO dto);
 
@@ -38,4 +38,6 @@ public interface AgentService {
     Set<InterviewProcess> findAllInterviewsByCompanyId(Long companyId);
 
     Set<OpenPosition> findAllPositionsByCompanyId(Long companyId);
+
+    AgentUser saveToken(Long userId, String token);
 }

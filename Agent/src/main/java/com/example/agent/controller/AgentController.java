@@ -50,10 +50,10 @@ public class AgentController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping("/addOpenPosition/{companyId}/{positionName}")
+    @RequestMapping("/addOpenPosition/{companyId}/{positionName}/{description}/{criteria}")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addOpenPosition(@PathVariable("companyId") Long companyId, @PathVariable("positionName") String positionName){
-        agentService.addOpenPosition(companyId, positionName);
+    public ResponseEntity addOpenPosition(@PathVariable("companyId") Long companyId, @PathVariable("positionName") String positionName, @PathVariable("description") String description, @PathVariable("criteria") String criteria){
+        agentService.addOpenPosition(companyId, positionName, description, criteria);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -67,7 +67,7 @@ public class AgentController {
     @RequestMapping("/addSallary")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addSallary(@RequestBody SalaryDTO dto){
-        agentService.addSallary(dto);
+        agentService.addSalary(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -133,5 +133,11 @@ public class AgentController {
     public ResponseEntity<Set<OpenPosition>> findAllPositionsByCompanyId(@PathVariable("companyId") Long companyId){
         Set<OpenPosition> positions = agentService.findAllPositionsByCompanyId(companyId);
         return new ResponseEntity<>(positions, HttpStatus.OK);
+    }
+
+    @RequestMapping("/saveToken/{userId}/{token}")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AgentUser> saveToken(@PathVariable("userId") Long userId, @PathVariable("token") String token){
+        return new ResponseEntity<>(agentService.saveToken(userId, token) ,HttpStatus.CREATED);
     }
 }

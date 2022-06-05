@@ -18,14 +18,22 @@ public class OpenPosition {
     @Column
     private String positionName;
 
+    @Column
+    private String description;
+
+    @Column
+    private String criteria;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Salary> salaries;
 
     public OpenPosition() {
     }
 
-    public OpenPosition(String positionName) {
+    public OpenPosition(String positionName, String description, String criteria) {
         this.positionName = positionName;
+        this.description = description;
+        this.criteria = criteria;
     }
 
 
