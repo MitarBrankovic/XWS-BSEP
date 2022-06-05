@@ -1,4 +1,14 @@
 <div class="container">
+
+  <div class="field has-addons">
+    <div class="control">
+      <input name='searchBar' [(ngModel)]='searchValue' class="input" type="text" placeholder="Search users"
+        (keyup)="searchOffers(searchValue)">
+    </div>
+    <div class="control">
+      <button class="button is-info" (click)="searchOffers(searchValue)">Search</button>
+    </div>
+  </div>
  
     <table class="table">
       <thead>
@@ -9,7 +19,7 @@
         <th>
         <th>
       </thead>
-      <tr *ngFor="let u of jobOffers">
+      <tr *ngFor="let u of filteredOffers">
         <td>{{u.position}}</td>
         <td>{{u.description}}</td>
         <td>{{u.criteria}}</td>

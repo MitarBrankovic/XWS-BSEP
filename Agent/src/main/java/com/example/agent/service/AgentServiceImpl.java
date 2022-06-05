@@ -110,11 +110,11 @@ public class AgentServiceImpl implements AgentService {
         if(userIsNotCommon(dto.getUserId()))
             return;
 
-        Salary newSallary = new Salary(dto.getSalary(), dto.getUserId());
-        sallaryRepository.save(newSallary);
+        Salary newSalary = new Salary(dto.getSalary(), dto.getUserId());
+        sallaryRepository.save(newSalary);
 
         OpenPosition openPosition = openPositionRepository.findById(dto.getPositionId()).orElseGet(null);
-        openPosition.getSalaries().add(newSallary);
+        openPosition.getSalaries().add(newSalary);
 
         openPositionRepository.save(openPosition);
     }

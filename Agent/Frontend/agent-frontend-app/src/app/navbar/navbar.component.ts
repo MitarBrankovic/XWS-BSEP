@@ -99,7 +99,7 @@ export class NavbarComponent implements OnInit {
   hasToken(){
     let user = localStorage.getItem('agentUser')
     if(user != null){
-      return JSON.parse(user).apiToken !== ''
+      return (JSON.parse(user).apiToken !== '' && JSON.parse(user).apiToken !== null)
     }
     return false
   }
