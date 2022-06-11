@@ -19,9 +19,9 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.agentService.login(this.username, this.password).subscribe(user =>
+    this.agentService.login(this.username, this.password).subscribe(data =>
     {
-      if(user == undefined){
+      if(data == undefined){
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -55,8 +55,9 @@ export class LoginComponent implements OnInit {
           icon: 'success',
           title: 'Signed in successfully'
         })
-        this.agentService.loggedUser = user
-        localStorage.setItem('agentUser', JSON.stringify(user))
+        this.agentService.loggedUser = data.user
+        localStorage.setItem('agentUser', JSON.stringify(data.user))
+        localStorage.setItem('jwtToken', JSON.stringify(data.token))
         this.router.navigate(['/homePage'])
       }
     })

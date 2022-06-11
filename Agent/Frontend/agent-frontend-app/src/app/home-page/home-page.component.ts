@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AgentService } from '../services/agent.service';
@@ -11,10 +12,10 @@ export class HomePageComponent implements OnInit {
 
   user: any
   companies:any
-
   companyRegistrationRequests : any = []
 
-  constructor(private agentService: AgentService, public router: Router) { }
+  constructor(private agentService: AgentService, public router: Router) { 
+  }
 
   ngOnInit(): void {
     this.getLoggedUser()
@@ -23,15 +24,15 @@ export class HomePageComponent implements OnInit {
   }
 
   userIsCommon(): boolean{
-    return this.agentService.loggedUser.role == 'Common'
+    return this.agentService.loggedUser.role.name == 'ROLE_COMMON'
   }
 
   userIsAdmin(): boolean{
-    return this.agentService.loggedUser.role == 'Admin'
+    return this.agentService.loggedUser.role.name == 'ROLE_ADMIN'
   }
 
   userIsCompanyOwner(): boolean{
-    return this.agentService.loggedUser.role == 'CompanyOwner'
+    return this.agentService.loggedUser.role.name == 'ROLE_COMPANY_OWNER'
   }
 
   findAllCompanyRegistrationRequests(){

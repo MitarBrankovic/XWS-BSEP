@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { User } from '../model/user';
 import { Observable } from 'rxjs';
 
@@ -12,15 +12,29 @@ export class AgentService {
   private helper :any = localStorage.getItem('agentUser')
   public loggedUser: any = JSON.parse(this.helper)
 
-  constructor(private http: HttpClient) { }
+  header: any
+
+  constructor(private http: HttpClient) {
+    let token = localStorage.getItem('jwtToken')
+    if (token === null) {
+        token = ""
+    }
+    if (token != "")
+        this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+   }
 
   public registerUser(user: User) {
     return this.http.post(this._url + 'saveUser', user);
   }
 
   public login(username: string, password: string): Observable<any> {
-    return this.http.get<any>(this._url + 'findUser?username=' + username + '&password=' + password);
+    let data = {
+      username: username,
+      password: password
+    }
+    return this.http.post<any>('http://localhost:8081/api/auth/login', data);
   }
+
 
   public findAllCompanies(): Observable<any> {
     return this.http.get<any>(this._url + 'findAllCompanies');
@@ -31,12 +45,12 @@ export class AgentService {
   }
 
   public findAllCompanyRegistrationRequests(): Observable<any> {
-    return this.http.get<any>(this._url + 'findAllCompanyRegistrationRequests');
+    return this.http.get<any>(this._url + 'findAllCompanyRegistrationRequests', { headers: this.header });
   }
 
   public registerCompany(companyRegistrationRequest: any) {
     return this.http.post(this._url + 'saveCompany', companyRegistrationRequest);
-  }
+  } 
 
   public findOneCompanyById(id: number): Observable<any> {
     return this.http.get<any>(this._url + 'findOneCompanyById?companyId=' + id);
