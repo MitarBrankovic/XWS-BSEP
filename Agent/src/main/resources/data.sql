@@ -20,10 +20,14 @@ insert into company_interview_processes (company_id, interview_processes_id) val
 
 insert into company_open_positions (company_id, open_positions_id) values (1, 1)
 
-insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role, company_id) values (1, 'Marko', 'Markovic', 'markoagent', 'markoagent', '2000-01-01', 0, null )
-insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role, company_id) values (2, 'Petar', 'Petrovic', 'petaragent', 'petaragent', '2001-01-01', 1, null )
-insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role, company_id) values (3, 'Sima', 'Kesic', 'simakesic', 'simica', '2001-01-01', 1, null )
-insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role, company_id) values (4, 'Stevan', 'Stevanovic', 'stevanagent', 'stevanagent', '2002-01-01', 2, 1)
+insert into role(id, name) values (0, 'ROLE_ADMIN')
+insert into role(id, name) values (1, 'ROLE_COMMON')
+insert into role(id, name) values (2, 'ROLE_COMPANY_OWNER')
+
+insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role_id, company_id) values (1, 'Marko', 'Markovic', 'markoagent', '$2a$12$aER/Nl0mc8hfjAqCyg79CeF/E2lhbSTESZi95RTxPX8KJTQut17Ju', '2000-01-01', 0, null )
+insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role_id, company_id) values (2, 'Petar', 'Petrovic', 'petaragent', '$2a$12$aER/Nl0mc8hfjAqCyg79CeF/E2lhbSTESZi95RTxPX8KJTQut17Ju', '2001-01-01', 1, null )
+insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role_id, company_id) values (3, 'Sima', 'Kesic', 'simakesic', '$2a$12$aER/Nl0mc8hfjAqCyg79CeF/E2lhbSTESZi95RTxPX8KJTQut17Ju', '2001-01-01', 1, null )
+insert into agent_user (id, first_name, last_name, username, password, date_of_birth, role_id, company_id) values (4, 'Stevan', 'Stevanovic', 'stevanagent', '$2a$12$aER/Nl0mc8hfjAqCyg79CeF/E2lhbSTESZi95RTxPX8KJTQut17Ju', '2002-01-01', 2, 1)
 
 
 insert into company_registration_request (id, company_owner_username, company_owner_name, company_name, company_contact_info, company_description, username) values (1, 'simakesic', 'Sima Kesic', 'Microsoft', 'Company contact info', 'Company description', 'simakesic')

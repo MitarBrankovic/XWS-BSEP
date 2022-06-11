@@ -2,15 +2,21 @@ package com.example.agent.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class AgentUser {
+public class AgentUser implements Serializable, UserDetails {
 
     @Id
     @SequenceGenerator(name = "agentUserIdSeqGen", sequenceName = "agentUserIdSeq", initialValue = 5, allocationSize = 1)
@@ -32,8 +38,16 @@ public class AgentUser {
     @Column
     private LocalDateTime dateOfBirth;
 
-    @Column
-    private UserRole role;
+    @ManyToOne()
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<Role> collection = new ArrayList<>();
+        collection.add(this.role);
+        return collection;
+    }
 
     @Column
     private String apiToken;
@@ -42,9 +56,29 @@ public class AgentUser {
     @JoinColumn(name="companyId", referencedColumnName="id")
     private Company company;
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public AgentUser() {}
 
-    public AgentUser(String username, String password, String firstName, String lastName, LocalDateTime dateOfBirth, UserRole role) {
+    public AgentUser(String username, String password, String firstName, String lastName, LocalDateTime dateOfBirth, Role role) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;

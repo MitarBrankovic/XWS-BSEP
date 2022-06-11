@@ -4,6 +4,7 @@ import com.example.agent.domain.*;
 import com.example.agent.dtos.*;
 import com.example.agent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class AgentServiceImpl implements AgentService {
+public class AgentServiceImpl implements AgentService, UserDetailsService {
 
     @Autowired
     private AgentUserRepository agentUserRepository;
@@ -38,6 +39,9 @@ public class AgentServiceImpl implements AgentService {
     @Autowired
     private MarkRepository markRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Override
     public void saveUser(UserRegistrationDTO userRegistrationDTO) {
         agentUserRepository.save(new AgentUser(userRegistrationDTO.getUsername(),
@@ -45,7 +49,7 @@ public class AgentServiceImpl implements AgentService {
                 userRegistrationDTO.getFirstName(),
                 userRegistrationDTO.getLastName(),
                 userRegistrationDTO.getDateOfBirth(),
-                UserRole.Common));
+                roleRepository.findById(1L).orElseThrow()));
     }
 
     @Override
@@ -64,7 +68,7 @@ public class AgentServiceImpl implements AgentService {
         Company newCompany = new Company(dto.getCompanyName(), dto.getCompanyContactInfo(), dto.getCompanyDescription(), dto.getUsername());
 
         commonUser.setCompany(newCompany);
-        commonUser.setRole(UserRole.CompanyOwner);
+        commonUser.setRole(roleRepository.findById(2L).orElseThrow());
 
         companyRepository.save(newCompany);
         agentUserRepository.save(commonUser);
@@ -177,7 +181,7 @@ public class AgentServiceImpl implements AgentService {
 
     private boolean userIsNotCommon(Long userId){
         AgentUser user = agentUserRepository.findById(userId).orElseGet(null);
-        return !user.getRole().equals(UserRole.Common);
+        return !user.getRole().getName().equals("COMMON");
     }
 
     public Set<CommentOnCompany> findAllCommentsByCompanyId(Long companyId){
@@ -200,5 +204,9 @@ public class AgentServiceImpl implements AgentService {
         agentUser.setApiToken(token);
         agentUserRepository.save(agentUser);
         return agentUser;
+    }
+
+    public AgentUser loadUserByUsername(String username) {
+        return agentUserRepository.findAgentUserByUsername(username);
     }
 }

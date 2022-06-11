@@ -2,11 +2,12 @@ package com.example.agent.service;
 
 import com.example.agent.domain.*;
 import com.example.agent.dtos.*;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Set;
 
-public interface AgentService {
+public interface AgentService{
     void saveUser(UserRegistrationDTO userRegistrationDTO);
 
     void saveCompanyRegistrationRequest(CompanyRegistrationRequestDTO dto);
