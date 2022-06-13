@@ -20,7 +20,7 @@ export class AgentService {
         token = ""
     }
     if (token != "")
-        this.header = new HttpHeaders().set("Authorization", JSON.parse(token).accessToken);
+        this.header = new HttpHeaders().set("Authorization", "Bearer " + JSON.parse(token));
    }
 
   public registerUser(user: User) {
