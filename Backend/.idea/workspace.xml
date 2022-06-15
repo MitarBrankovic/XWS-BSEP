@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/offer_service/infrastructure/api/offer_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/offer_service/infrastructure/api/offer_grpc_api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/post_service/infrastructure/api/comment_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/infrastructure/api/comment_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_service/infrastructure/api/post_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/infrastructure/api/post_grpc_api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user_service/infrastructure/api/user_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/infrastructure/api/user_grpc_api.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -181,7 +183,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/api_gateway/startup/server.go</url>
-          <line>36</line>
+          <line>39</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

@@ -3,6 +3,8 @@ package com.example.agent.controller;
 import com.example.agent.domain.*;
 import com.example.agent.dtos.*;
 import com.example.agent.service.AgentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

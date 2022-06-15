@@ -9,7 +9,6 @@ import (
 
 var errorLog = loggers.NewErrorLogger()
 var successLog = loggers.NewSuccessLogger()
-var customLog = loggers.NewCustomLogger()
 
 type CommentHandler struct {
 	pb.UnimplementedPostServiceServer
@@ -26,7 +25,7 @@ func (handler *CommentHandler) Get(ctx context.Context, request *pb.GetRequest) 
 	commentId := request.Id
 	Comment, err := handler.service.Get(commentId)
 	if err != nil {
-
+		errorLog.Error("Cannot get comment: %v", err)
 		return nil, err
 	}
 	CommentPb := mapCommentToPb(Comment)
@@ -39,6 +38,7 @@ func (handler *CommentHandler) Get(ctx context.Context, request *pb.GetRequest) 
 func (handler *CommentHandler) GetAll(ctx context.Context, request *pb.GetAllRequest) (*pb.GetAllResponseComment, error) {
 	Comments, err := handler.service.GetAll()
 	if err != nil {
+		errorLog.Error("Cannot get all comments: %v", err)
 		return nil, err
 	}
 	response := &pb.GetAllResponseComment{
@@ -55,8 +55,10 @@ func (handler CommentHandler) Create(ctx context.Context, request *pb.CreateRequ
 	comment := mapPbToComment(request.Comment)
 	err := handler.service.Create(comment, request.PostId)
 	if err != nil {
+		errorLog.Error("Cannot create comment: %v", err)
 		return nil, err
 	}
+	successLog.Info("Comment created")
 	return &pb.CreateResponseComment{
 		Comment: mapCommentToPb(comment),
 	}, nil
@@ -67,8 +69,10 @@ func (handler CommentHandler) Update(ctx context.Context, request *pb.UpdateRequ
 	commentId := request.Id
 	err := handler.service.Update(commentId, comment)
 	if err != nil {
+		errorLog.Error("Cannot update comment")
 		return nil, err
 	}
+	successLog.WithField("id", commentId).Info("Comment updated")
 	return &pb.UpdateResponseComment{
 		Comment: mapCommentToPb(comment),
 	}, nil

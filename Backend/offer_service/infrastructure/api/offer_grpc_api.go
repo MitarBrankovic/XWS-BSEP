@@ -1,6 +1,7 @@
 package api
 
 import (
+	"dislinkt/common/loggers"
 	pb "dislinkt/common/proto/offer_service"
 	pbUser "dislinkt/common/proto/user_service"
 	"errors"
@@ -9,6 +10,9 @@ import (
 	"context"
 	"dislinkt/offer_service/application"
 )
+
+var errorLog = loggers.NewErrorLogger()
+var successLog = loggers.NewSuccessLogger()
 
 type OfferHandler struct {
 	pb.UnimplementedOfferServiceServer
@@ -27,6 +31,7 @@ func (handler *OfferHandler) Get(ctx context.Context, request *pb.GetRequest) (*
 	offerId := request.Id
 	Offer, err := handler.service.Get(offerId)
 	if err != nil {
+		errorLog.Error("Cannot get offer: %v", err)
 		return nil, err
 	}
 	OfferPb := mapOfferToPb(Offer)
@@ -39,6 +44,7 @@ func (handler *OfferHandler) Get(ctx context.Context, request *pb.GetRequest) (*
 func (handler *OfferHandler) GetAll(ctx context.Context, request *pb.GetAllRequest) (*pb.GetAllResponse, error) {
 	Offers, err := handler.service.GetAll()
 	if err != nil {
+		errorLog.Error("Cannot get all offers: %v", err)
 		return nil, err
 	}
 	response := &pb.GetAllResponse{
@@ -55,8 +61,10 @@ func (handler OfferHandler) Create(ctx context.Context, request *pb.CreateReques
 	offer := mapPbToOffer(request.Offer)
 	err := handler.service.Create(offer)
 	if err != nil {
+		errorLog.Error("Cannot create offer: %v", err)
 		return nil, err
 	}
+	successLog.Info("Offer created")
 	return &pb.CreateResponse{
 		Offer: mapOfferToPb(offer),
 	}, nil
@@ -67,8 +75,10 @@ func (handler OfferHandler) Update(ctx context.Context, request *pb.UpdateReques
 	offerId := request.Id
 	err := handler.service.Update(offerId, offer)
 	if err != nil {
+		errorLog.Error("Cannot update offer")
 		return nil, err
 	}
+	successLog.WithField("id", offerId).Info("Offer updated")
 	return &pb.UpdateResponse{
 		Offer: mapOfferToPb(offer),
 	}, nil
@@ -78,15 +88,19 @@ func (handler OfferHandler) CreateMono(ctx context.Context, request *pb.CreateMo
 	offer := mapPbToOffer(request.Offer)
 	_, err := handler.userClient.CheckApiToken(context.Background(), &pbUser.CheckApiTokenRequest{Token: request.Token})
 	if err != nil {
+		errorLog.Error("ApiToken invalid: %v", err)
 		return nil, err
 	}
 	if request.Token == "" {
+		errorLog.Error("Empty token: %v", err)
 		return nil, errors.New("token is empty")
 	}
 	err = handler.service.Create(offer)
 	if err != nil {
+		errorLog.Error("Cannot create offer: %v", err)
 		return nil, err
 	}
+	successLog.Info("Offer created")
 	return &pb.CreateMonoResponse{
 		Offer: mapOfferToPb(offer),
 	}, nil

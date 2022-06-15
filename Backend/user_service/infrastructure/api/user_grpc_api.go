@@ -21,7 +21,6 @@ import (
 
 var errorLog = loggers.NewErrorLogger()
 var successLog = loggers.NewSuccessLogger()
-var customLog = loggers.NewCustomLogger()
 
 type UserHandler struct {
 	pb.UnimplementedUserServiceServer
