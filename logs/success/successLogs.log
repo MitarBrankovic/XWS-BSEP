@@ -1,0 +1,3 @@
+time="2022-06-15T14:40:05.340Z" level=info msg=Authorized func="dislinkt/user_service/auth.(*AuthInterceptor).authorize" file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/user_service/auth/auth_interceptor.go:101"
+time="2022-06-15T14:40:05.429Z" level=info msg="User updated" func=dislinkt/user_service/infrastructure/api.UserHandler.Update file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/user_service/infrastructure/api/user_grpc_api.go:187" id=62a9d308df98922ae4c2a0b8
+time="2022-06-15T14:48:45.018Z" level=info msg="User logged in" func="dislinkt/user_service/infrastructure/api.(*UserHandler).Login" file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/user_service/infrastructure/api/user_grpc_api.go:215"

@@ -1,10 +1,12 @@
 package config
 
 import (
+	"dislinkt/common/loggers"
 	"github.com/joho/godotenv"
-	"log"
 	"os"
 )
+
+var errorLog = loggers.NewErrorLogger()
 
 type Config struct {
 	Port           string
@@ -39,7 +41,7 @@ func NewConfig() *Config {
 func SetEnvironment() error {
 	if os.Getenv("OS_ENV") != "docker" {
 		if err := godotenv.Load("../.env.dev"); err != nil {
-			log.Fatal("Error loading .env file")
+			errorLog.Fatal("Error loading .env file")
 		}
 	}
 	return nil

@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"crypto/rand"
+	"dislinkt/common/loggers"
 	pbPost "dislinkt/common/proto/post_service"
 	pb "dislinkt/common/proto/user_service"
 	pbUser "dislinkt/common/proto/user_service"
@@ -17,6 +18,10 @@ import (
 	"time"
 	"unicode"
 )
+
+var errorLog = loggers.NewErrorLogger()
+var successLog = loggers.NewSuccessLogger()
+var customLog = loggers.NewCustomLogger()
 
 type UserHandler struct {
 	pb.UnimplementedUserServiceServer
@@ -44,6 +49,7 @@ func (handler *UserHandler) FindByUsername(ctx context.Context, request *pb.Find
 
 	User, err := handler.service.Find(request.Username)
 	if err != nil {
+		errorLog.Error("Can't find user by username: %v", err)
 		return nil, err
 	}
 	UserPb := mapUserToPb(User)
@@ -57,6 +63,7 @@ func (handler *UserHandler) Get(ctx context.Context, request *pb.GetRequest) (*p
 	userId := request.Id
 	User, err := handler.service.Get(userId)
 	if err != nil {
+		errorLog.Error("Cannot get user: %v", err)
 		return nil, err
 	}
 	UserPb := mapUserToPb(User)
@@ -69,6 +76,7 @@ func (handler *UserHandler) Get(ctx context.Context, request *pb.GetRequest) (*p
 func (handler *UserHandler) GetAll(ctx context.Context, request *pb.GetAllRequest) (*pb.GetAllResponse, error) {
 	Users, err := handler.service.GetAll()
 	if err != nil {
+		errorLog.Error("Cannot get all users: %v", err)
 		return nil, err
 	}
 	response := &pb.GetAllResponse{
@@ -84,6 +92,7 @@ func (handler *UserHandler) GetAll(ctx context.Context, request *pb.GetAllReques
 func (handler *UserHandler) GetAllPublic(ctx context.Context, request *pb.GetAllRequest) (*pb.GetAllResponse, error) {
 	Users, err := handler.service.GetAll()
 	if err != nil {
+		errorLog.Error("Cannot get all public users: %v", err)
 		return nil, err
 	}
 	response := &pb.GetAllResponse{
@@ -101,6 +110,7 @@ func (handler *UserHandler) GetAllPublic(ctx context.Context, request *pb.GetAll
 func (handler *UserHandler) GetAllUsernames(ctx context.Context, request *pb.GetAllRequest) (*pb.GetAllUsernamesResponse, error) {
 	Users, err := handler.service.GetAll()
 	if err != nil {
+		errorLog.Error("Cannot get all usernames: %v", err)
 		return nil, err
 	}
 	response := &pb.GetAllUsernamesResponse{
@@ -117,19 +127,23 @@ func (handler UserHandler) Create(ctx context.Context, request *pb.CreateRequest
 	user := mapPbToUser(request.User)
 
 	if !isValid(request.User.Password) {
+		errorLog.Error("Password is not valid: %v", err)
 		return nil, status.Errorf(codes.InvalidArgument, "password failed: %v", err)
 	}
 
 	if !user.DateOfBirth.Before(time.Now()) {
+		errorLog.Error("Date of birth is not valid: %v", err)
 		return nil, status.Errorf(codes.InvalidArgument, "date of birth failed: %v", err)
 	}
 
 	user.HashedPassword = string(hashedPassword)
 	if err := handler.validate.Struct(user); err != nil {
+		errorLog.Error("Validation failed: %v", err)
 		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
 	}
 	err = handler.service.Create(user)
 	if err != nil {
+		errorLog.Error("Can't create user: %v", err)
 		return nil, err
 	}
 	return &pb.CreateResponse{
@@ -146,10 +160,12 @@ func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest
 	user.Activated = oldUser.Activated
 	user.Private = oldUser.Private
 	if err := handler.validate.Struct(user); err != nil {
+		errorLog.Error("Validation failed")
 		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
 	}
 	err := handler.service.Update(userId, user)
 	if err != nil {
+		errorLog.Error("Cannot update user")
 		return nil, err
 	}
 
@@ -162,10 +178,13 @@ func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest
 			},
 		})
 		if err != nil {
+			successLog.WithField("id", userId).Info("User updated")
 			handler.service.Update(userId, oldUser)
 			return nil, err
 		}
 	}
+
+	successLog.WithField("id", userId).Info("User updated")
 
 	return &pb.UpdateResponse{
 		User: mapUserToPb(user),
@@ -175,20 +194,25 @@ func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest
 func (handler *UserHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
 	user, err := handler.service.Find(req.GetUsername())
 	if err != nil {
+		errorLog.Error("Incorect username")
 		return nil, status.Errorf(codes.Internal, "cannot find user: %v", err)
 	}
 	if user.Activated == false {
+		errorLog.Error("Not activated account")
 		return nil, status.Errorf(codes.Internal, "You need to activate account first!")
 	}
 	if user == nil || !user.IsCorrectPassword(req.GetPassword()) {
+		errorLog.Error("Incorect password")
 		return nil, status.Errorf(codes.NotFound, "incorrect username/password")
 	}
 
 	token, err := handler.jwtManager.Generate(user)
 	if err != nil {
+		errorLog.Error("Cannon generate token")
 		return nil, status.Errorf(codes.Internal, "cannot generate access token")
 	}
 
+	successLog.Info("User logged in")
 	return &pb.LoginResponse{AccessToken: token}, nil
 }
 
@@ -201,23 +225,30 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	user := mapPbToUser(request.User)
 
 	if !isValid(request.User.Password) {
+		errorLog.Error("Password is not valid: %v", err)
 		return nil, status.Errorf(codes.InvalidArgument, "password failed: %v", err)
 	}
 
 	if !user.DateOfBirth.Before(time.Now()) {
+		errorLog.Error("Date of birth is not valid: %v", err)
 		return nil, status.Errorf(codes.InvalidArgument, "date of birth failed: %v", err)
 	}
 
 	user.HashedPassword = string(hashedPassword)
 	user.Token = GenerateSecureToken(32)
-	handler.mailService.SendActivationEmail(user.Token, "http://localhost:8000/activate/")
+	//handler.mailService.SendActivationEmail(user.Token, "http://localhost:8000/activate/")
 	if err := handler.validate.Struct(user); err != nil {
+		errorLog.Error("Validation failed: %v", err)
 		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
 	}
 	err = handler.service.Create(user)
 	if err != nil {
+		errorLog.Error("Can't create user: %v", err)
 		return nil, err
 	}
+
+	successLog.Info("User registrated")
+
 	return &pb.RegisterResponse{
 		User: mapUserToPb(user),
 	}, nil

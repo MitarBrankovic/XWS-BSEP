@@ -2,13 +2,18 @@ package auth
 
 import (
 	"context"
-	"log"
-
+	"dislinkt/common/loggers"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"log"
 )
+
+var customLog = loggers.NewCustomLogger()
+var errorLog = loggers.NewErrorLogger()
+var successLog = loggers.NewSuccessLogger()
 
 // AuthInterceptor is a server interceptor for authentication and authorization
 type AuthInterceptor struct {
@@ -60,6 +65,12 @@ func (interceptor *AuthInterceptor) Stream() grpc.StreamServerInterceptor {
 }
 
 func (interceptor *AuthInterceptor) authorize(ctx context.Context, method string) error {
+	customLogger := customLog.WithFields(logrus.Fields{
+		"method": method,
+	})
+
+	customLogger.Info("Authorizing...")
+
 	accessibleRoles, ok := interceptor.accessibleRoles[method]
 	if !ok {
 		// everyone can access
@@ -68,25 +79,29 @@ func (interceptor *AuthInterceptor) authorize(ctx context.Context, method string
 
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
+		errorLog.Error("Error providing metadata")
 		return status.Errorf(codes.Unauthenticated, "metadata is not provided")
 	}
 
 	values := md["authorization"]
 	if len(values) == 0 {
+		errorLog.Error("Error providing access token")
 		return status.Errorf(codes.Unauthenticated, "authorization token is not provided")
 	}
 
 	accessToken := values[0]
 	claims, err := interceptor.jwtManager.Verify(accessToken)
 	if err != nil {
+		errorLog.Error("Error verifying access token")
 		return status.Errorf(codes.Unauthenticated, "access token is invalid: %v", err)
 	}
 
 	for _, role := range accessibleRoles {
 		if role == claims.Role {
+			successLog.Info("Authorized")
 			return nil
 		}
 	}
-
+	errorLog.Error("Error access to this RPC")
 	return status.Error(codes.PermissionDenied, "no permission to access this RPC")
 }

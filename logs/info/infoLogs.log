@@ -1,0 +1,3 @@
+time="2022-06-15T14:39:14.378Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-06-15T14:43:55.658Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-06-15T14:46:04.480Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/api_gateway/main.go:14"

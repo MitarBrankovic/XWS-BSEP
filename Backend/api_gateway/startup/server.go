@@ -3,18 +3,24 @@ package startup
 import (
 	"context"
 	cfg "dislinkt/api_gateway/startup/config"
+	"dislinkt/common/loggers"
+	_ "dislinkt/common/loggers"
 	connectionPb "dislinkt/common/proto/connection_service"
 	offerPb "dislinkt/common/proto/offer_service"
 	postPb "dislinkt/common/proto/post_service"
 	userPb "dislinkt/common/proto/user_service"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/sirupsen/logrus"
+	_ "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"log"
 	"net/http"
 	"strings"
 )
+
+var errorLog = loggers.NewErrorLogger()
+var customLog = loggers.NewCustomLogger()
 
 type Server struct {
 	config *cfg.Config
@@ -33,6 +39,13 @@ func NewServer(config *cfg.Config) *Server {
 func cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h := w.Header()
+
+		customLog.WithFields(logrus.Fields{
+			"method":     r.Method,
+			"url":        r.URL.String(),
+			"origin":     r.Header.Get("Origin"),
+			"user-agent": r.Header.Get("User-Agent"),
+		}).Info("CORS filter")
 
 		h.Set("Access-Control-Allow-Origin", "*")
 
@@ -98,5 +111,5 @@ func (server *Server) initHandlers() {
 }
 
 func (server *Server) Start() {
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), cors(server.mux)))
+	errorLog.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), cors(server.mux)))
 }
