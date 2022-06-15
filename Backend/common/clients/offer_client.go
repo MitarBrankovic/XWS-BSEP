@@ -2,9 +2,9 @@ package clients
 
 import (
 	"context"
+	"dislinkt/common/https"
 	pbOffer "dislinkt/common/proto/offer_service"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"time"
 )
 
@@ -13,7 +13,11 @@ type OfferClient struct {
 }
 
 func NewOfferClient(address string) (pbOffer.OfferServiceClient, error) {
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	tlsCredentials, err := https.LoadTLSClientCredentials()
+	if err != nil {
+		return nil, err
+	}
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(tlsCredentials)}
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Second*30)
 	defer cancel()
 	conn, err := grpc.DialContext(ctx, address, opts...)

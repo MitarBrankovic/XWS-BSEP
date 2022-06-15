@@ -11,7 +11,7 @@ import { User } from "../model/user.model";
 })
 export class UserService {
 
-  private _url = 'http://localhost:8000';
+  private _url = 'https://localhost:8000';
   header: any;
   loggedUser: LoggedUser = new LoggedUser();
 
