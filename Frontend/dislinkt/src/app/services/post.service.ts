@@ -9,7 +9,7 @@ import { Post } from "../model/post";
 })
 export class PostService {
 
-    private _url = 'http://localhost:8000';
+    private _url = 'https://localhost:8000';
     header: any;
 
     constructor(private http: HttpClient, private router: Router) {
