@@ -2,9 +2,14 @@ package api
 
 import (
 	"context"
+	"dislinkt/common/loggers"
 	pb "dislinkt/common/proto/post_service"
 	"dislinkt/post_service/application"
 )
+
+var errorLog = loggers.NewErrorLogger()
+var successLog = loggers.NewSuccessLogger()
+var customLog = loggers.NewCustomLogger()
 
 type CommentHandler struct {
 	pb.UnimplementedPostServiceServer
@@ -21,6 +26,7 @@ func (handler *CommentHandler) Get(ctx context.Context, request *pb.GetRequest) 
 	commentId := request.Id
 	Comment, err := handler.service.Get(commentId)
 	if err != nil {
+
 		return nil, err
 	}
 	CommentPb := mapCommentToPb(Comment)

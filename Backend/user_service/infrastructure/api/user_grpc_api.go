@@ -247,7 +247,7 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 		return nil, err
 	}
 
-	successLog.Info("User registrated")
+	successLog.Info("User registered")
 
 	return &pb.RegisterResponse{
 		User: mapUserToPb(user),
@@ -255,6 +255,7 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 }
 
 func (handler UserHandler) ActivateAccount(ctx context.Context, request *pb.ActivateRequest) (*pb.ActivateResponse, error) {
+	successLog.Info("Successfuly activated account")
 	return &pb.ActivateResponse{
 		User: mapUserToPb(handler.service.ActivateAccount(request.Token)),
 	}, nil
@@ -264,7 +265,8 @@ func (handler UserHandler) PasswordlessLoginDemand(ctx context.Context, request 
 	user, _ := handler.service.Find(request.Username)
 	user.PasswordToken = GenerateSecureToken(32)
 	handler.service.Update(user.Id.Hex(), user)
-	handler.mailService.SendActivationEmail(user.PasswordToken, "http://localhost:4200/redirect/")
+	//handler.mailService.SendActivationEmail(user.PasswordToken, "http://localhost:4200/redirect/")
+	successLog.Info("Successfuly passworldess login demand")
 	return &pb.PasswordlessLoginDemandResponse{
 		Email: user.Email,
 	}, nil
@@ -273,15 +275,19 @@ func (handler UserHandler) PasswordlessLoginDemand(ctx context.Context, request 
 func (handler UserHandler) PasswordlessLogin(ctx context.Context, request *pb.PasswordlesLoginRequest) (*pb.LoginResponse, error) {
 	user, _ := handler.service.PasswordlessLogin(request.Token)
 	if user.PasswordToken == "" {
+		errorLog.Error("Passwordless login request doesn't exist")
 		return nil, status.Errorf(codes.Internal, "Passwordless login request doesn't exist!")
 	}
 	token, err := handler.jwtManager.Generate(user)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+		errorLog.Error("Cannot login request doesn't exist")
+		return nil, status.Errorf(codes.Internal, "Cannot generate access token")
 	}
 
 	user.PasswordToken = ""
 	handler.service.Update(user.Id.Hex(), user)
+
+	successLog.Info("User passwordless logged")
 
 	return &pb.LoginResponse{AccessToken: token}, nil
 }
@@ -289,46 +295,58 @@ func (handler UserHandler) PasswordlessLogin(ctx context.Context, request *pb.Pa
 func (handler UserHandler) RecoverAccountDemand(ctx context.Context, request *pb.RecoverAccountDemandRequest) (*pb.RecoverAccountDemandResponse, error) {
 	user, err := handler.service.FindByEmail(request.Email)
 	if err != nil {
+		errorLog.Error("No account with said mail")
 		return nil, status.Errorf(codes.Internal, "no account with said email")
 	}
 	user.RecoveryToken = GenerateSecureToken(32)
 	handler.service.Update(user.Id.Hex(), user)
 	//TODO
 	//front da se pogodi
-	handler.mailService.SendActivationEmail(user.RecoveryToken, "http://localhost:4200/recover/")
+	successLog.Info("Successfuly recover account demand")
+	//handler.mailService.SendActivationEmail(user.RecoveryToken, "http://localhost:4200/recover/")
 	return &pb.RecoverAccountDemandResponse{}, nil
 }
 
 func (handler UserHandler) RecoverAccount(ctx context.Context, request *pb.RecoverAccountRequest) (*pb.RecoverAccountResponse, error) {
 	_, err := handler.service.RecoverAccount(request.Token, request.NewPassword)
 	if err != nil {
+		errorLog.Error("Recovery account error")
 		return nil, status.Errorf(codes.Internal, "recovery account error")
 	}
+
+	successLog.Info("Recovery account success")
 	return &pb.RecoverAccountResponse{}, nil
 }
 
 func (handler UserHandler) ChangePassword(ctx context.Context, request *pb.ChangePasswordRequest) (*pb.ChangePasswordResponse, error) {
 	if !isValid(request.NewPassword) {
+		successLog.Info("New password inadequate")
 		return nil, status.Errorf(codes.InvalidArgument, "new password inadequate")
 	}
 	err := handler.service.ChangePassword(request.Username, request.NewPassword, request.OldPassword)
+	successLog.Info("Password changed")
 	return &pb.ChangePasswordResponse{}, err
 }
 
 func (handler UserHandler) GenerateApiToken(ctx context.Context, request *pb.GenerataApiTokenRequest) (*pb.GenerateApiTokenResponse, error) {
 	user, err := handler.service.GenerateApiToken(request.Username, request.Password)
 	if err != nil {
+		errorLog.Error("Cannot generate access token")
 		return nil, status.Errorf(codes.Internal, "cannot generate access token")
 	}
 	if user.ApiToken != "" {
+		errorLog.Errorf("ApiToken already generated")
 		return nil, status.Errorf(codes.Internal, "ApiToken already generated")
 	}
 	token := GenerateSecureToken(32)
 	user.ApiToken = token
 	err = handler.service.Update(user.Id.Hex(), user)
 	if err != nil {
+		errorLog.Error("Cannot generate access token")
 		return nil, status.Errorf(codes.Internal, "cannot generate access token")
 	}
+
+	successLog.Info("ApiToken generated")
 	return &pb.GenerateApiTokenResponse{
 		Token: token,
 	}, nil
@@ -337,6 +355,7 @@ func (handler UserHandler) GenerateApiToken(ctx context.Context, request *pb.Gen
 func (handler UserHandler) CheckApiToken(ctx context.Context, request *pb.CheckApiTokenRequest) (*pb.CheckApiTokenResponse, error) {
 	valid, err := handler.service.CheckApiToken(request.Token)
 	if err != nil {
+		errorLog.Error("Cannot generate access token")
 		return &pb.CheckApiTokenResponse{Valid: valid}, status.Errorf(codes.Internal, "cannot generate access token")
 	}
 	return &pb.CheckApiTokenResponse{

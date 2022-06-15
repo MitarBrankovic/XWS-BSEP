@@ -1,3 +1,5 @@
 time="2022-06-15T14:39:14.378Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/api_gateway/main.go:14"
 time="2022-06-15T14:43:55.658Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/api_gateway/main.go:14"
 time="2022-06-15T14:46:04.480Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-06-15T18:10:00.581Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-06-15T18:10:00.583Z" level=fatal msg="listen tcp :8000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted." func="dislinkt/api_gateway/startup.(*Server).Start" file="C:/Users/Mirko/Documents/GitHub/XWS-BSEP/Backend/api_gateway/startup/server.go:114"
