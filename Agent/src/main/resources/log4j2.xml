@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="console-log" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
+        </Console>
+        <File name="success-log" fileName="successLogs.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
+        </File>
+
+        <File name="error-log" fileName="errorLogs.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.test.app" level="debug" additivity="false">
+            <appender-ref ref="console-log" level="debug"/>
+        </Logger>
+        <Logger name="success-log" level="debug" additivity="false">
+            <appender-ref ref="success-log" level="debug"/>>
+        </Logger>
+        <Logger name="error-log" level="debug" additivity="false">
+            <appender-ref ref="error-log" level="warn"/>
+        </Logger>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="console-log" />
+        </Root>
+    </Loggers>
+</Configuration>

@@ -4,8 +4,6 @@ import com.example.agent.controller.AgentController;
 import com.example.agent.domain.*;
 import com.example.agent.dtos.*;
 import com.example.agent.repository.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -45,7 +43,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
 
-    Logger logger = LoggerFactory.getLogger(AgentController.class);
 
     @Override
     public void saveUser(UserRegistrationDTO userRegistrationDTO) {
@@ -56,7 +53,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
                 userRegistrationDTO.getDateOfBirth(),
                 roleRepository.findById(1L).orElseThrow()));
 
-        logger.info("User registrated");
     }
 
     @Override
@@ -67,7 +63,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
                 dto.getCompanyContactInfo(),
                 dto.getCompanyDescription(), dto.getUsername()));
 
-        logger.info("Company registration request saved");
     }
 
     @Override
@@ -84,7 +79,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
 
         companyRegistrationRequestRepository.removeAllByCompanyOwnerUsername(dto.getCompanyOwnerUsername());
 
-        logger.info("Company registrated");
     }
 
     @Override
@@ -94,7 +88,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
         company.setDescription(dto.getDescription());
         companyRepository.save(company);
 
-        logger.info("Company (id: " + company.getId() + " )  edited");
     }
 
     @Override
@@ -107,7 +100,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
 
         companyRepository.save(company);
 
-        logger.info("Open position in company: " + company.getName() + " created");
     }
 
     @Override
@@ -123,7 +115,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
 
         companyRepository.save(company);
 
-        logger.info("Comment in company: " + company.getName() + " saved");
     }
 
     @Override
@@ -139,7 +130,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
 
         openPositionRepository.save(openPosition);
 
-        logger.info("Sallary on open position: " + openPosition.getPositionName() + " added");
     }
 
     @Override
@@ -155,7 +145,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
 
         companyRepository.save(company);
 
-        logger.info("Interview process in company: " + company.getName() + " added");
     }
 
     @Override
@@ -170,7 +159,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
         company.getMarks().add(newMark);
         companyRepository.save(company);
 
-        logger.info("Mark on company: " + company.getName() + " added");
     }
 
     @Override
@@ -225,8 +213,6 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
         AgentUser agentUser = agentUserRepository.findById(userId).orElseGet(null);
         agentUser.setApiToken(token);
         agentUserRepository.save(agentUser);
-
-        logger.info("ApiToken saved");
 
         return agentUser;
     }
