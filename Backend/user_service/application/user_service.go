@@ -63,3 +63,15 @@ func (service *UserService) GenerateApiToken(username string, password string) (
 func (service *UserService) CheckApiToken(token string) (bool, error) {
 	return service.store.CheckApiToken(token)
 }
+
+func (service *UserService) FindByActivationToken(token string) (*domain.User, error) {
+	return service.store.FindByActivationToken(token)
+}
+
+func (service *UserService) FindByRecoveryToken(token string) (*domain.User, error) {
+	return service.store.FindByRecoveryToken(token)
+}
+
+func (service *UserService) FindByPasswordlessToken(token string) (*domain.User, error) {
+	return service.store.FindByPasswordlessToken(token)
+}

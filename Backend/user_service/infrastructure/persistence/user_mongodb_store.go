@@ -87,6 +87,21 @@ func (store *UserMongoDBStore) FindByEmail(email string) (*domain.User, error) {
 	return store.filterOne(filter)
 }
 
+func (store *UserMongoDBStore) FindByActivationToken(token string) (*domain.User, error) {
+	filter := bson.M{"token": token}
+	return store.filterOne(filter)
+}
+
+func (store *UserMongoDBStore) FindByPasswordlessToken(token string) (*domain.User, error) {
+	filter := bson.M{"passwordToken": token}
+	return store.filterOne(filter)
+}
+
+func (store *UserMongoDBStore) FindByRecoveryToken(token string) (*domain.User, error) {
+	filter := bson.M{"recoveryToken": token}
+	return store.filterOne(filter)
+}
+
 func (store *UserMongoDBStore) ActivateAccount(token string) *domain.User {
 	filter := bson.M{"token": token}
 	user, err := store.filterOne(filter)

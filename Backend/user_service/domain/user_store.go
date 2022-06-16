@@ -15,4 +15,7 @@ type UserStore interface {
 	ChangePassword(username string, password string, password2 string) error
 	GenerateApiToken(username string, password string) (*User, error)
 	CheckApiToken(token string) (bool, error)
+	FindByActivationToken(token string) (*User, error)
+	FindByRecoveryToken(token string) (*User, error)
+	FindByPasswordlessToken(token string) (*User, error)
 }

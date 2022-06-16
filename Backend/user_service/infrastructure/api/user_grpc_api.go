@@ -235,7 +235,8 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 
 	user.HashedPassword = string(hashedPassword)
 	user.Token = GenerateSecureToken(32)
-	//handler.mailService.SendActivationEmail(user.Token, "http://localhost:8000/activate/")
+	user.TokenDate = time.Now()
+	//handler.mailService.SendActivationEmail(user.Token, "https://localhost:8000/activate/")
 	if err := handler.validate.Struct(user); err != nil {
 		errorLog.Error("Validation failed: %v", err)
 		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
@@ -254,6 +255,13 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 }
 
 func (handler UserHandler) ActivateAccount(ctx context.Context, request *pb.ActivateRequest) (*pb.ActivateResponse, error) {
+	user, err := handler.service.FindByActivationToken(request.Token)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "Cannot find user")
+	}
+	if user.TokenDate.Before(time.Now().Add(-30 * time.Minute)) {
+		return nil, status.Errorf(codes.Internal, "Token expired")
+	}
 	successLog.Info("Successfuly activated account")
 	return &pb.ActivateResponse{
 		User: mapUserToPb(handler.service.ActivateAccount(request.Token)),
@@ -263,6 +271,7 @@ func (handler UserHandler) ActivateAccount(ctx context.Context, request *pb.Acti
 func (handler UserHandler) PasswordlessLoginDemand(ctx context.Context, request *pb.PasswordlessLoginDemandRequest) (*pb.PasswordlessLoginDemandResponse, error) {
 	user, _ := handler.service.Find(request.Username)
 	user.PasswordToken = GenerateSecureToken(32)
+	user.PasswordTokenDate = time.Now()
 	handler.service.Update(user.Id.Hex(), user)
 	//handler.mailService.SendActivationEmail(user.PasswordToken, "http://localhost:4200/redirect/")
 	successLog.Info("Successfuly passworldess login demand")
@@ -272,7 +281,14 @@ func (handler UserHandler) PasswordlessLoginDemand(ctx context.Context, request 
 }
 
 func (handler UserHandler) PasswordlessLogin(ctx context.Context, request *pb.PasswordlesLoginRequest) (*pb.LoginResponse, error) {
-	user, _ := handler.service.PasswordlessLogin(request.Token)
+	user, erro := handler.service.FindByPasswordlessToken(request.Token)
+	if erro != nil {
+		return nil, status.Errorf(codes.Internal, "Cannot find user")
+	}
+	if user.PasswordTokenDate.Before(time.Now().Add(-30 * time.Minute)) {
+		return nil, status.Errorf(codes.Internal, "Token expired")
+	}
+	user, _ = handler.service.PasswordlessLogin(request.Token)
 	if user.PasswordToken == "" {
 		errorLog.Error("Passwordless login request doesn't exist")
 		return nil, status.Errorf(codes.Internal, "Passwordless login request doesn't exist!")
@@ -298,6 +314,7 @@ func (handler UserHandler) RecoverAccountDemand(ctx context.Context, request *pb
 		return nil, status.Errorf(codes.Internal, "no account with said email")
 	}
 	user.RecoveryToken = GenerateSecureToken(32)
+	user.RecoveryTokenDate = time.Now()
 	handler.service.Update(user.Id.Hex(), user)
 	//TODO
 	//front da se pogodi
@@ -307,7 +324,14 @@ func (handler UserHandler) RecoverAccountDemand(ctx context.Context, request *pb
 }
 
 func (handler UserHandler) RecoverAccount(ctx context.Context, request *pb.RecoverAccountRequest) (*pb.RecoverAccountResponse, error) {
-	_, err := handler.service.RecoverAccount(request.Token, request.NewPassword)
+	user, err := handler.service.FindByRecoveryToken(request.Token)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "no account with said token")
+	}
+	if user.RecoveryTokenDate.Before(time.Now().Add(-30 * time.Minute)) {
+		return nil, status.Errorf(codes.Internal, "Token expired")
+	}
+	_, err = handler.service.RecoverAccount(request.Token, request.NewPassword)
 	if err != nil {
 		errorLog.Error("Recovery account error")
 		return nil, status.Errorf(codes.Internal, "recovery account error")
