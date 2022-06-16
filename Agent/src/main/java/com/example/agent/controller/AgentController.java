@@ -3,13 +3,11 @@ package com.example.agent.controller;
 import com.example.agent.domain.*;
 import com.example.agent.dtos.*;
 import com.example.agent.service.AgentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.agent.validator.Validators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,65 +25,99 @@ public class AgentController {
 
     @RequestMapping("/saveUser")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserRegistrationDTO> saveUser(@RequestBody UserRegistrationDTO dto){
-        agentService.saveUser(dto);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    public ResponseEntity saveUser(@RequestBody UserRegistrationDTO dto){
+        if(Validators.isValidUserDto(dto)){
+            agentService.saveUser(dto);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/saveCompanyRegistrationRequest")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CompanyRegistrationRequestDTO> saveCompanyRegistrationRequest(@RequestBody CompanyRegistrationRequestDTO dto){
-        agentService.saveCompanyRegistrationRequest(dto);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    public ResponseEntity saveCompanyRegistrationRequest(@RequestBody CompanyRegistrationRequestDTO dto){
+        if(Validators.isValidCompanyRegistrationRequestDto(dto)){
+            agentService.saveCompanyRegistrationRequest(dto);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/saveCompany")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CompanyRegistrationRequestDTO> saveCompany(@RequestBody CompanyRegistrationRequestDTO dto){
-        agentService.saveCompany(dto);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    public ResponseEntity saveCompany(@RequestBody CompanyRegistrationRequestDTO dto){
+        if(Validators.isValidCompanyRegistrationRequestDto(dto))
+        {
+            agentService.saveCompany(dto);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/editCompanyInfo")
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity editCompanyInfo(@RequestBody CompanyInfoDTO dto){
-        agentService.editCompanyInfo(dto);
-        return new ResponseEntity(HttpStatus.ACCEPTED);
+        if(Validators.isValidCompanyInfoDTO(dto))
+        {
+            agentService.editCompanyInfo(dto);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/addOpenPosition/{companyId}/{positionName}/{description}/{criteria}")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addOpenPosition(@PathVariable("companyId") Long companyId, @PathVariable("positionName") String positionName, @PathVariable("description") String description, @PathVariable("criteria") String criteria){
-        agentService.addOpenPosition(companyId, positionName, description, criteria);
-        return new ResponseEntity(HttpStatus.CREATED);
+        if(Validators.isValidOpenPositionDto(companyId, positionName, description, criteria))
+        {
+            agentService.addOpenPosition(companyId, positionName, description, criteria);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/saveComment")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommentOnCompany> saveComment(@RequestBody CommentDTO dto){
-        agentService.saveComment(dto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity saveComment(@RequestBody CommentDTO dto){
+        if(Validators.isValidCommentDto(dto))
+        {
+            agentService.saveComment(dto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/addSallary")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addSallary(@RequestBody SalaryDTO dto){
-        agentService.addSalary(dto);
-        return new ResponseEntity(HttpStatus.CREATED);
+        if(Validators.isValidSallaryDto(dto))
+        {
+            agentService.addSalary(dto);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/addInterviewProcess")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addInterviewProcess(@RequestBody InterviewProcessDTO dto){
-        agentService.addInterviewProcess(dto);
-        return new ResponseEntity(HttpStatus.CREATED);
+        if(Validators.isValidInterviewProcessDto(dto))
+        {
+            agentService.addInterviewProcess(dto);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/addMark")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addMark(@RequestBody MarkDTO dto){
-        agentService.addMark(dto);
-        return new ResponseEntity(HttpStatus.CREATED);
+        if(Validators.isValidMarkDto(dto))
+        {
+            agentService.addMark(dto);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping("/findAllCompanies")
@@ -108,7 +140,6 @@ public class AgentController {
         Company company = agentService.findOneCompanyById(companyId);
         return new ResponseEntity<Company>(company, HttpStatus.OK);
     }
-
 
     @RequestMapping("/findUser")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -141,6 +172,11 @@ public class AgentController {
     @RequestMapping("/saveToken/{userId}/{token}")
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AgentUser> saveToken(@PathVariable("userId") Long userId, @PathVariable("token") String token){
-        return new ResponseEntity<>(agentService.saveToken(userId, token) ,HttpStatus.CREATED);
+        if(Validators.isValidToken(userId, token))
+        {
+            AgentUser agentUser = agentService.saveToken(userId, token);
+            return new ResponseEntity<>(agentUser, HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }
