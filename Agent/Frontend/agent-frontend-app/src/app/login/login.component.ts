@@ -21,45 +21,44 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.agentService.login(this.username, this.password).subscribe(data =>
     {
-      if(data == undefined){
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 1100,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-        
-        Toast.fire({
-          icon: 'error',
-          title: 'Invalid username or password'
-        })}
-      else{
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 1100,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-        
-        Toast.fire({
-          icon: 'success',
-          title: 'Signed in successfully'
-        })
-        this.agentService.loggedUser = data.user
-        localStorage.setItem('agentUser', JSON.stringify(data.user))
-        localStorage.setItem('jwtToken', JSON.stringify(data.token))
-        this.router.navigate(['/homePage'])
-      }
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1100,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'success',
+        title: 'Signed in successfully'
+      })
+      this.agentService.loggedUser = data.user
+      localStorage.setItem('agentUser', JSON.stringify(data.user))
+      localStorage.setItem('jwtToken', JSON.stringify(data.token))
+      this.router.navigate(['/homePage'])
+    },
+    error => {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1100,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Invalid username or password'
+      })
     })
 
   }

@@ -1,6 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { AgentService } from '../services/agent.service';
 
 @Component({
@@ -41,7 +42,22 @@ export class HomePageComponent implements OnInit {
 
   registerCompany(companyRegistrationRequest: any){
     this.agentService.registerCompany(companyRegistrationRequest).subscribe(() => {
-      alert('Company registered successfully')
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'success',
+        title: 'Company registration request accepted successfully'
+      })
+      this.router.navigate(['/homePage'])
       this.findAllCompanyRegistrationRequests()
       this.getLoggedUser()
     })

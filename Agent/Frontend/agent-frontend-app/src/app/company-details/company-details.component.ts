@@ -80,7 +80,8 @@ export class CompanyDetailsComponent implements OnInit {
       contactInfo: this.company.contactInfo,
       description: this.company.description,
     }
-    this.agentService.editCompanyInfo(data).subscribe(() => this.swalSuccess('Company info is edited!'))
+    this.agentService.editCompanyInfo(data).subscribe(() => this.swalSuccess('Company info is edited!'),
+    error => {this.swalError("Invalid inputs")})
   }
 
   openCommentsDiv() {
@@ -119,7 +120,8 @@ export class CompanyDetailsComponent implements OnInit {
       this.agentService.saveComment(commentDto).subscribe(() => {
         this.findAllCommentsByCompanyId(this.id);
         this.content = ''
-      })
+      },
+      error => {this.swalError("Invalid inputs")})
 
     }else{
       this.swalError('Write comment first!')
@@ -138,7 +140,8 @@ export class CompanyDetailsComponent implements OnInit {
       this.agentService.saveInterview(interviewDto).subscribe(() => {
         this.findAllInterviewsByCompanyId(this.id);
         this.contentInterview = ''
-      })
+      },
+      error => {this.swalError("Invalid inputs")})
 
     }else{
       this.swalError('Write interview description first!')
@@ -152,7 +155,8 @@ export class CompanyDetailsComponent implements OnInit {
         this.contentPosition = ''
         this.description = ''
         this.criteria = ''
-      })
+      },
+      error => {this.swalError("Invalid inputs")})
       if(this.promoteBool){
         let body = {
           id: '1',
@@ -235,7 +239,8 @@ export class CompanyDetailsComponent implements OnInit {
 
       this.agentService.saveSalary(dto).subscribe(() => {
         this.findAllPositionsByCompanyId(this.id);
-      })
+      },
+      error => {this.swalError("Invalid input")})
     }
   }
 
