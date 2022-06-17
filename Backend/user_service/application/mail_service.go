@@ -16,7 +16,7 @@ func NewMailService() *MailService {
 	return &MailService{}
 }
 
-func (service *MailService) SendActivationEmail(token string, path string) {
+func (service *MailService) SendActivationEmail(token string, path string, subject string) {
 	/*from := "<xwsclient@gmail.com>"
 	password := "<XWSClient123.>"
 
@@ -40,14 +40,13 @@ func (service *MailService) SendActivationEmail(token string, path string) {
 
 	from := mail.Address{"", "xwsclient@gmail.com"}
 	to := mail.Address{"", "xwsclient@gmail.com"}
-	subj := "Activation mail"
 	body := path + token
 
 	// Setup headers
 	headers := make(map[string]string)
 	headers["From"] = from.String()
 	headers["To"] = to.String()
-	headers["Subject"] = subj
+	headers["Subject"] = subject
 
 	// Setup message
 	message := ""
@@ -62,7 +61,7 @@ func (service *MailService) SendActivationEmail(token string, path string) {
 
 	host, _, _ := net.SplitHostPort(servername)
 
-	auth := smtp.PlainAuth("", "xwsclient@gmail.com", "XWSClient123.", host)
+	auth := smtp.PlainAuth("", "xwsclient@gmail.com", "ljezkcbjapwvsfvu", host)
 
 	// TLS config
 	tlsconfig := &tls.Config{
