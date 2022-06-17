@@ -12,6 +12,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
 import { CompanyDetailsComponent } from './company-details/company-details.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AuthInterceptorProvider } from './auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     FormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [AuthInterceptorProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
