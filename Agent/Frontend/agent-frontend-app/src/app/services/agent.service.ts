@@ -14,14 +14,7 @@ export class AgentService {
 
   header: any
 
-  constructor(private http: HttpClient) {
-    let token = localStorage.getItem('jwtToken')
-    if (token === null) {
-        token = ""
-    }
-    if (token != "")
-        this.header = new HttpHeaders().set("Authorization", "Bearer " + JSON.parse(token));
-   }
+  constructor(private http: HttpClient) {}
 
   public registerUser(user: User) {
     return this.http.post(this._url + 'saveUser', user);
@@ -45,7 +38,7 @@ export class AgentService {
   }
 
   public findAllCompanyRegistrationRequests(): Observable<any> {
-    return this.http.get<any>(this._url + 'findAllCompanyRegistrationRequests', { headers: this.header });
+    return this.http.get<any>(this._url + 'findAllCompanyRegistrationRequests');
   }
 
   public registerCompany(companyRegistrationRequest: any) {
