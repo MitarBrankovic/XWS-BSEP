@@ -6,10 +6,12 @@ import com.example.agent.dtos.*;
 import com.example.agent.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -47,8 +49,13 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
 
     @Override
     public void saveUser(UserRegistrationDTO userRegistrationDTO) {
+        int strength = 10; // work factor of bcrypt
+        BCryptPasswordEncoder bCryptPasswordEncoder =
+                new BCryptPasswordEncoder(strength, new SecureRandom());
+        String encodedPassword = bCryptPasswordEncoder.encode(userRegistrationDTO.getPassword());
+
         agentUserRepository.save(new AgentUser(userRegistrationDTO.getUsername(),
-                userRegistrationDTO.getPassword(),
+                encodedPassword,
                 userRegistrationDTO.getFirstName(),
                 userRegistrationDTO.getLastName(),
                 userRegistrationDTO.getDateOfBirth(),
