@@ -30,6 +30,9 @@ type UserServiceClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	LoginTwoFactor(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*TwoFactorResponse, error)
+	//lose napisani request i response
+	CheckTwoFactor(ctx context.Context, in *CheckTwoFactorRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	ActivateAccount(ctx context.Context, in *ActivateRequest, opts ...grpc.CallOption) (*ActivateResponse, error)
 	PasswordlessLoginDemand(ctx context.Context, in *PasswordlessLoginDemandRequest, opts ...grpc.CallOption) (*PasswordlessLoginDemandResponse, error)
@@ -115,6 +118,24 @@ func (c *userServiceClient) Update(ctx context.Context, in *UpdateRequest, opts 
 func (c *userServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
 	out := new(LoginResponse)
 	err := c.cc.Invoke(ctx, "/user.UserService/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) LoginTwoFactor(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*TwoFactorResponse, error) {
+	out := new(TwoFactorResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/LoginTwoFactor", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) CheckTwoFactor(ctx context.Context, in *CheckTwoFactorRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/CheckTwoFactor", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -214,6 +235,9 @@ type UserServiceServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	LoginTwoFactor(context.Context, *LoginRequest) (*TwoFactorResponse, error)
+	//lose napisani request i response
+	CheckTwoFactor(context.Context, *CheckTwoFactorRequest) (*LoginResponse, error)
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	ActivateAccount(context.Context, *ActivateRequest) (*ActivateResponse, error)
 	PasswordlessLoginDemand(context.Context, *PasswordlessLoginDemandRequest) (*PasswordlessLoginDemandResponse, error)
@@ -253,6 +277,12 @@ func (UnimplementedUserServiceServer) Update(context.Context, *UpdateRequest) (*
 }
 func (UnimplementedUserServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUserServiceServer) LoginTwoFactor(context.Context, *LoginRequest) (*TwoFactorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginTwoFactor not implemented")
+}
+func (UnimplementedUserServiceServer) CheckTwoFactor(context.Context, *CheckTwoFactorRequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckTwoFactor not implemented")
 }
 func (UnimplementedUserServiceServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
@@ -434,6 +464,42 @@ func _UserService_Login_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_LoginTwoFactor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).LoginTwoFactor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/LoginTwoFactor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).LoginTwoFactor(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_CheckTwoFactor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckTwoFactorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CheckTwoFactor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/CheckTwoFactor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CheckTwoFactor(ctx, req.(*CheckTwoFactorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -638,6 +704,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _UserService_Login_Handler,
+		},
+		{
+			MethodName: "LoginTwoFactor",
+			Handler:    _UserService_LoginTwoFactor_Handler,
+		},
+		{
+			MethodName: "CheckTwoFactor",
+			Handler:    _UserService_CheckTwoFactor_Handler,
 		},
 		{
 			MethodName: "Register",

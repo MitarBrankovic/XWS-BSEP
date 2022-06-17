@@ -57,6 +57,21 @@ service UserService{
     };
   };
 
+  rpc LoginTwoFactor(LoginRequest) returns (TwoFactorResponse) {
+    option (google.api.http) = {
+      post : "/loginTwoFactor"
+      body : "*"
+    };
+  };
+
+  //lose napisani request i response
+  rpc CheckTwoFactor(CheckTwoFactorRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post : "/checkTwoFactor"
+      body : "*"
+    };
+  };
+
   rpc Register(RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
       post : "/register"
@@ -233,6 +248,14 @@ message CheckApiTokenRequest{
 
 message CheckApiTokenResponse{
   bool valid = 1;
+}
+
+message CheckTwoFactorRequest{
+  string token = 1;
+}
+
+message TwoFactorResponse{
+  string token = 1;
 }
 
 message User {

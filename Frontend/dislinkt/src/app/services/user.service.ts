@@ -45,6 +45,17 @@ export class UserService {
     return this.http.post(this._url + '/register', user);
   }
 
+  public loginTwoFactor(user: User) {
+    return this.http.post(this._url + '/loginTwoFactor', user);
+  }
+
+  public checkTwoFactor(token: string) {
+    let body = {
+      token: token
+    }
+    return this.http.post(this._url + '/checkTwoFactor', body);
+  }
+
 
   public changePassword(username: string, oldPassword: string, newPassword: string) {
     let body = {

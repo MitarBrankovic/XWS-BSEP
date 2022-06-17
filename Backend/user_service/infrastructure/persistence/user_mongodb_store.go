@@ -102,6 +102,11 @@ func (store *UserMongoDBStore) FindByRecoveryToken(token string) (*domain.User, 
 	return store.filterOne(filter)
 }
 
+func (store *UserMongoDBStore) FindByTwoFactorToken(token string) (*domain.User, error) {
+	filter := bson.M{"twoFactorToken": token}
+	return store.filterOne(filter)
+}
+
 func (store *UserMongoDBStore) ActivateAccount(token string) *domain.User {
 	filter := bson.M{"token": token}
 	user, err := store.filterOne(filter)

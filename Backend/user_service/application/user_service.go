@@ -75,3 +75,7 @@ func (service *UserService) FindByRecoveryToken(token string) (*domain.User, err
 func (service *UserService) FindByPasswordlessToken(token string) (*domain.User, error) {
 	return service.store.FindByPasswordlessToken(token)
 }
+
+func (service *UserService) FindByTwoFactorToken(token string) (*domain.User, error) {
+	return service.store.FindByTwoFactorToken(token)
+}

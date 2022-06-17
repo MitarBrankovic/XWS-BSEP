@@ -18,4 +18,5 @@ type UserStore interface {
 	FindByActivationToken(token string) (*User, error)
 	FindByRecoveryToken(token string) (*User, error)
 	FindByPasswordlessToken(token string) (*User, error)
+	FindByTwoFactorToken(token string) (*User, error)
 }

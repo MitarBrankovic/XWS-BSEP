@@ -215,6 +215,50 @@ func (handler *UserHandler) Login(ctx context.Context, req *pb.LoginRequest) (*p
 	return &pb.LoginResponse{AccessToken: token}, nil
 }
 
+func (handler *UserHandler) LoginTwoFactor(ctx context.Context, req *pb.LoginRequest) (*pb.TwoFactorResponse, error) {
+	user, err := handler.service.Find(req.GetUsername())
+	if err != nil {
+		errorLog.Error("Incorect username")
+		return nil, status.Errorf(codes.Internal, "cannot find user: %v", err)
+	}
+	if user.Activated == false {
+		errorLog.Error("Not activated account")
+		return nil, status.Errorf(codes.Internal, "You need to activate account first!")
+	}
+	if user == nil || !user.IsCorrectPassword(req.GetPassword()) {
+		errorLog.Error("Incorect password")
+		return nil, status.Errorf(codes.NotFound, "incorrect username/password")
+	}
+
+	token := GenerateSecureToken(10)
+	user.TwoFactorToken = token
+	user.TwoFactorTokenDate = time.Now()
+	err = handler.service.Update(user.Id.Hex(), user)
+	handler.mailService.SendActivationEmail(user.TwoFactorToken, "", "Two Factor Authentication")
+
+	return &pb.TwoFactorResponse{Token: token}, nil
+}
+
+func (handler *UserHandler) CheckTwoFactor(ctx context.Context, req *pb.CheckTwoFactorRequest) (*pb.LoginResponse, error) {
+	user, err := handler.service.FindByTwoFactorToken(req.Token)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "cannot find token: %v", err)
+	}
+	if user.TwoFactorTokenDate.Before(time.Now().Add(-1 * time.Minute)) {
+		return nil, status.Errorf(codes.Internal, "token expired")
+	}
+
+	err = handler.service.Update(user.Id.Hex(), user)
+	token, err := handler.jwtManager.Generate(user)
+	if err != nil {
+		errorLog.Error("Cannon generate token")
+		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+	}
+
+	successLog.Info("User logged in")
+	return &pb.LoginResponse{AccessToken: token}, nil
+}
+
 func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterRequest) (*pb.RegisterResponse, error) {
 	checkUser, err := handler.service.Find(request.User.Username)
 	if checkUser != nil {

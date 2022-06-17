@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   user: User = new User;
   passwordless: boolean = false;
+  twoFactor: boolean = false;
 
 
   constructor(private userService: UserService,
@@ -22,20 +23,27 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.userService.login(this.user).subscribe((token) => {
-      localStorage.setItem('token', JSON.stringify(token))
-      localStorage.setItem('username', this.user.username)
-      this.userService.updateCredentials();
-      window.location.href = '/homePage';
-    },
-    ()=>{
-      Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Username/Password incorect',
-    })},
-    ()=>{}
-    );
+    if(!this.twoFactor){
+      this.userService.login(this.user).subscribe((token) => {
+        localStorage.setItem('token', JSON.stringify(token))
+        localStorage.setItem('username', this.user.username)
+        this.userService.updateCredentials();
+        window.location.href = '/homePage';
+      },
+      ()=>{
+        this.swalError('Username/Password incorect')},
+      ()=>{}
+      );
+    }else{
+      this.userService.loginTwoFactor(this.user).subscribe(() => {
+        this.checkTwoFactor();
+      },
+      ()=>{
+        this.swalError('Username/Password incorect')},
+      ()=>{}
+      )
+    }
+
   }
 
   loginPasswordlessDemand() {
@@ -50,5 +58,48 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/recovery']);
   }
 
+  swalError(text: string){
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: text,
+    })
+  }
+
+
+
+
+  async checkTwoFactor(){
+    const { value: formValues } = await Swal.fire({
+      title: 'Two factor authentication token',
+      html:
+        '<input placeholder="token" id="swal-input1" [(ngModel)]="input1" class="swal2-input">',
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          (<HTMLInputElement>document.getElementById("swal-input1")).value,
+        ]
+      }
+    })
+    
+    if (formValues) {
+      this.userService.checkTwoFactor(formValues[0]).subscribe(
+        data => {
+          Swal.fire({
+            title: 'Success',
+            text: 'You are logged in',
+            icon: 'success'
+          });
+          localStorage.setItem('token', JSON.stringify(data))
+          localStorage.setItem('username', this.user.username)
+          this.userService.updateCredentials();
+          window.location.href = '/homePage';
+        },
+          ()=>{
+            this.swalError('Invalid credentials')},
+          () => {}    
+      )
+    }
+  }
 
 }
