@@ -205,14 +205,19 @@ func (handler *UserHandler) Login(ctx context.Context, req *pb.LoginRequest) (*p
 		return nil, status.Errorf(codes.NotFound, "incorrect username/password")
 	}
 
-	token, err := handler.jwtManager.Generate(user)
-	if err != nil {
-		errorLog.Error("Cannon generate token")
-		return nil, status.Errorf(codes.Internal, "cannot generate access token")
+	if !user.TwoFactorEnabled {
+		token, err := handler.jwtManager.Generate(user)
+		if err != nil {
+			errorLog.Error("Cannon generate token")
+			return nil, status.Errorf(codes.Internal, "cannot generate access token")
+		}
+
+		successLog.Info("User logged in")
+		return &pb.LoginResponse{AccessToken: token}, nil
+	} else {
+		return nil, status.Errorf(codes.Unimplemented, "Two factor authentication is not implemented yet")
 	}
 
-	successLog.Info("User logged in")
-	return &pb.LoginResponse{AccessToken: token}, nil
 }
 
 func (handler *UserHandler) LoginTwoFactor(ctx context.Context, req *pb.LoginRequest) (*pb.TwoFactorResponse, error) {

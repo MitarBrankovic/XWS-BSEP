@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login() {
+  /*login() {
     if(!this.twoFactor){
       this.userService.login(this.user).subscribe((token) => {
         localStorage.setItem('token', JSON.stringify(token))
@@ -41,8 +41,28 @@ export class LoginComponent implements OnInit {
       ()=>{
         this.swalError('Username/Password incorect')},
       ()=>{}
-      )
+    
     }
+
+  }*/
+
+
+  login() {
+    this.userService.login(this.user).subscribe((token) => {
+      localStorage.setItem('token', JSON.stringify(token))
+      localStorage.setItem('username', this.user.username)
+      this.userService.updateCredentials();
+      window.location.href = '/homePage';
+    },
+    ()=>{
+      this.userService.loginTwoFactor(this.user).subscribe(() => {
+        this.checkTwoFactor();
+      },
+      ()=>{
+        this.swalError('Username/Password incorect')},
+      ()=>{})},
+    ()=>{}
+    );
 
   }
 
