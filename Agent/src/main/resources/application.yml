@@ -1,0 +1,9 @@
+server:
+  ssl:
+    enabled: true
+    key-store: classpath:newkeystore.p12
+    key-store-password: password
+    key-store-type: PKCS12
+    key-alias: localhost
+    key-password: password
+  port: 8081

@@ -20,7 +20,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:4201")
+@CrossOrigin(origins = "https://localhost:4201")
 @RequestMapping("/api/agent")
 public class AgentController {
 

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AgentService {
-  private _url = 'http://localhost:8081/api/agent/';
+  private _url = 'https://localhost:8081/api/agent/';
 
   private helper :any = localStorage.getItem('agentUser')
   public loggedUser: any = JSON.parse(this.helper)
@@ -32,7 +32,7 @@ export class AgentService {
       username: username,
       password: password
     }
-    return this.http.post<any>('http://localhost:8081/api/auth/login', data);
+    return this.http.post<any>('https://localhost:8081/api/auth/login', data);
   }
 
 
@@ -93,7 +93,7 @@ export class AgentService {
   }
 
   public promoteCompany(dto:any, token:string){
-    return this.http.post('http://localhost:8000/offer/mono/' + token, dto);
+    return this.http.post('https://localhost:8000/offer/mono/' + token, dto);
   }
 
   public generateToken(username:string, password: string): Observable<any> {
@@ -102,7 +102,7 @@ export class AgentService {
       password: password
     }
 
-    return this.http.post('http://localhost:8000/generateApiToken', body);
+    return this.http.post('https://localhost:8000/generateApiToken', body);
   }
 
   public saveToken(userId:number, token:string){

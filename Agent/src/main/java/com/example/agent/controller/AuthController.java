@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.naming.AuthenticationException;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:4201")
+@CrossOrigin(origins = "https://localhost:4201")
 @RequestMapping("/api/auth")
 public class AuthController {
 
