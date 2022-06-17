@@ -48,13 +48,18 @@ export class HomePageComponent implements OnInit {
   }
 
   getLoggedUser(){
-    //this.user = this.agentService.loggedUser
-    this.user = localStorage.getItem('agentUser')
+    let localStorageAgentUser = localStorage.getItem('agentUser')
+    if(localStorageAgentUser != null)
+      this.user = JSON.parse(localStorageAgentUser)
   }
 
   getAllCompanies() {
     this.agentService.getAllCompanies().subscribe(companies => {
       this.companies = companies
     })
+  }
+
+  navigateToUserCompany() {
+    this.router.navigate(['/company', this.user?.company.id])
   }
 }

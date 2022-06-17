@@ -191,7 +191,7 @@ public class AgentServiceImpl implements AgentService, UserDetailsService {
 
     private boolean userIsNotCommon(Long userId){
         AgentUser user = agentUserRepository.findById(userId).orElseGet(null);
-        return !user.getRole().getName().equals("COMMON");
+        return !user.getRole().getName().equals("ROLE_COMMON");
     }
 
     public Set<CommentOnCompany> findAllCommentsByCompanyId(Long companyId){

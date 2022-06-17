@@ -22,7 +22,7 @@
 </div>
 
 <div *ngIf="userIsCompanyOwner()" class="box">
-    <button class="button is-info" (click)="this.router.navigate(['/company', user?.company.id])">My company</button>
+    <button class="button is-info" (click)="navigateToUserCompany()">My company</button>
 </div>
 
 
