@@ -127,7 +127,11 @@
               <button [attr.disabled]="!isEdit? true : null" class="button is-primary" data-backdrop="false" (click)="open(contentWork)">Add employment</button>
 
         </div>
-
+        <br><br><hr>
+        <label class="checkbox">
+          <input [attr.disabled]="!isEdit? true : null" type="checkbox" [(ngModel)]="user.twoFactorEnabled">
+          Two Factor Authentication
+        </label> <br><hr>
     </div>
 
 </div>

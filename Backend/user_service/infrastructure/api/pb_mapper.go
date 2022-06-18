@@ -10,18 +10,19 @@ import (
 
 func mapUserToPb(user *domain.User) *pb.User {
 	pbUser := &pb.User{
-		Id:             user.Id.Hex(),
-		Username:       user.Username,
-		FirstName:      user.FirstName,
-		LastName:       user.LastName,
-		DateOfBirth:    timestamppb.New(user.DateOfBirth),
-		Email:          user.Email,
-		Education:      make([]*pb.Education, 0),
-		WorkExperience: make([]*pb.WorkExperience, 0),
-		Skills:         make([]string, 0),
-		Interests:      make([]string, 0),
-		Activated:      user.Activated,
-		Private:        user.Private,
+		Id:               user.Id.Hex(),
+		Username:         user.Username,
+		FirstName:        user.FirstName,
+		LastName:         user.LastName,
+		DateOfBirth:      timestamppb.New(user.DateOfBirth),
+		Email:            user.Email,
+		Education:        make([]*pb.Education, 0),
+		WorkExperience:   make([]*pb.WorkExperience, 0),
+		Skills:           make([]string, 0),
+		Interests:        make([]string, 0),
+		Activated:        user.Activated,
+		Private:          user.Private,
+		TwoFactorEnabled: user.TwoFactorEnabled,
 	}
 
 	for _, education := range user.Education {
@@ -61,21 +62,22 @@ func mapUserToPb(user *domain.User) *pb.User {
 func mapPbToUser(pbUser *pb.User) *domain.User {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(pbUser.Password), bcrypt.DefaultCost)
 	user := &domain.User{
-		Id:             getObjectId(pbUser.Id),
-		Username:       pbUser.Username,
-		HashedPassword: string(hashedPassword),
-		FirstName:      pbUser.FirstName,
-		LastName:       pbUser.LastName,
-		FullName:       pbUser.FirstName + " " + pbUser.LastName,
-		DateOfBirth:    pbUser.DateOfBirth.AsTime(),
-		Email:          pbUser.Email,
-		Role:           "unverified",
-		Private:        pbUser.Private,
-		Activated:      pbUser.Activated,
-		Education:      make([]domain.Education, 0),
-		WorkExperience: make([]domain.WorkExperience, 0),
-		Skills:         make([]string, 0),
-		Interests:      make([]string, 0),
+		Id:               getObjectId(pbUser.Id),
+		Username:         pbUser.Username,
+		HashedPassword:   string(hashedPassword),
+		FirstName:        pbUser.FirstName,
+		LastName:         pbUser.LastName,
+		FullName:         pbUser.FirstName + " " + pbUser.LastName,
+		DateOfBirth:      pbUser.DateOfBirth.AsTime(),
+		Email:            pbUser.Email,
+		Role:             "unverified",
+		Private:          pbUser.Private,
+		Activated:        pbUser.Activated,
+		TwoFactorEnabled: pbUser.TwoFactorEnabled,
+		Education:        make([]domain.Education, 0),
+		WorkExperience:   make([]domain.WorkExperience, 0),
+		Skills:           make([]string, 0),
+		Interests:        make([]string, 0),
 	}
 	for _, education := range pbUser.Education {
 		education := &domain.Education{

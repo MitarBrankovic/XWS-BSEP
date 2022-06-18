@@ -18,3 +18,6 @@ time="2022-06-18T00:39:35.856Z" level=info msg="Api gateway started" func=main.m
 time="2022-06-18T00:46:02.106Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Brankovic/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
 time="2022-06-18T00:46:38.614Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Brankovic/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
 time="2022-06-18T01:12:50.191Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Brankovic/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-06-18T01:33:59.286Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Brankovic/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-06-18T01:52:05.574Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Brankovic/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-06-18T01:59:54.004Z" level=info msg="Api gateway started" func=main.main file="C:/Users/Brankovic/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"

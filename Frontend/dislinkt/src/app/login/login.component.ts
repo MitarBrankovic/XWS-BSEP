@@ -22,30 +22,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  /*login() {
-    if(!this.twoFactor){
-      this.userService.login(this.user).subscribe((token) => {
-        localStorage.setItem('token', JSON.stringify(token))
-        localStorage.setItem('username', this.user.username)
-        this.userService.updateCredentials();
-        window.location.href = '/homePage';
-      },
-      ()=>{
-        this.swalError('Username/Password incorect')},
-      ()=>{}
-      );
-    }else{
-      this.userService.loginTwoFactor(this.user).subscribe(() => {
-        this.checkTwoFactor();
-      },
-      ()=>{
-        this.swalError('Username/Password incorect')},
-      ()=>{}
-    
-    }
-
-  }*/
-
 
   login() {
     this.userService.login(this.user).subscribe((token) => {

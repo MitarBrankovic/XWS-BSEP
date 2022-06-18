@@ -151,6 +151,11 @@
         </div>
         <br>
         <hr>
+        <label class="checkbox">
+          <input type="checkbox" [(ngModel)]="newUser.twoFactorEnabled">
+          Two Factor Authentication
+        </label> <br><hr>
+
         <button class="button is-dark mt-5" (click)="createAccount()"
           [disabled]="nameInput.invalid || lastNameInput.invalid
                 || usernameInput.invalid || emailInput.invalid || passwordInput.invalid || dateOfBirthInput.invalid">Create account</button>
