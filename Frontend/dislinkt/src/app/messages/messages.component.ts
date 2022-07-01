@@ -51,12 +51,12 @@ export class MessagesComponent implements OnInit {
       this.roomname = this.router.url.split('/')[2];  //ako je link/21312
       firebase.database().ref('chats/').on('value', (resp: any) => {
         this.chats = [];
-        this.chats = snapshotToArray(resp);
+        this.chats = snapshotToArray(resp).filter(x => x.roomname === this.roomname);;
         setTimeout(() => this.scrolltop = this.chatcontent.nativeElement.scrollHeight, 500);
       });
       firebase.database().ref('roomusers/').orderByChild('roomname').equalTo(this.roomname).on('value', (resp2: any) => {
         const roomusers = snapshotToArray(resp2);
-        this.users = roomusers.filter(x => x.status === 'online');
+        this.users = roomusers;
       });
     }
 

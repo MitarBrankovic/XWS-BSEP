@@ -10,6 +10,7 @@ import { ConnectionService } from '../services/connection.service';
 import { PostService } from '../services/post.service';
 import { UserService } from '../services/user.service';
 import firebase from 'firebase/compat/app';
+import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
 
 export const snapshotToArray = (snapshot: any) => {
   const returnArr: any[] = [];
@@ -38,6 +39,7 @@ export class UserProfilePageComponent implements OnInit {
   isApproved: boolean = false;
   isClickedOnCommentButton: Array<boolean> = [];
   commentContent: any = "";
+  roomname = ""
 
   user: User = new User();
   posts: Array<any> = [];
@@ -60,6 +62,19 @@ export class UserProfilePageComponent implements OnInit {
       this.user = JSON.parse(checkUser);
     this.getPosts()
     this.getAllConnections();
+
+    firebase.database().ref('roomusers/').on('value', (resp: any) => {
+      let roomname = this.user.username + this.loggedUser.username;
+      let roomname2 = this.loggedUser.username + this.user.username;
+      let roomuser = [];
+      roomuser = snapshotToArray(resp);
+      const user = roomuser.find(x => x.nickname === this.loggedUser.username && (x.roomname === roomname || x.roomname === roomname2));
+      if (user !== undefined) {
+        const userRef = firebase.database().ref('roomusers/' + user.key);
+        this.roomname = user.roomname;
+      }
+    })
+
   }
 
   sortPostsByDate(posts:any){
@@ -226,8 +241,15 @@ export class UserProfilePageComponent implements OnInit {
           this.swalUpRight('Request sent')
 
           //FIREBASE
-          let roomname = 'jikjhjhkl';
-          firebase.database().ref('roomusers/').orderByChild('roomname').equalTo(roomname).on('value', (resp: any) => {
+          
+          if(this.checkIfUserIsFollowingMe()){
+            this.roomname = this.user.username + this.loggedUser.username;
+          }else{
+            this.roomname = this.loggedUser.username + this.user.username;
+          }
+
+          firebase.database().ref('roomusers/').orderByChild('roomname').equalTo(this.roomname).on('value', (resp: any) => {
+            
             let roomuser = [];
             roomuser = snapshotToArray(resp);
             const user = roomuser.find(x => x.nickname === this.loggedUser.username);
@@ -236,7 +258,7 @@ export class UserProfilePageComponent implements OnInit {
               userRef.update({status: 'online'});
             } else {
               const newroomuser = { roomname: '', nickname: '', status: '' };
-              newroomuser.roomname = roomname;
+              newroomuser.roomname = this.roomname;
               newroomuser.nickname = this.loggedUser.username;
               newroomuser.status = 'online';
               const newRoomUser = firebase.database().ref('roomusers/').push();
@@ -247,6 +269,16 @@ export class UserProfilePageComponent implements OnInit {
       )
     }
   }
+
+  checkIfUserIsFollowingMe(){
+    for(let connection of this.connections){
+      if(connection.issuerUsername == this.user.username && connection.subjectUsername == this.loggedUser.username){
+        return true;
+      }
+    }
+    return false;
+  }
+
 
   getAllConnections(){
     this.connectionService.getAllConnections().subscribe(
@@ -267,7 +299,7 @@ export class UserProfilePageComponent implements OnInit {
     this.connectionService.deleteConnection(connection[0].id).subscribe(() => {
         this.getAllConnections();
         this.swalUpRight('Successfully unfollowed')
-
+/*
                   //FIREBASE
                   let roomname = 'jikjhjhkl';
                   firebase.database().ref('roomusers/').orderByChild('roomname').equalTo(roomname).on('value', (resp: any) => {
@@ -276,10 +308,10 @@ export class UserProfilePageComponent implements OnInit {
                     const user = roomuser.find(x => x.nickname === this.loggedUser.username);
                     if (user !== undefined) {
                       //const userRef = firebase.database().ref('roomusers/' + user.key);
-                      firebase.database().ref('roomusers/' + user.key).remove()
-
+                      //userRef.remove(user)
+                      firebase.database().ref('roomusers').child(user.key).remove()
                     }
-                  });
+                  });*/
       })
   }
 
@@ -303,19 +335,17 @@ export class UserProfilePageComponent implements OnInit {
   }
 
   messageRouter(){
-    let roomname = 'jikjhjhkl';
-    window.location.href = '/messages/'+ roomname;
-    //this.router.navigate(['/messages/'+ roomname]);
+    window.location.href = '/messages/'+ this.roomname;
   }
 
 
   //OVA METODA CE SE KORISTITI ZA DOPISIVANJE
-  /*checkIfConnectionIsMutual(){
+  checkIfConnectionIsMutual(){
     let firstConnection = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username && connection.isApproved == true);
     let secondConnection = this.connections.some((connection:any) => connection.issuerUsername == this.user.username && connection.subjectUsername == this.loggedUser.username && connection.isApproved == true);
     if(firstConnection && secondConnection)
       return true
     else return false
-  }*/
+  }
 
 }
