@@ -10,6 +10,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { JobOffersComponent } from './job-offers/job-offers.component';
 import { UserProfilePageComponent } from './user-profile-page/user-profile-page.component';
+import { MessagesComponent } from './messages/messages.component';
 import { User } from './model/user.model';
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: "homePage", component: HomePageComponent },
   { path: "jobOffers", component: JobOffersComponent },
   { path: "profile", component: UserProfilePageComponent, data: { user: User } },
+  { path: "messages/:roomname", component: MessagesComponent },
 ];
 
 @NgModule({

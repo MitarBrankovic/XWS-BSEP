@@ -11,6 +11,7 @@ export class User {
     workExperience: any;
     private: boolean;
     activated: boolean;
+    role:any;
     twoFactorEnabled: boolean;
 
     constructor(){
@@ -26,6 +27,7 @@ export class User {
         this.workExperience = [];
         this.private = false;
         this.activated = false;
+        this.role = "";
         this.twoFactorEnabled = false;
     }
 }

@@ -1,5 +1,6 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subscriber } from 'rxjs';
 import Swal from 'sweetalert2';
 import { LoggedUser } from '../model/logged-user';
@@ -8,12 +9,28 @@ import { User } from '../model/user.model';
 import { ConnectionService } from '../services/connection.service';
 import { PostService } from '../services/post.service';
 import { UserService } from '../services/user.service';
+import firebase from 'firebase/compat/app';
+
+export const snapshotToArray = (snapshot: any) => {
+  const returnArr: any[] = [];
+
+  snapshot.forEach((childSnapshot: any) => {
+      const item = childSnapshot.val();
+      item.key = childSnapshot.key;
+      returnArr.push(item);
+  });
+
+  return returnArr;
+};
 
 @Component({
   selector: 'app-user-profile-page',
   templateUrl: './user-profile-page.component.html',
   styleUrls: ['./user-profile-page.component.css']
 })
+
+
+
 export class UserProfilePageComponent implements OnInit {
 
   connections: any = [];
@@ -33,7 +50,7 @@ export class UserProfilePageComponent implements OnInit {
   postImageBase64: any;
 
 
-  constructor(private userService: UserService, private postService: PostService , private connectionService: ConnectionService) { }
+  constructor(private userService: UserService, private postService: PostService , private connectionService: ConnectionService, private router: Router, public datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser;
@@ -207,6 +224,25 @@ export class UserProfilePageComponent implements OnInit {
         (data) => {
           this.getAllConnections();
           this.swalUpRight('Request sent')
+
+          //FIREBASE
+          let roomname = 'jikjhjhkl';
+          firebase.database().ref('roomusers/').orderByChild('roomname').equalTo(roomname).on('value', (resp: any) => {
+            let roomuser = [];
+            roomuser = snapshotToArray(resp);
+            const user = roomuser.find(x => x.nickname === this.loggedUser.username);
+            if (user !== undefined) {
+              const userRef = firebase.database().ref('roomusers/' + user.key);
+              userRef.update({status: 'online'});
+            } else {
+              const newroomuser = { roomname: '', nickname: '', status: '' };
+              newroomuser.roomname = roomname;
+              newroomuser.nickname = this.loggedUser.username;
+              newroomuser.status = 'online';
+              const newRoomUser = firebase.database().ref('roomusers/').push();
+              newRoomUser.set(newroomuser);
+            }
+          });
         }
       )
     }
@@ -231,6 +267,19 @@ export class UserProfilePageComponent implements OnInit {
     this.connectionService.deleteConnection(connection[0].id).subscribe(() => {
         this.getAllConnections();
         this.swalUpRight('Successfully unfollowed')
+
+                  //FIREBASE
+                  let roomname = 'jikjhjhkl';
+                  firebase.database().ref('roomusers/').orderByChild('roomname').equalTo(roomname).on('value', (resp: any) => {
+                    let roomuser = [];
+                    roomuser = snapshotToArray(resp);
+                    const user = roomuser.find(x => x.nickname === this.loggedUser.username);
+                    if (user !== undefined) {
+                      //const userRef = firebase.database().ref('roomusers/' + user.key);
+                      firebase.database().ref('roomusers/' + user.key).remove()
+
+                    }
+                  });
       })
   }
 
@@ -251,6 +300,12 @@ export class UserProfilePageComponent implements OnInit {
       icon: 'success',
       title: title
     })
+  }
+
+  messageRouter(){
+    let roomname = 'jikjhjhkl';
+    window.location.href = '/messages/'+ roomname;
+    //this.router.navigate(['/messages/'+ roomname]);
   }
 
 

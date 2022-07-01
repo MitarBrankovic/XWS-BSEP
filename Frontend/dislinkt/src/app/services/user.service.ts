@@ -5,6 +5,8 @@ import { Observable } from "rxjs";
 import { Connection } from "../model/connection";
 import { LoggedUser } from "../model/logged-user";
 import { User } from "../model/user.model";
+import firebase from 'firebase/compat/app';
+import "firebase/compat/database";
 
 @Injectable({
   providedIn: 'root',
@@ -109,4 +111,5 @@ export class UserService {
   public isExpired(): boolean{
       return this.loggedUser.exp < Date.now() / 1000
   }
+
 }

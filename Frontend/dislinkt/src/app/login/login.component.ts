@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
+import firebase from 'firebase/compat/app';
+import "firebase/compat/database";
 
 @Component({
   selector: 'app-login',
@@ -16,8 +18,7 @@ export class LoginComponent implements OnInit {
   twoFactor: boolean = false;
 
 
-  constructor(private userService: UserService,
-    private router: Router) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -28,7 +29,18 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', JSON.stringify(token))
       localStorage.setItem('username', this.user.username)
       this.userService.updateCredentials();
-      window.location.href = '/homePage';
+
+      firebase.database().ref('users/').orderByChild('nickname').equalTo(this.user.username).once('value', snapshot => {
+        if (snapshot.exists()) {
+          window.location.href = '/homePage';
+        } else {
+          const newUser = firebase.database().ref('users/').push();
+          newUser.set(this.userService.loggedUser);
+          window.location.href = '/homePage';
+        }
+      });
+
+      //window.location.href = '/homePage';
     },
     ()=>{
       this.userService.loginTwoFactor(this.user).subscribe(() => {

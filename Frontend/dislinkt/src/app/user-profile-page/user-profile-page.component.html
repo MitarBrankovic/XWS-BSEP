@@ -13,6 +13,9 @@
             <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && isApproved">FOLLOWING</h2>
             <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && !isApproved">FOLLOW REQUEST IS SENT</h2>
             <button *ngIf="loggedUser.username !== user.username && isApproved" class="button is-danger is-outlined is-fullwidth mt-5" (click)="unFollow()">Unfollow</button>
+
+            <br><hr>
+            <button  class="button is-primary" (click)="messageRouter()">Message</button>
         </div>
         <div class="tile is-child box">
             <p class="title">Work experience</p>
