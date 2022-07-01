@@ -67,40 +67,18 @@ export class MessagesComponent implements OnInit {
   }
 
   onFormSubmit(form: any) {
-    const chat = form;
-    chat.roomname = this.roomname;
-    chat.nickname = this.nickname;
-    chat.date = this.datepipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss');
-    chat.type = 'message';
-    const newMessage = firebase.database().ref('chats/').push();
-    newMessage.set(chat);
-    this.chatForm = this.formBuilder.group({
-      'message' : [null, Validators.required]
-    });
+    if(form.message != null && form.message != ""){
+      const chat = form;
+      chat.roomname = this.roomname;
+      chat.nickname = this.nickname;
+      chat.date = this.datepipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss');
+      chat.type = 'message';
+      const newMessage = firebase.database().ref('chats/').push();
+      newMessage.set(chat);
+      this.chatForm = this.formBuilder.group({
+        'message' : [null, Validators.required]
+      });
+    }
   }
-
-  /*exitChat() {
-    
-    const chat = { roomname: '', nickname: '', message: '', date: '', type: '' };
-    chat.roomname = this.roomname;
-    chat.nickname = this.nickname;
-    chat.date = this.datepipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss');
-    chat.message = `${this.nickname} leave the room`;
-    chat.type = 'exit';
-    const newMessage = firebase.database().ref('chats/').push();
-    newMessage.set(chat);
-
-    firebase.database().ref('roomusers/').orderByChild('roomname').equalTo(this.roomname).on('value', (resp: any) => {
-      let roomuser = [];
-      roomuser = snapshotToArray(resp);
-      const user = roomuser.find(x => x.nickname === this.nickname);
-      if (user !== undefined) {
-        const userRef = firebase.database().ref('roomusers/' + user.key);
-        userRef.update({status: 'offline'});
-      }
-    });
-
-    this.router.navigate(['/roomlist']);
-  }*/
 
 }

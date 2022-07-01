@@ -29,11 +29,11 @@
         <footer class="sticky-footer">
           <form class="message-form" [formGroup]="chatForm" (ngSubmit)="onFormSubmit(chatForm.value)">
             <mat-form-field class="message-form-field">
-              <input matInput placeholder="Enter message here" formControlName="message" > <!--[errorStateMatcher]="matcher"-->
+              <input matInput placeholder="Enter message here" formControlName="message" >
               <mat-error>
-                <span >Enter your message</span> <!--*ngIf="!chatForm.get('message').valid && chatForm.get('message').touched"-->>
+                <span >Enter your message</span>
               </mat-error>
-              <button type="submit"  mat-button matSuffix mat-icon-button aria-label="Send"> <!--[disabled]="!chatForm.valid"-->
+              <button type="submit"  mat-button matSuffix mat-icon-button aria-label="Send">
                 <mat-icon>send</mat-icon>
               </button>
             </mat-form-field>
