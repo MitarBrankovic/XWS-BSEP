@@ -10,7 +10,7 @@ import { Post } from "../model/post";
 })
 export class ConnectionService {
 
-    private _url = 'https://localhost:8000';
+    private _url = 'http://localhost:8000';
     header: any;
     loggedUser: LoggedUser = new LoggedUser();
 

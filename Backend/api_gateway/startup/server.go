@@ -3,7 +3,6 @@ package startup
 import (
 	"context"
 	cfg "dislinkt/api_gateway/startup/config"
-	"dislinkt/common/https"
 	"dislinkt/common/loggers"
 	_ "dislinkt/common/loggers"
 	connectionPb "dislinkt/common/proto/connection_service"
@@ -15,10 +14,9 @@ import (
 	"github.com/sirupsen/logrus"
 	_ "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	_ "google.golang.org/grpc/credentials/insecure"
-	"log"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -86,15 +84,15 @@ func cors(next http.Handler) http.Handler {
 }
 
 func (server *Server) initHandlers() {
-	tlsCredentials, err := https.LoadTLSClientCredentials()
+	/*tlsCredentials, err := https.LoadTLSClientCredentials()
 	if err != nil {
 		log.Fatalf("failed to load tls credentials: %v", err)
-	}
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(tlsCredentials)}
-	//opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	}*/
+	//opts := []grpc.DialOption{grpc.WithTransportCredentials(tlsCredentials)}
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
 	userEndpoint := fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort)
-	err = userPb.RegisterUserServiceHandlerFromEndpoint(context.TODO(), server.mux, userEndpoint, opts)
+	err := userPb.RegisterUserServiceHandlerFromEndpoint(context.TODO(), server.mux, userEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}
@@ -119,14 +117,16 @@ func (server *Server) initHandlers() {
 }
 
 func (server *Server) Start() {
-	serverCertFile := getCertPath() + "cert/server-cert.pem"
+
+	errorLog.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), cors(server.mux)))
+	/*serverCertFile := getCertPath() + "cert/server-cert.pem"
 	serverKeyFile := getCertPath() + "cert/server-key.pem"
-	errorLog.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%s", server.config.Port), serverCertFile, serverKeyFile, cors(server.mux)))
+	errorLog.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%s", server.config.Port), serverCertFile, serverKeyFile, cors(server.mux)))*/
 }
 
-func getCertPath() string {
+/*func getCertPath() string {
 	if os.Getenv("OS_ENV") != "docker" {
 		return "../"
 	}
 	return ""
-}
+}*/

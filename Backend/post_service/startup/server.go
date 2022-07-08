@@ -2,7 +2,6 @@ package startup
 
 import (
 	"dislinkt/common/clients"
-	"dislinkt/common/https"
 	post "dislinkt/common/proto/post_service"
 	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/post_service/application"
@@ -97,16 +96,15 @@ func (server *Server) initPostHandler(service *application.PostService, reaction
 
 func (server *Server) startGrpcServer(postHandler *api.PostHandler, jwtManager *auth.JWTManager) {
 	interceptor := auth.NewAuthInterceptor(jwtManager, accessibleRoles())
-	tlsCredentials, err := https.LoadTLSServerCredentials()
+	/*tlsCredentials, err := https.LoadTLSServerCredentials()
 	if err != nil {
 		panic("cannot load TLS credentials: %w")
-	}
+	}*/
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", server.config.Port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	serverOptions := []grpc.ServerOption{
-		grpc.Creds(tlsCredentials),
 		grpc.UnaryInterceptor(interceptor.Unary()),
 		grpc.StreamInterceptor(interceptor.Stream()),
 	}

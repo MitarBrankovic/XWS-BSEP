@@ -8,7 +8,7 @@ import { User } from "../model/user.model";
   providedIn: 'root',
 })
 export class EditProfileService {
-  private _url = 'https://localhost:8000';
+  private _url = 'http://localhost:8000';
   
   header: any;
 

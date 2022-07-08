@@ -9,7 +9,7 @@ import { LoggedUser } from '../model/logged-user';
 })
 export class JobOffersService {
 
-  private _url = 'https://localhost:8000';
+  private _url = 'http://localhost:8000';
   header: any;
   loggedUser: LoggedUser = new LoggedUser();
 

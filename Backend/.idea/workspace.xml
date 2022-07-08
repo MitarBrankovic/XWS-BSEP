@@ -6,17 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connection_service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connection_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/offer_service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/offer_service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/offer_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/offer_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/clients/connection_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/clients/connection_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/clients/offer_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/clients/offer_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/clients/post_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/clients/post_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/clients/user_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/clients/user_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/offer_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/offer_service/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/connection.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/connection.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/edit-profile.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/edit-profile.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/job-offers.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/job-offers.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/post.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/post.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/custom/customLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/custom/customLogs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/info/infoLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/info/infoLogs.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +76,7 @@
       <recent name="C:\Users\Brankovic\Desktop\XWS-BSEP\Backend\common\proto\post_service\google\api" />
     </key>
   </component>
-  <component name="RunManager" selected="Compound.xml">
+  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
     <configuration name="xml" type="CompoundRunConfigurationType">
       <toRun name="go build dislinkt/api_gateway" type="GoApplicationRunConfiguration" />
       <toRun name="go build dislinkt/connection_service" type="GoApplicationRunConfiguration" />
@@ -187,20 +193,5 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/api_gateway/startup/server.go</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/api_gateway/startup/server.go</url>
-          <line>39</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
