@@ -8,11 +8,17 @@ services:
       context: .
       dockerfile: ./user_service/Dockerfile
     restart: on-failure
+    ports:
+      - 8001:${USER_SERVICE_PORT}
     environment:
       OS_ENV: docker
       USER_DB_HOST: ${USER_DB_HOST}
       USER_DB_PORT: ${USER_DB_PORT}
       USER_SERVICE_PORT: ${USER_SERVICE_PORT}
+      NATS_HOST: ${NATS_HOST}
+      NATS_PORT: ${NATS_PORT}
+      NATS_USER: ${NATS_USER}
+      NATS_PASS: ${NATS_PASS}
     depends_on:
       - user_db
     networks:
@@ -25,11 +31,17 @@ services:
       context: .
       dockerfile: ./post_service/Dockerfile
     restart: on-failure
+    ports:
+      - 8002:${POST_SERVICE_PORT}
     environment:
       OS_ENV: docker
       POST_DB_HOST: ${POST_DB_HOST}
       POST_DB_PORT: ${POST_DB_PORT}
       POST_SERVICE_PORT: ${POST_SERVICE_PORT}
+      NATS_HOST: ${NATS_HOST}
+      NATS_PORT: ${NATS_PORT}
+      NATS_USER: ${NATS_USER}
+      NATS_PASS: ${NATS_PASS}
     depends_on:
       - post_db
     networks:
@@ -42,13 +54,42 @@ services:
       context: .
       dockerfile: ./connection_service/Dockerfile
     restart: on-failure
+    ports:
+      - 8003:${CONNECTION_SERVICE_PORT}
     environment:
       OS_ENV: docker
       CONNECTION_DB_HOST: ${CONNECTION_DB_HOST}
       CONNECTION_DB_PORT: ${CONNECTION_DB_PORT}
       CONNECTION_SERVICE_PORT: ${CONNECTION_SERVICE_PORT}
+      NATS_HOST: ${NATS_HOST}
+      NATS_PORT: ${NATS_PORT}
+      NATS_USER: ${NATS_USER}
+      NATS_PASS: ${NATS_PASS}
     depends_on:
       - connection_db
+    networks:
+      - network
+
+  offer_service:
+    image: offer_service
+    container_name: offer_service
+    build:
+      context: .
+      dockerfile: ./offer_service/Dockerfile
+    restart: on-failure
+    ports:
+      - 8004:${OFFER_SERVICE_PORT}
+    environment:
+      OS_ENV: docker
+      OFFER_DB_HOST: ${OFFER_DB_HOST}
+      OFFER_DB_PORT: ${OFFER_DB_PORT}
+      OFFER_SERVICE_PORT: ${OFFER_SERVICE_PORT}
+      NATS_HOST: ${NATS_HOST}
+      NATS_PORT: ${NATS_PORT}
+      NATS_USER: ${NATS_USER}
+      NATS_PASS: ${NATS_PASS}
+    depends_on:
+      - offer_db
     networks:
       - network
 
@@ -70,6 +111,8 @@ services:
       POST_SERVICE_PORT: ${POST_SERVICE_PORT}
       CONNECTION_SERVICE_HOST: ${CONNECTION_SERVICE_HOST}
       CONNECTION_SERVICE_PORT: ${CONNECTION_SERVICE_PORT}
+      OFFER_SERVICE_HOST: ${OFFER_SERVICE_HOST}
+      OFFER_SERVICE_PORT: ${OFFER_SERVICE_PORT}
     networks:
       - network
 
@@ -90,6 +133,13 @@ services:
   connection_db:
     image: mongo
     container_name: connection_db
+    restart: on-failure
+    networks:
+      - network
+
+  offer_db:
+    image: mongo
+    container_name: offer_db
     restart: on-failure
     networks:
       - network

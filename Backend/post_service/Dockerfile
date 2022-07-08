@@ -9,6 +9,8 @@ COPY ./post_service/go.mod ./post_service/go.sum ./
 
 # Copy the local dependency
 COPY /common ../common
+COPY /user_service ../user_service
+COPY /cert ../cert
 
 # Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
@@ -27,6 +29,7 @@ WORKDIR /root/
 
 # Copy the Pre-built binary file from the previous stage
 COPY --from=builder /app/main .
+COPY --from=builder ../cert ./cert
 
 # Expose port 8000 to the outside world
 EXPOSE 8000

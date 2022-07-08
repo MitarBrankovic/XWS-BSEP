@@ -2,6 +2,12 @@ module dislinkt/offer_service
 
 go 1.18
 
+replace dislinkt/common => ../common
+
+replace dislinkt/user_service => ../user_service
+
+replace dislinkt/cert => ../cert
+
 require (
 	dislinkt/common v0.0.0-00010101000000-000000000000
 	dislinkt/user_service v0.0.0-00010101000000-000000000000
@@ -36,7 +42,3 @@ require (
 	google.golang.org/genproto v0.0.0-20220505152158-f39f71e6c8f3 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )
-
-replace dislinkt/common => ../common
-
-replace dislinkt/user_service => ../user_service

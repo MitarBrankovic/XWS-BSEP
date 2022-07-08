@@ -6,6 +6,8 @@ replace dislinkt/common => ../common
 
 replace dislinkt/user_service => ../user_service
 
+replace dislinkt/cert => ../cert
+
 require (
 	dislinkt/common v0.0.0-00010101000000-000000000000
 	dislinkt/user_service v0.0.0-00010101000000-000000000000

@@ -38,3 +38,5 @@ require (
 )
 
 replace dislinkt/common => ../common
+
+replace dislinkt/cert => ../cert

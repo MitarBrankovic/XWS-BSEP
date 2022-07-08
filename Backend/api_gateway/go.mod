@@ -4,6 +4,8 @@ go 1.18
 
 replace dislinkt/common => ../common
 
+replace dislinkt/cert => ../cert
+
 require (
 	dislinkt/common v0.0.0-00010101000000-000000000000
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
