@@ -5,41 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/common/saga/messaging/messaging.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/saga/messaging/nats/connection.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/saga/messaging/nats/nats_publisher.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/saga/messaging/nats/nats_subscriber.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/saga/update_user/update_user_event.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/post_service/infrastructure/api/update_user_handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user_service/application/update_user_orchestrator.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user_service/infrastructure/api/update_profile_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.dev" beforeDir="false" afterPath="$PROJECT_DIR$/.env.dev" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/domain/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/domain/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/common/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/common/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connection_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connection_service/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/offer_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/offer_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/offer_service/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/offer_service/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/infrastructure/api/post_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/infrastructure/api/post_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/startup/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/startup/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/post_service/startup/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/application/user_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/application/user_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/infrastructure/api/pb_mapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/infrastructure/api/pb_mapper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user_service/infrastructure/api/user_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/infrastructure/api/user_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/startup/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/startup/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/startup/server.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../logs/custom/customLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/custom/customLogs.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../logs/info/infoLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/info/infoLogs.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../logs/success/successLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/success/successLogs.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

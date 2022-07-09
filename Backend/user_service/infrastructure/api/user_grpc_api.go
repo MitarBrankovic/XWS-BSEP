@@ -157,7 +157,7 @@ func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest
 	user.HashedPassword = oldUser.HashedPassword
 	user.Role = oldUser.Role
 	user.Activated = oldUser.Activated
-	user.Private = oldUser.Private
+	//user.Private = oldUser.Private
 	if err := handler.validate.Struct(user); err != nil {
 		errorLog.Error("Validation failed")
 		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)

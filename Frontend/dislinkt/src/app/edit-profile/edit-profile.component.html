@@ -132,6 +132,10 @@
           <input [attr.disabled]="!isEdit? true : null" type="checkbox" [(ngModel)]="user.twoFactorEnabled">
           Two Factor Authentication
         </label> <br><hr>
+        <label class="checkbox">
+          <input [attr.disabled]="!isEdit? true : null" type="checkbox" [(ngModel)]="user.private">
+          Private
+        </label> <br><hr>
     </div>
 
 </div>
