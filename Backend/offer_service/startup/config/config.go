@@ -16,9 +16,6 @@ type Config struct {
 	NatsUser    string
 	NatsPass    string
 
-	UserDBHost string
-	UserDBPort string
-
 	UserHost string
 	UserPort string
 }
@@ -38,10 +35,8 @@ func NewConfig() *Config {
 		NatsUser:    os.Getenv("NATS_USER"),
 		NatsPass:    os.Getenv("NATS_PASS"),
 
-		UserHost:   os.Getenv("USER_SERVICE_HOST"),
-		UserPort:   os.Getenv("USER_SERVICE_PORT"),
-		UserDBHost: os.Getenv("USER_DB_HOST"),
-		UserDBPort: os.Getenv("USER_DB_PORT"),
+		UserHost: os.Getenv("USER_SERVICE_HOST"),
+		UserPort: os.Getenv("USER_SERVICE_PORT"),
 	}
 }
 

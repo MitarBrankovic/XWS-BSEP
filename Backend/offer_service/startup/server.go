@@ -54,7 +54,7 @@ func (server *Server) Start() {
 }
 
 func (server *Server) initMongoClient() *mongo.Client {
-	client, err := persistence.GetClient(server.config.UserDBHost, server.config.UserDBPort)
+	client, err := persistence.GetClient(server.config.OfferDBHost, server.config.OfferDBPort)
 	if err != nil {
 		log.Fatal(err)
 	}
