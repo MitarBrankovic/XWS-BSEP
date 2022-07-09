@@ -65,6 +65,7 @@
                             <a href="#" *ngFor="let link of p.content.links "> #{{link}}</a>
                             <br>
                             <time><i>{{formatDates(p.createdAt)}}</i></time>
+                            <label class="ml-3"><i>{{p.user.firstName}} {{p.user.lastName}}</i></label>
                         </div>
                         <footer class="card-footer">
                             <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p.id, 0)" href="#" class="card-footer-item button is-info">Like

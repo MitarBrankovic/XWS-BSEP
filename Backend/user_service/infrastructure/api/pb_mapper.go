@@ -1,6 +1,7 @@
 package api
 
 import (
+	commonDomain "dislinkt/common/domain"
 	pb "dislinkt/common/proto/user_service"
 	"dislinkt/user_service/domain"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -110,6 +111,57 @@ func mapPbToUser(pbUser *pb.User) *domain.User {
 		user.Interests = append(user.Interests, interest)
 	}
 
+	return user
+}
+
+func mapCommonUserToUser(commonUser *commonDomain.User) *domain.User {
+	user := &domain.User{
+		Id:                 commonUser.Id,
+		Username:           commonUser.Username,
+		FirstName:          commonUser.FirstName,
+		LastName:           commonUser.LastName,
+		FullName:           commonUser.FirstName + " " + commonUser.LastName,
+		Email:              commonUser.Email,
+		Role:               commonUser.Role,
+		Private:            commonUser.Private,
+		Activated:          commonUser.Activated,
+		TwoFactorEnabled:   commonUser.TwoFactorEnabled,
+		TwoFactorToken:     commonUser.TwoFactorToken,
+		TwoFactorTokenDate: commonUser.TwoFactorTokenDate,
+		ApiToken:           commonUser.ApiToken,
+		HashedPassword:     commonUser.HashedPassword,
+		DateOfBirth:        commonUser.DateOfBirth,
+	}
+	for _, education := range user.Education {
+		education := &domain.Education{
+			School:       education.School,
+			Degree:       education.Degree,
+			FieldOfStudy: education.FieldOfStudy,
+			StartDate:    education.StartDate,
+			EndDate:      education.EndDate,
+		}
+		user.Education = append(user.Education, *education)
+	}
+
+	for _, workExperience := range user.WorkExperience {
+		workExperience := &domain.WorkExperience{
+			Title:          workExperience.Title,
+			Company:        workExperience.Company,
+			EmploymentType: workExperience.EmploymentType,
+			Location:       workExperience.Location,
+			StartDate:      workExperience.StartDate,
+			EndDate:        workExperience.StartDate,
+		}
+		user.WorkExperience = append(user.WorkExperience, *workExperience)
+	}
+
+	for _, skill := range user.Skills {
+		user.Skills = append(user.Skills, skill)
+	}
+
+	for _, interest := range user.Interests {
+		user.Interests = append(user.Interests, interest)
+	}
 	return user
 }
 

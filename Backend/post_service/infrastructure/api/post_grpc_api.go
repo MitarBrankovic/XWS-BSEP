@@ -15,11 +15,10 @@ type PostHandler struct {
 	commentService  *application.CommentService
 }
 
-func NewPostHandler(service *application.PostService, reactionService *application.ReactionService, commentService *application.CommentService, userClient pbUser.UserServiceClient) *PostHandler {
+func NewPostHandler(service *application.PostService, reactionService *application.ReactionService, commentService *application.CommentService) *PostHandler {
 	return &PostHandler{
 		service:         service,
 		reactionService: reactionService,
-		userClient:      userClient,
 		commentService:  commentService,
 	}
 }

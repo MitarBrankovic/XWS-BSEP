@@ -21,6 +21,9 @@ type Config struct {
 
 	PostHost string
 	PostPort string
+
+	UpdateUserCommandSubject string
+	UpdateUserReplySubject   string
 }
 
 func NewConfig() *Config {
@@ -42,6 +45,9 @@ func NewConfig() *Config {
 		PostPort:   os.Getenv("POST_SERVICE_PORT"),
 		PostDBHost: os.Getenv("POST_DB_HOST"),
 		PostDBPort: os.Getenv("POST_DB_PORT"),
+
+		UpdateUserCommandSubject: os.Getenv("UPDATE_USER_COMMAND_SUBJECT"),
+		UpdateUserReplySubject:   os.Getenv("UPDATE_USER_REPLY_SUBJECT"),
 	}
 }
 

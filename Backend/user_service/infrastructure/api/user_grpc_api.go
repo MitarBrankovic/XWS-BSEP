@@ -168,7 +168,7 @@ func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest
 		return nil, err
 	}
 
-	if oldUser.FirstName != user.FirstName || oldUser.LastName != user.LastName {
+	/*if oldUser.FirstName != user.FirstName || oldUser.LastName != user.LastName {
 		_, err = handler.postClient.UpdateUser(context.Background(), &pbPost.UpdateUserRequest{
 			User: &pbPost.User{
 				Username:  user.Username,
@@ -181,7 +181,7 @@ func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest
 			handler.service.Update(userId, oldUser)
 			return nil, err
 		}
-	}
+	}*/
 
 	successLog.WithField("id", userId).Info("User updated")
 

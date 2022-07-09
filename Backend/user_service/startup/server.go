@@ -5,6 +5,8 @@ import (
 	"dislinkt/common/clients"
 	pbPost "dislinkt/common/proto/post_service"
 	pbUser "dislinkt/common/proto/user_service"
+	saga "dislinkt/common/saga/messaging"
+	"dislinkt/common/saga/messaging/nats"
 	"dislinkt/user_service/application"
 	"dislinkt/user_service/auth"
 	"dislinkt/user_service/domain"
@@ -33,6 +35,10 @@ func NewServer(config *config.Config) *Server {
 		config: config,
 	}
 }
+
+const (
+	QueueGroup = "user_service"
+)
 
 func accessibleRoles() map[string][]string {
 
@@ -64,10 +70,55 @@ func (server *Server) Start() {
 
 	mongoClient := server.initMongoClient()
 	userStore := server.initUserStore(mongoClient)
-	userService := server.initUserService(userStore)
+
+	commandPublisher := server.initPublisher(server.config.UpdateUserCommandSubject)
+	replySubscriber := server.initSubscriber(server.config.UpdateUserReplySubject, QueueGroup)
+	updateUserOrchestrator := server.initUpdateUserOrchestrator(commandPublisher, replySubscriber)
+
+	userService := server.initUserService(userStore, updateUserOrchestrator)
 	mailService := server.initMailService()
+
+	commandSubscriber := server.initSubscriber(server.config.UpdateUserCommandSubject, QueueGroup)
+	replyPublisher := server.initPublisher(server.config.UpdateUserReplySubject)
+	server.initUpdateUserHandler(userService, replyPublisher, commandSubscriber)
+
 	userHandler := server.initUserHandler(userService, mailService, jwtManager, userClient, postClient)
 	server.startGrpcServer(userHandler, jwtManager)
+}
+
+func (server *Server) initPublisher(subject string) saga.Publisher {
+	publisher, err := nats.NewNATSPublisher(
+		server.config.NatsHost, server.config.NatsPort,
+		server.config.NatsUser, server.config.NatsPass, subject)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return publisher
+}
+
+func (server *Server) initSubscriber(subject, queueGroup string) saga.Subscriber {
+	subscriber, err := nats.NewNATSSubscriber(
+		server.config.NatsHost, server.config.NatsPort,
+		server.config.NatsUser, server.config.NatsPass, subject, queueGroup)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return subscriber
+}
+
+func (server *Server) initUpdateUserOrchestrator(publisher saga.Publisher, subscriber saga.Subscriber) *application.UpdateUserOrchestrator {
+	orchestrator, err := application.NewUpdateUserOrchestrator(publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return orchestrator
+}
+
+func (server *Server) initUpdateUserHandler(service *application.UserService, publisher saga.Publisher, subscriber saga.Subscriber) {
+	_, err := api.NewUpdateProfileCommandHandler(service, publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (server *Server) initMongoClient() *mongo.Client {
@@ -93,8 +144,8 @@ func (server *Server) initUserStore(client *mongo.Client) domain.UserStore {
 	return store
 }
 
-func (server *Server) initUserService(store domain.UserStore) *application.UserService {
-	return application.NewUserService(store)
+func (server *Server) initUserService(store domain.UserStore, orchestartor *application.UpdateUserOrchestrator) *application.UserService {
+	return application.NewUserService(store, orchestartor)
 }
 
 func (server *Server) initMailService() *application.MailService {

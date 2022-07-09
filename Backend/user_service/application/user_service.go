@@ -1,15 +1,24 @@
 package application
 
-import "dislinkt/user_service/domain"
+import (
+	commonDomain "dislinkt/common/domain"
+	"dislinkt/user_service/domain"
+)
 
 type UserService struct {
-	store domain.UserStore
+	store        domain.UserStore
+	orchestrator *UpdateUserOrchestrator
 }
 
-func NewUserService(store domain.UserStore) *UserService {
+func NewUserService(store domain.UserStore, orchestrator *UpdateUserOrchestrator) *UserService {
 	return &UserService{
-		store: store,
+		store:        store,
+		orchestrator: orchestrator,
 	}
+}
+
+func (service *UserService) RollbackUpdate(profile *domain.User) error {
+	return service.store.Update(profile.Id.Hex(), profile)
 }
 
 func (service *UserService) Find(username string) (*domain.User, error) {
@@ -33,7 +42,25 @@ func (service *UserService) Create(user *domain.User) error {
 }
 
 func (service *UserService) Update(userId string, user *domain.User) error {
-	return service.store.Update(userId, user)
+	oldUser, err := service.store.Get(userId)
+	if err != nil {
+		return err
+	}
+	err = service.store.Update(userId, user)
+	if err != nil {
+		return err
+	}
+	newUser := &commonDomain.User{
+		Id:        user.Id,
+		Username:  user.Username,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+	}
+	err = service.orchestrator.Start(newUser, oldUser.Username, oldUser.FirstName, oldUser.LastName)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (service *UserService) ActivateAccount(token string) *domain.User {

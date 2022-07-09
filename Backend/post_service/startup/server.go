@@ -1,9 +1,9 @@
 package startup
 
 import (
-	"dislinkt/common/clients"
 	post "dislinkt/common/proto/post_service"
-	pbUser "dislinkt/common/proto/user_service"
+	saga "dislinkt/common/saga/messaging"
+	"dislinkt/common/saga/messaging/nats"
 	"dislinkt/post_service/application"
 	"dislinkt/post_service/domain"
 	"dislinkt/post_service/infrastructure/api"
@@ -29,6 +29,10 @@ func NewServer(config *config.Config) *Server {
 	}
 }
 
+const (
+	QueueGroup = "post_service"
+)
+
 func accessibleRoles() map[string][]string {
 
 	const postServicePath = "/post.PostService/"
@@ -46,13 +50,44 @@ func (server *Server) Start() {
 	reactionService := server.initReactionService(postStore)
 	commentService := server.initCommentService(postStore)
 
-	userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort))
+	/*userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort))
+	if err != nil {
+		log.Fatal(err)
+	}*/
+
+	commandSubscriber := server.initSubscriber(server.config.UpdateUserCommandSubject, QueueGroup)
+	replyPublisher := server.initPublisher(server.config.UpdateUserReplySubject)
+	server.initUpdateUserHandler(postService, replyPublisher, commandSubscriber)
+
+	postHandler := server.initPostHandler(postService, reactionService, commentService)
+	server.startGrpcServer(postHandler, jwtManager)
+}
+
+func (server *Server) initPublisher(subject string) saga.Publisher {
+	publisher, err := nats.NewNATSPublisher(
+		server.config.NatsHost, server.config.NatsPort,
+		server.config.NatsUser, server.config.NatsPass, subject)
 	if err != nil {
 		log.Fatal(err)
 	}
+	return publisher
+}
 
-	postHandler := server.initPostHandler(postService, reactionService, commentService, userClient)
-	server.startGrpcServer(postHandler, jwtManager)
+func (server *Server) initSubscriber(subject, queueGroup string) saga.Subscriber {
+	subscriber, err := nats.NewNATSSubscriber(
+		server.config.NatsHost, server.config.NatsPort,
+		server.config.NatsUser, server.config.NatsPass, subject, queueGroup)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return subscriber
+}
+
+func (server *Server) initUpdateUserHandler(service *application.PostService, publisher saga.Publisher, subscriber saga.Subscriber) {
+	_, err := api.NewUpdateUserCommandHandler(service, publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (server *Server) initMongoClient() *mongo.Client {
@@ -90,8 +125,8 @@ func (server *Server) initCommentService(store domain.PostStore) *application.Co
 	return application.NewCommentService(store)
 }
 
-func (server *Server) initPostHandler(service *application.PostService, reactionService *application.ReactionService, commentService *application.CommentService, userClient pbUser.UserServiceClient) *api.PostHandler {
-	return api.NewPostHandler(service, reactionService, commentService, userClient)
+func (server *Server) initPostHandler(service *application.PostService, reactionService *application.ReactionService, commentService *application.CommentService) *api.PostHandler {
+	return api.NewPostHandler(service, reactionService, commentService)
 }
 
 func (server *Server) startGrpcServer(postHandler *api.PostHandler, jwtManager *auth.JWTManager) {
