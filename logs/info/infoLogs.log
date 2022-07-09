@@ -44,3 +44,6 @@ time="2022-07-09T18:59:59.859Z" level=info msg="Api gateway started" func=main.m
 time="2022-07-09T19:21:47.858Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
 time="2022-07-09T22:28:45.164Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
 time="2022-07-09T22:35:42.197Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-07-09T22:52:25.513Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-07-09T22:52:25.515Z" level=fatal msg="listen tcp :8000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted." func="dislinkt/api_gateway/startup.(*Server).Start" file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/startup/server.go:121"
+time="2022-07-09T22:52:58.763Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"

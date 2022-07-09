@@ -104,7 +104,7 @@ export class NavbarComponent implements OnInit {
   getUnapprovedConnectionsByUser(connections:any){
     let unapprovedConnections = [];
     for(let connection of connections){
-      if(this.loggedUser.username == connection.subjectUsername && connection.isApproved == false){
+      if(this.loggedUser.username == connection.subjectUser.username && connection.isApproved == false){
         unapprovedConnections.push(connection)
       }
     }

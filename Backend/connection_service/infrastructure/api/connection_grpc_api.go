@@ -3,22 +3,17 @@ package api
 import (
 	"context"
 	pb "dislinkt/common/proto/connection_service"
-	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/connection_service/application"
 )
 
 type ConnectionHandler struct {
 	pb.UnimplementedConnectionServiceServer
-	service        *application.ConnectionService
-	messageService *application.MessageService
-	userClient     pbUser.UserServiceClient
+	service *application.ConnectionService
 }
 
-func NewConnectionHandler(service *application.ConnectionService, messageService *application.MessageService, userClient pbUser.UserServiceClient) *ConnectionHandler {
+func NewConnectionHandler(service *application.ConnectionService) *ConnectionHandler {
 	return &ConnectionHandler{
-		service:        service,
-		messageService: messageService,
-		userClient:     userClient,
+		service: service,
 	}
 }
 
@@ -89,16 +84,5 @@ func (handler *ConnectionHandler) Update(ctx context.Context, request *pb.Update
 	}
 	return &pb.UpdateResponse{
 		Connection: mapConnectionToPb(connection),
-	}, nil
-}
-
-func (handler *ConnectionHandler) CreateMessage(ctx context.Context, request *pb.CreateMessageRequest) (*pb.CreateMessageResponse, error) {
-	message := mapPbToMessage(request.Message)
-	newMessage, err := handler.messageService.Create(message)
-	if err != nil {
-		return nil, err
-	}
-	return &pb.CreateMessageResponse{
-		Message: mapMessageToPb(newMessage),
 	}, nil
 }

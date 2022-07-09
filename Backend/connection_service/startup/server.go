@@ -1,9 +1,7 @@
 package startup
 
 import (
-	"dislinkt/common/clients"
 	connection "dislinkt/common/proto/connection_service"
-	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/connection_service/application"
 	"dislinkt/connection_service/domain"
 	"dislinkt/connection_service/infrastructure/api"
@@ -48,17 +46,10 @@ func (server *Server) Start() {
 
 	mongoClient := server.initMongoClient()
 	connectionStore := server.initConnectionStore(mongoClient)
-	messageStore := server.initMessageStore(mongoClient)
 
 	connectionService := server.initConnectionService(connectionStore)
-	messageService := server.initMessageService(messageStore)
 
-	userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.UserHost, server.config.UserPort))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	connectionHandler := server.initConnectionHandler(connectionService, messageService, userClient)
+	connectionHandler := server.initConnectionHandler(connectionService)
 
 	server.startGrpcServer(connectionHandler, jwtManager)
 }
@@ -86,31 +77,12 @@ func (server *Server) initConnectionStore(client *mongo.Client) domain.Connectio
 	return store
 }
 
-func (server *Server) initMessageStore(client *mongo.Client) domain.MessageStore {
-	store := persistence.NewMessageMongoDBStore(client)
-	err := store.DeleteAll()
-	if err != nil {
-		return nil
-	}
-	for _, Message := range messages {
-		_, err := store.Create(Message)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-	return store
-}
-
 func (server *Server) initConnectionService(store domain.ConnectionStore) *application.ConnectionService {
 	return application.NewConnectionService(store)
 }
 
-func (server *Server) initMessageService(store domain.MessageStore) *application.MessageService {
-	return application.NewMessageService(store)
-}
-
-func (server *Server) initConnectionHandler(service *application.ConnectionService, messageService *application.MessageService, userClient pbUser.UserServiceClient) *api.ConnectionHandler {
-	return api.NewConnectionHandler(service, messageService, userClient)
+func (server *Server) initConnectionHandler(service *application.ConnectionService) *api.ConnectionHandler {
+	return api.NewConnectionHandler(service)
 }
 
 func (server *Server) startGrpcServer(connectionHandler *api.ConnectionHandler, jwtManager *auth.JWTManager) {
