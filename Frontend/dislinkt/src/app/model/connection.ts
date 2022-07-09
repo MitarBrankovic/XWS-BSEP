@@ -1,10 +1,10 @@
 export class Connection {
 
-    issuerUsername: string;
-    subjectUsername: string;
+    issuerUser: any;
+    subjectUser: any;
 
-    constructor(issuerUsername: string, subjectUsername: string) {
-        this.issuerUsername = issuerUsername;
-        this.subjectUsername = subjectUsername;
+    constructor(issuerUser: any, subjectUser: any) {
+        this.issuerUser = issuerUser;
+        this.subjectUser = subjectUser;
     }
 }

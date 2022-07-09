@@ -9,21 +9,35 @@ import (
 
 func mapConnectionToPb(connection *domain.Connection) *pb.Connection {
 	return &pb.Connection{
-		Id:              connection.Id.Hex(),
-		IssuerUsername:  connection.IssuerUsername,
-		SubjectUsername: connection.SubjectUsername,
-		Date:            timestamppb.New(connection.Date),
-		IsApproved:      connection.IsApproved,
+		Id:          connection.Id.Hex(),
+		IssuerUser:  mapUserToPbUser(&connection.IssuerUser),
+		SubjectUser: mapUserToPbUser(&connection.SubjectUser),
+		Date:        timestamppb.New(connection.Date),
+		IsApproved:  connection.IsApproved,
 	}
 }
 
 func mapPbToConnection(pbConnection *pb.Connection) *domain.Connection {
 	return &domain.Connection{
-		Id:              getObjectId(pbConnection.Id),
-		IssuerUsername:  pbConnection.IssuerUsername,
-		SubjectUsername: pbConnection.SubjectUsername,
-		Date:            pbConnection.Date.AsTime(),
-		IsApproved:      pbConnection.IsApproved,
+		Id:          getObjectId(pbConnection.Id),
+		IssuerUser:  mapPbUserToUser(pbConnection.IssuerUser),
+		SubjectUser: mapPbUserToUser(pbConnection.SubjectUser),
+		Date:        pbConnection.Date.AsTime(),
+		IsApproved:  pbConnection.IsApproved,
+	}
+}
+
+func mapPbUserToUser(pbUser *pb.User) domain.User {
+	return domain.User{
+		Username: pbUser.Username,
+		Private:  pbUser.Private,
+	}
+}
+
+func mapUserToPbUser(user *domain.User) *pb.User {
+	return &pb.User{
+		Username: user.Username,
+		Private:  user.Private,
 	}
 }
 

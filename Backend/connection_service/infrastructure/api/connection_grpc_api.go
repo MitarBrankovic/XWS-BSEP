@@ -53,9 +53,8 @@ func (handler *ConnectionHandler) GetAll(ctx context.Context, request *pb.GetAll
 }
 
 func (handler *ConnectionHandler) Create(ctx context.Context, request *pb.CreateRequest) (*pb.CreateResponse, error) {
-	user, err := handler.userClient.FindByUsername(context.Background(), &pbUser.FindByUsernameRequest{Username: request.Connection.SubjectUsername})
 	connection := mapPbToConnection(request.Connection)
-	if user.User.Private {
+	if request.Connection.SubjectUser.Private {
 		connection.IsApproved = false
 	} else {
 		connection.IsApproved = true
@@ -64,7 +63,7 @@ func (handler *ConnectionHandler) Create(ctx context.Context, request *pb.Create
 	if err != nil {
 		return nil, err
 	}
-	if user.User.Private {
+	if request.Connection.SubjectUser.Private {
 		newConnection.IsApproved = false
 	} else {
 		newConnection.IsApproved = true

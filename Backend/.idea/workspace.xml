@@ -6,8 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/offer_service/startup/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/offer_service/startup/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/offer_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/offer_service/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/connection_service/connection_service.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/connection_service/connection_service.pb.gw.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/connection_service/connection_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/connection_service/connection_service.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/connection_service/connection_service_grpc.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection_service/domain/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/domain/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection_service/infrastructure/api/connection_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/infrastructure/api/connection_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection_service/infrastructure/api/pb_mapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/infrastructure/api/pb_mapper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection_service/infrastructure/persistence/connection_mongodb_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/infrastructure/persistence/connection_mongodb_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection_service/startup/data.go" beforeDir="false" afterPath="$PROJECT_DIR$/connection_service/startup/data.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/custom/customLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/custom/customLogs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/info/infoLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/info/infoLogs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/success/successLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/success/successLogs.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +73,7 @@
       <recent name="C:\Users\Brankovic\Desktop\XWS-BSEP\Backend\common\proto\post_service\google\api" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
+  <component name="RunManager" selected="Compound.xml">
     <configuration name="xml" type="CompoundRunConfigurationType">
       <toRun name="go build dislinkt/api_gateway" type="GoApplicationRunConfiguration" />
       <toRun name="go build dislinkt/connection_service" type="GoApplicationRunConfiguration" />

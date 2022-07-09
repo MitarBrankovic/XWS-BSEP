@@ -94,8 +94,8 @@ message CreateMessageResponse {
 
 message Connection {
   string id = 1;
-  string issuerUsername = 2;
-  string subjectUsername = 3;
+  User issuerUser = 2;
+  User subjectUser = 3;
   google.protobuf.Timestamp date = 4;
   bool isApproved = 5;
 }
@@ -106,4 +106,9 @@ message Message {
   string receiverUsername = 3;
   string content = 4;
   google.protobuf.Timestamp date = 5;
+}
+
+message User{
+  string username = 1;
+  bool private = 4;
 }

@@ -101,8 +101,8 @@ export class UserService {
     }
   }
 
-  public requestConnect(username: string): Observable<any>{
-    let connection = new Connection(this.loggedUser.username, username);
+  public requestConnect(user: any): Observable<any>{
+    let connection = new Connection(this.loggedUser, user);
     
     return this.http.post(this._url + '/connection', connection, { headers: this.header });
 

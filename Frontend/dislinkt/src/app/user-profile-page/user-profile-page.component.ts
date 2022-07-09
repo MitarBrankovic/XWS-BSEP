@@ -235,7 +235,7 @@ export class UserProfilePageComponent implements OnInit {
 
   requestConnect(){
     if(this.loggedUser.username != ""){
-      this.userService.requestConnect(this.user.username).subscribe(
+      this.userService.requestConnect(this.user).subscribe(
         (data) => {
           this.getAllConnections();
           this.swalUpRight('Request sent')
@@ -272,7 +272,7 @@ export class UserProfilePageComponent implements OnInit {
 
   checkIfUserIsFollowingMe(){
     for(let connection of this.connections){
-      if(connection.issuerUsername == this.user.username && connection.subjectUsername == this.loggedUser.username){
+      if(connection.issuerUser.username == this.user.username && connection.subjectUser.username == this.loggedUser.username){
         return true;
       }
     }
@@ -284,18 +284,18 @@ export class UserProfilePageComponent implements OnInit {
     this.connectionService.getAllConnections().subscribe(
       (data) => {
         this.connections = data.connections;
-        this.isConnected = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username);
-        this.isApproved = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username && connection.isApproved == true);
+        this.isConnected = this.connections.some((connection:any) => connection.issuerUser.username == this.loggedUser.username && connection.subjectUser.username == this.user.username);
+        this.isApproved = this.connections.some((connection:any) => connection.issuerUser.username == this.loggedUser.username && connection.subjectUser.username == this.user.username && connection.isApproved == true);
       }
     )
   }
 
   requestIsAccepted(){
-    return this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username && connection.isApproved == true);
+    return this.connections.some((connection:any) => connection.issuerUser.username == this.loggedUser.username && connection.subjectUser.username == this.user.username && connection.isApproved == true);
   }
 
   unFollow(){
-    let connection = this.connections.filter((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username);
+    let connection = this.connections.filter((connection:any) => connection.issuerUser.username == this.loggedUser.username && connection.subjectUser.username == this.user.username);
     this.connectionService.deleteConnection(connection[0].id).subscribe(() => {
         this.getAllConnections();
         this.swalUpRight('Successfully unfollowed')
@@ -341,8 +341,8 @@ export class UserProfilePageComponent implements OnInit {
 
   //OVA METODA CE SE KORISTITI ZA DOPISIVANJE
   checkIfConnectionIsMutual(){
-    let firstConnection = this.connections.some((connection:any) => connection.issuerUsername == this.loggedUser.username && connection.subjectUsername == this.user.username && connection.isApproved == true);
-    let secondConnection = this.connections.some((connection:any) => connection.issuerUsername == this.user.username && connection.subjectUsername == this.loggedUser.username && connection.isApproved == true);
+    let firstConnection = this.connections.some((connection:any) => connection.issuerUser.username == this.loggedUser.username && connection.subjectUser.username == this.user.username && connection.isApproved == true);
+    let secondConnection = this.connections.some((connection:any) => connection.issuerUser.username == this.user.username && connection.subjectUser.username == this.loggedUser.username && connection.isApproved == true);
     if(firstConnection && secondConnection)
       return true
     else return false

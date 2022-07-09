@@ -6,15 +6,7 @@ import (
 	"time"
 )
 
-var connections = []*domain.Connection{
-	{
-		Id:              getObjectId("45406d1b624b3da748f63fe1"),
-		IssuerUsername:  "radisa",
-		SubjectUsername: "filip",
-		IsApproved:      true,
-		Date:            time.Now(),
-	},
-}
+var connections = []*domain.Connection{}
 
 var messages = []*domain.Message{
 	{

@@ -6,11 +6,11 @@ import (
 )
 
 type Connection struct {
-	Id              primitive.ObjectID `bson:"_id"`
-	IssuerUsername  string             `bson:"issuerUsername"`
-	SubjectUsername string             `bson:"subjectUsername"`
-	Date            time.Time          `bson:"date"`
-	IsApproved      bool               `bson:"isApproved"`
+	Id          primitive.ObjectID `bson:"_id"`
+	IssuerUser  User               `bson:"issuerUser"`
+	SubjectUser User               `bson:"subjectUser"`
+	Date        time.Time          `bson:"date"`
+	IsApproved  bool               `bson:"isApproved"`
 }
 
 type Message struct {
@@ -19,4 +19,9 @@ type Message struct {
 	ReceiverUsername string             `bson:"receiverUsername"`
 	Date             time.Time          `bson:"date"`
 	Content          string             `bson:"content"`
+}
+
+type User struct {
+	Username string `bson:"username"`
+	Private  bool   `bson:"private"`
 }
