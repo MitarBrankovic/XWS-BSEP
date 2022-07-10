@@ -148,7 +148,15 @@ export class HomePageComponent implements OnInit {
         if(connection.issuerUser.username == this.loggedUser.username && connection.isApproved == true){
           this.postService.getLatestPosts(connection.subjectUser.username).subscribe((f:any) => {
             f.posts.forEach((post:any) => {
-              this.homePagePosts.push(post);
+              //post.reactions.some((reaction:any) => reaction.username == this.loggedUser.username)
+              this.userService.getBlocked().subscribe((blocked:any) => {
+                if(blocked.blocks.some((blockedUser:any) => blockedUser.issuerUsername == post.user.username && blockedUser.subjectUsername == this.loggedUser.username)){
+                  
+                }else{
+                  this.homePagePosts.push(post)
+                }
+              })
+              //this.homePagePosts.push(post);
             })
           })
         }

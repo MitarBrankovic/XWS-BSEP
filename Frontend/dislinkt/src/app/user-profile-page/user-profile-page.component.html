@@ -10,15 +10,15 @@
                 <label *ngFor="let i of user.interests" class="mr-1"><i>{{i}}</i></label>
             </p>
             <button [disabled]="this.loggedUser.role !== 'user' || amIBlocked" *ngIf="loggedUser.username !== user.username && !isConnected" class="button is-info is-outlined is-fullwidth mt-5" (click)="requestConnect()">Follow</button>
-            <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && isApproved">FOLLOWING</h2>
-            <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && !isApproved">FOLLOW REQUEST IS SENT</h2>
-            <button *ngIf="loggedUser.username !== user.username && isApproved" class="button is-danger is-outlined is-fullwidth mt-5" (click)="unFollow()">Unfollow</button>
+            <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && isApproved && !amIBlocked">FOLLOWING</h2>
+            <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && !isApproved && !amIBlocked">FOLLOW REQUEST IS SENT</h2>
+            <button *ngIf="loggedUser.username !== user.username && isApproved && !amIBlocked" class="button is-danger is-outlined is-fullwidth mt-5" (click)="unFollow()">Unfollow</button>
 
             <br><hr>
-            <button *ngIf="loggedUser.username !== user.username && checkIfConnectionIsMutual()"  class="button is-info is-fullwidth mt-5" (click)="messageRouter()">Message ✉️</button>
+            <button *ngIf="loggedUser.username !== user.username && checkIfConnectionIsMutual() && !amIBlocked"  class="button is-info is-fullwidth mt-5" (click)="messageRouter()">Message ✉️</button>
 
-            <button *ngIf="loggedUser.username !== user.username && !isBlocked"  class="button is-danger is-fullwidth mt-5" (click)="blockUser()">Block 🚫</button>
-            <button *ngIf="loggedUser.username !== user.username && isBlocked"  class="button is-danger is-fullwidth mt-5" (click)="unblockUser()">Unblock ⭕</button>
+            <button *ngIf="loggedUser.username !== user.username && !isBlocked && loggedUser.username != ''"  class="button is-danger is-fullwidth mt-5" (click)="blockUser()">Block 🚫</button>
+            <button *ngIf="loggedUser.username !== user.username && isBlocked && loggedUser.username != ''"  class="button is-danger is-fullwidth mt-5" (click)="unblockUser()">Unblock ⭕</button>
         </div>
         <div class="tile is-child box" *ngIf="!amIBlocked">
             <p class="title">Work experience</p>
