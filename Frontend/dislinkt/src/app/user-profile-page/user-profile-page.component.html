@@ -60,7 +60,7 @@
                 </div>
             </div>
             <h2 *ngIf="posts.length == 0 && loggedUser.username !== user.username && !user.private" class="title" style="text-align: center;"><i>No posts yet</i></h2>
-            <h2 *ngIf="loggedUser.username !== user.username && user.private && !requestIsAccepted()" class="title" style="text-align: center;"><i>Profile is private</i></h2>
+            <h2 *ngIf="loggedUser.username !== user.username && user.private && !requestIsAccepted()" class="title" style="text-align: center;"><i>Profile is private 🔒</i></h2>
             <div *ngIf="requestIsAccepted() || !user.private">
                 <div class="card mt-5" *ngFor="let p of posts; let i = index">
                     <div class="card-content">

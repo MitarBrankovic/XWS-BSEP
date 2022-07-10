@@ -36,4 +36,8 @@ export class PostService {
     public sendComment(comment: any) {
         return this.http.post(this._url + '/comment', comment, { headers: this.header });
     }
+
+    public getLatestPosts(username: string){
+        return this.http.get(this._url + '/post/latest/' + username);
+    }
 }   

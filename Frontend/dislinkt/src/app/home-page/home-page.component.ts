@@ -1,7 +1,13 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { LoggedUser } from '../model/logged-user';
+import { Post } from '../model/post';
 import { User } from '../model/user.model';
+import { PostService } from '../services/post.service';
 import { UserService } from '../services/user.service';
+import { ConnectionService } from '../services/connection.service';
 
 @Component({
   selector: 'app-home-page',
@@ -13,11 +19,19 @@ export class HomePageComponent implements OnInit {
   publicUsers: any;
   filteredUsers: any;
   searchValue: string = "";
+  posts: Array<any> = [];
+  homePagePosts: Array<any> = [];
+  loggedUser: LoggedUser = new LoggedUser();
+  isClickedOnCommentButton: Array<boolean> = [];
+  commentContent: any = "";
+  connections: any;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private postService: PostService, private connectionService: ConnectionService, private router: Router) { }
 
   ngOnInit(): void {
+    this.loggedUser = this.userService.loggedUser;
     this.getAllPublicUsers()
+    this.getConnections();
   }
 
   getAllPublicUsers() {
@@ -47,6 +61,100 @@ export class HomePageComponent implements OnInit {
       return "Private"
     else
       return "Public"
+  }
+
+  formatDates(date: any) {
+    date = formatDate(date, 'dd MMMM yyyy hh:mm', 'en_US');
+    return date;
+  }
+
+  reactOnPost(postId: any, reactionType: any) {
+    let data = {
+      reaction: {
+        id: '',
+        username: this.loggedUser.username,
+        type: reactionType,
+        createdAt: formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en_US') + 'Z'
+
+      },
+      postId: postId
+
+    }
+
+    this.postService.reactOnPost(data).subscribe();
+    this.getPosts();
+    window.location.reload();
+  }
+
+  getNumLikes(post: Post, type:number){ 
+    return post.reactions.filter((reaction:any) => reaction.type == type).length
+  }
+
+  alreadyReacted(post: Post){
+    return post.reactions.some((reaction:any) => reaction.username == this.loggedUser.username)
+  }
+
+  openCommentDiv(i: number) {
+    this.isClickedOnCommentButton[i] = !this.isClickedOnCommentButton[i]
+  }
+
+  sendComment(postId: any, i: number) {
+    if(this.commentContent != ""){
+      let data = {
+        comment: {
+          id: "",
+          content: this.commentContent,
+          username: this.loggedUser.username,
+          dateCreated: formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en_US') + 'Z'
+        },
+        postId: postId
+      }
+      
+      this.postService.sendComment(data).subscribe(() => {
+        this.commentContent = "";
+        window.location.reload();
+        this.isClickedOnCommentButton[i] = false
+      },
+        () => { }
+      );
+      /*this.commentContent = "";
+      window.location.reload();
+      this.isClickedOnCommentButton[i] = false*/
+    }else{
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1100,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Fill the comment field!'
+      })
+    }
+  }
+
+  getConnections(){
+    this.connectionService.getAllConnections().subscribe(f => {
+      this.connections = f.connections;
+      this.connections.forEach((connection:any) => {
+        if(connection.issuerUser.username == this.loggedUser.username && connection.isApproved == true){
+          this.postService.getLatestPosts(connection.subjectUser.username).subscribe((f:any) => {
+            this.homePagePosts.push(f.posts[0]);
+          })
+        }
+      },
+      console.log(this.homePagePosts)
+    )})
+  }
+
+  getPosts(){
   }
 
 }
