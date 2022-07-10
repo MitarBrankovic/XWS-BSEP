@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="40a20657-8c89-4c73-a88d-8d48b695c2c9" name="Changes" comment="">
+    <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/home-page/home-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/home-page/home-page.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../logs/custom/customLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/custom/customLogs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/info/infoLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/info/infoLogs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/success/successLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/success/successLogs.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

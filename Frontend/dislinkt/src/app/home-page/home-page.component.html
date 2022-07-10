@@ -33,6 +33,7 @@
   </div>
   <div class="tile is-parent">
     <div class="tile is-child box">
+      <h1 *ngIf="loggedUser.username ==  ''">Login to see for you page!</h1>
         <div class="card mt-5" *ngFor="let p of homePagePosts; let i = index">
             <div class="card-content">
                 <div class="content">

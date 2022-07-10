@@ -77,3 +77,4 @@ time="2022-07-10T14:43:16.746Z" level=info msg="Api gateway started" func=main.m
 time="2022-07-10T14:49:20.954Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
 time="2022-07-10T15:24:43.730Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
 time="2022-07-10T15:29:33.191Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
+time="2022-07-10T16:10:41.318Z" level=info msg="Api gateway started" func=main.main file="C:/Users/radis/OneDrive/Desktop/XWS-BSEP/Backend/api_gateway/main.go:14"
