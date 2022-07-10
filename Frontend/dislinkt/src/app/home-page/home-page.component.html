@@ -47,9 +47,9 @@
                     <label class="ml-3"><i>{{p.user.firstName}} {{p.user.lastName}}</i></label>
                 </div>
                 <footer class="card-footer">
-                    <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p.id, 0)" href="#" class="card-footer-item button is-info">Like
+                    <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p, 0)" href="#" class="card-footer-item button is-info">Like
                         👍 {{getNumLikes(p, 0)}}</button>
-                    <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p.id, 1)" href="#"
+                    <button [disabled]="loggedUser.role !== 'user' || alreadyReacted(p)" (click)="reactOnPost(p, 1)" href="#"
                         class="card-footer-item button is-light ml-5">Dislike 👎 {{getNumLikes(p, 1)}}</button>
                     <button [disabled]="loggedUser.role !== 'user'" (click)="openCommentDiv(i)" class="card-footer-item button is-light ml-5">Comment
                         💬</button>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <textarea class="textarea" placeholder="Write a comment" [(ngModel)]="commentContent"></textarea><br>
-                    <button (click)="sendComment(p.id, i)" class="button is-light mt-3">Send comment</button>
+                    <button (click)="sendComment(p, i)" class="button is-light mt-3">Send comment</button>
                 </div>
             </div>
           </div>

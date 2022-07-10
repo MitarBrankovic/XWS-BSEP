@@ -166,7 +166,7 @@ service UserService{
 
   rpc GetNotifications(NotificationsRequest) returns(NotificationsResponse) {
     option (google.api.http) = {
-      get: "/notification/{username}/{type}"
+      get: "/notification/{username}"
     };
   }
 }
@@ -181,7 +181,6 @@ message NotificationResponse{
 
 message NotificationsRequest{
   string username = 1;
-  int64 type = 2;
 }
 
 message NotificationsResponse{

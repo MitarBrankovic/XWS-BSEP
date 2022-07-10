@@ -68,7 +68,7 @@ export class HomePageComponent implements OnInit {
     return date;
   }
 
-  reactOnPost(postId: any, reactionType: any) {
+  reactOnPost(post: any, reactionType: any) {
     let data = {
       reaction: {
         id: '',
@@ -77,12 +77,12 @@ export class HomePageComponent implements OnInit {
         createdAt: formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en_US') + 'Z'
 
       },
-      postId: postId
+      postId: post.id
 
     }
 
     this.postService.reactOnPost(data).subscribe();
-    this.getPosts();
+    this.createNotification(post.user.username, `${this.loggedUser.username} reacted on your post`, 1)
     window.location.reload();
   }
 
@@ -98,7 +98,7 @@ export class HomePageComponent implements OnInit {
     this.isClickedOnCommentButton[i] = !this.isClickedOnCommentButton[i]
   }
 
-  sendComment(postId: any, i: number) {
+  sendComment(post: any, i: number) {
     if(this.commentContent != ""){
       let data = {
         comment: {
@@ -107,7 +107,7 @@ export class HomePageComponent implements OnInit {
           username: this.loggedUser.username,
           dateCreated: formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en_US') + 'Z'
         },
-        postId: postId
+        postId: post.id
       }
       
       this.postService.sendComment(data).subscribe(() => {
@@ -120,6 +120,7 @@ export class HomePageComponent implements OnInit {
       /*this.commentContent = "";
       window.location.reload();
       this.isClickedOnCommentButton[i] = false*/
+      this.createNotification(post.user.username,`${this.loggedUser.username} commented on your post`, 1)
     }else{
       const Toast = Swal.mixin({
         toast: true,
@@ -155,7 +156,12 @@ export class HomePageComponent implements OnInit {
     )})
   }
 
-  getPosts(){
-  }
+  createNotification(username:string, message: string, type: number){
+    this.userService.getByUsername(username).subscribe((user:any) => {
+      if ((type == 0 && user.user.followNotification) || (type==1 && user.user.postNotification) || (type == 2 && user.user.messageNotification)) 
+      this.userService.createNotification(user.user.username, message, type).subscribe();
+  })
+    
+}
 
 }

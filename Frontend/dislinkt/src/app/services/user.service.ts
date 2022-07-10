@@ -90,6 +90,10 @@ export class UserService {
     return this.http.get(this._url + '/getAllUsernames');
   }
 
+  public getByUsername(username: string){
+    return this.http.get(this._url + '/user/findByUsername/' + username, {headers: this.header})
+  }
+
   public updateCredentials(){
     let token = localStorage.getItem('token')
     if (token === null) {
