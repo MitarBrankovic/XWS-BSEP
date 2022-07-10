@@ -146,11 +146,12 @@ export class HomePageComponent implements OnInit {
       this.connections.forEach((connection:any) => {
         if(connection.issuerUser.username == this.loggedUser.username && connection.isApproved == true){
           this.postService.getLatestPosts(connection.subjectUser.username).subscribe((f:any) => {
-            this.homePagePosts.push(f.posts[0]);
+            f.posts.forEach((post:any) => {
+              this.homePagePosts.push(post);
+            })
           })
         }
       },
-      console.log(this.homePagePosts)
     )})
   }
 
