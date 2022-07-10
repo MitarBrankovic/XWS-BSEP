@@ -139,4 +139,12 @@ export class UserService {
   public createNotification(username: string, message: string, type: number){
     return this.http.post(this._url + '/notification', {username: username, message: message, type: type}, {headers: this.header})
   }
+
+  public getNotifications(username: string){
+    return this.http.get(this._url + '/notification/' + username, {headers: this.header})
+  }
+
+  public removeNotification(notification: any){
+    return this.http.post(this._url + '/notification/delete', notification, {headers: this.header})
+  }
 }

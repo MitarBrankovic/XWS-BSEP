@@ -25,6 +25,6 @@ type UserStore interface {
 	UnBlock(block *Block) error
 	CreateNotification(notification *Notification) error
 	DeleteNotification(notification *Notification) error
-	GetNotifications(username string, notificationType NotificationType) ([]*Notification, error)
+	GetNotifications(username string) ([]*Notification, error)
 	DeleteAllNotifications() error
 }

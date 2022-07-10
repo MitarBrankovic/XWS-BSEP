@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
 
   connections: any = [];
   user: User = new User();
+  notifications: any = [];
 
   constructor(private router:Router, private userService:UserService, private editProfileService:EditProfileService, private modalService: NgbModal, private connectionService: ConnectionService) { }
 
@@ -87,9 +88,18 @@ export class NavbarComponent implements OnInit {
     return this.loggedUser.exp < Date.now() / 1000
   }
 
-  notifications(content: any) {
+  friendRequests(content: any) {
     this.getAllConnections()
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {}, (reason) => {});
+  }
+
+  notification(content: any){
+    this.getAllNotifications();
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {}, (reason) => {});
+  }
+
+  getAllNotifications(){
+    this.userService.getNotifications(this.loggedUser.username).subscribe((data:any) => this.notifications = data.notification)
   }
 
   //OPTIMIZOVATI - NA BACKU NAPRAVITI METODU
@@ -99,6 +109,11 @@ export class NavbarComponent implements OnInit {
         this.connections = this.getUnapprovedConnectionsByUser(data.connections);
       }
     )
+  }
+
+  dismissNotification(notification: any){
+    this.userService.removeNotification(notification).subscribe();
+    this.notifications = this.notifications.filter((n:any) => n.id != notification.id)
   }
 
   getUnapprovedConnectionsByUser(connections:any){

@@ -86,8 +86,8 @@ func (store *UserMongoDBStore) DeleteNotification(notification *domain.Notificat
 	return nil
 }
 
-func (store *UserMongoDBStore) GetNotifications(username string, notificationType domain.NotificationType) ([]*domain.Notification, error) {
-	filter := bson.M{"username": username, "type": notificationType}
+func (store *UserMongoDBStore) GetNotifications(username string) ([]*domain.Notification, error) {
+	filter := bson.M{"username": username}
 	return store.filterNotifications(filter)
 }
 

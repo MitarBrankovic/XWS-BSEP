@@ -211,7 +211,7 @@ func (handler UserHandler) DeleteNotification(ctx context.Context, request *pb.N
 }
 
 func (handler UserHandler) GetNotifications(ctx context.Context, request *pb.NotificationsRequest) (*pb.NotificationsResponse, error) {
-	notifications, err := handler.service.GetNotifications(request.Username, domain.NotificationType(request.Type))
+	notifications, err := handler.service.GetNotifications(request.Username)
 	if err != nil {
 		errorLog.Error("Can't get all blocks: %v", err)
 		return nil, err

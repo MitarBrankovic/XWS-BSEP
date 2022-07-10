@@ -61,8 +61,8 @@ func (service *UserService) DeleteNotification(notification *domain.Notification
 	return service.store.DeleteNotification(notification)
 }
 
-func (service *UserService) GetNotifications(username string, notificationType domain.NotificationType) ([]*domain.Notification, error) {
-	return service.store.GetNotifications(username, notificationType)
+func (service *UserService) GetNotifications(username string) ([]*domain.Notification, error) {
+	return service.store.GetNotifications(username)
 }
 
 func (service *UserService) Update(userId string, user *domain.User) error {
