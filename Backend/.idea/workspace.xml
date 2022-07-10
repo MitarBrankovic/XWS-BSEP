@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="" />
+    <list default="true" id="700ba763-a74a-4571-b303-b87710e3ff6b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_service/domain/user_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/domain/user_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_service/infrastructure/persistence/user_mongodb_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/infrastructure/persistence/user_mongodb_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_service/startup/data.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/startup/data.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_service/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/user_service/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/services/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/user-profile-page/user-profile-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/dislinkt/src/app/user-profile-page/user-profile-page.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/custom/customLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/custom/customLogs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/info/infoLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/info/infoLogs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logs/success/successLogs.log" beforeDir="false" afterPath="$PROJECT_DIR$/../logs/success/successLogs.log" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

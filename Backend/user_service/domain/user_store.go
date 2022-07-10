@@ -26,4 +26,5 @@ type UserStore interface {
 	CreateNotification(notification *Notification) error
 	DeleteNotification(notification *Notification) error
 	GetNotifications(username string, notificationType NotificationType) ([]*Notification, error)
+	DeleteAllNotifications() error
 }

@@ -180,6 +180,7 @@ export class UserProfilePageComponent implements OnInit {
 
     this.postService.reactOnPost(data).subscribe();
     this.getPosts();
+    this.createNotification(`${this.loggedUser.username} reacted on your post!`, 1);
     window.location.reload();
   }
 
@@ -209,6 +210,7 @@ export class UserProfilePageComponent implements OnInit {
       /*this.commentContent = "";
       window.location.reload();
       this.isClickedOnCommentButton[i] = false*/
+      this.createNotification(`${this.loggedUser.username} commented on your post`, 1)
     }else{
       const Toast = Swal.mixin({
         toast: true,
@@ -271,6 +273,7 @@ export class UserProfilePageComponent implements OnInit {
           });
         }
       )
+      this.createNotification(`${this.loggedUser.username} sent you a follow request`, 0)
     }
   }
 
@@ -317,6 +320,7 @@ export class UserProfilePageComponent implements OnInit {
                     }
                   });*/
       })
+      this.createNotification(`${this.loggedUser.username} unfollowed you`, 0);
   }
 
   swalUpRight(title:string){
@@ -366,6 +370,11 @@ export class UserProfilePageComponent implements OnInit {
     if(firstConnection && secondConnection)
       return true
     else return false
+  }
+
+  createNotification(message: string, type: number){
+    if ((type == 0 && this.user.followNotification) || (type==1 && this.user.postNotification) || (type == 2 && this.user.messageNotification)) 
+      this.userService.createNotification(this.user.username, message, type).subscribe();
   }
 
 }

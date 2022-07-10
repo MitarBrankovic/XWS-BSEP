@@ -127,6 +127,10 @@ func (server *Server) initUserStore(client *mongo.Client) domain.UserStore {
 	if err != nil {
 		return nil
 	}
+	err = store.DeleteAllNotifications()
+	if err != nil {
+		return nil
+	}
 	for _, User := range users {
 		err := store.Create(User)
 		if err != nil {
@@ -135,6 +139,12 @@ func (server *Server) initUserStore(client *mongo.Client) domain.UserStore {
 	}
 	for _, Block := range blocks {
 		err := store.Block(Block)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	for _, Notification := range notifications {
+		err := store.CreateNotification(Notification)
 		if err != nil {
 			log.Fatal(err)
 		}

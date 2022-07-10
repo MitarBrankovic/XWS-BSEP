@@ -132,4 +132,7 @@ export class UserService {
     return this.http.get(this._url + '/block', {headers: this.header})
   }
 
+  public createNotification(username: string, message: string, type: number){
+    return this.http.post(this._url + '/notification', {username: username, message: message, type: type}, {headers: this.header})
+  }
 }

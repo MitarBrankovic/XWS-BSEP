@@ -155,6 +155,14 @@ func (store *UserMongoDBStore) DeleteAllBlocks() error {
 	return nil
 }
 
+func (store *UserMongoDBStore) DeleteAllNotifications() error {
+	_, err := store.notifications.DeleteMany(context.TODO(), bson.D{{}})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (store *UserMongoDBStore) Find(username string) (*domain.User, error) {
 	filter := bson.M{"username": username}
 	return store.filterOne(filter)

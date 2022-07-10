@@ -73,6 +73,8 @@ var users = []*domain.User{
 	},
 }
 
+var notifications = []*domain.Notification{}
+
 var blocks = []*domain.Block{}
 
 func getObjectId(id string) primitive.ObjectID {
