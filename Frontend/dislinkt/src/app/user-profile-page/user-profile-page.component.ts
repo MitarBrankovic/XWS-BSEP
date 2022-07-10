@@ -40,7 +40,7 @@ export class UserProfilePageComponent implements OnInit {
   isClickedOnCommentButton: Array<boolean> = [];
   commentContent: any = "";
   roomname = ""
-  isBlocked: any;
+  isBlocked: boolean = false;
   blocked: any;
 
   user: User = new User();
@@ -344,8 +344,7 @@ export class UserProfilePageComponent implements OnInit {
   getBlocked(){
     this.userService.getBlocked().subscribe(f => {
       this.blocked = f;
-      this.isBlocked = this.blocked.some((block:any) => block.issuerUsername == this.loggedUser.username && block.subjectUsername == this.user.username);
-      this.isBlocked = !!this.isBlocked
+      this.isBlocked = this.blocked.blocks.some((block:any) => block.issuerUsername == this.loggedUser.username && block.subjectUsername == this.user.username);
     });
   }
 
