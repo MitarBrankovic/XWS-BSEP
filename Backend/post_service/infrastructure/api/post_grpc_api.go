@@ -139,6 +139,21 @@ func (handler *PostHandler) GetByUser(ctx context.Context, request *pb.GetByUser
 	}, nil
 }
 
+func (handler *PostHandler) GetLatestPosts(ctx context.Context, request *pb.GetLatestPostRequest) (*pb.GetLatestPostResponse, error) {
+	posts, err := handler.service.GetLatestPost(request.Username)
+	pbPost := []*pb.Post{}
+	for _, post := range posts {
+		pbPost = append(pbPost, mapPostToPb(post))
+	}
+	if err != nil {
+		errorLog.Error("Cannot get latest posts: %v", err)
+		return nil, err
+	}
+	return &pb.GetLatestPostResponse{
+		Posts: pbPost,
+	}, nil
+}
+
 func (handler *PostHandler) CreateReaction(ctx context.Context, request *pb.CreateRequestReaction) (*pb.CreateResponseReaction, error) {
 	reaction := mapPbToReaction(request.Reaction)
 	err := handler.reactionService.Create(reaction, request.PostId)

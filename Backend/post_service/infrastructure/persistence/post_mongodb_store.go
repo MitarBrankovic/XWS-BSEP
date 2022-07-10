@@ -30,6 +30,27 @@ func NewPostMongoDBStore(client *mongo.Client) domain.PostStore {
 	}
 }
 
+func (store *PostMongoDBStore) GetLatestPost(username string) ([]*domain.Post, error) {
+	filter := bson.M{"user.username": username}
+	posts, err := store.filter(filter)
+	if err != nil {
+		return nil, err
+	}
+	for i := 0; i < len(posts); i++ {
+		for j := i + 1; j < len(posts); j++ {
+			if posts[i].CreatedAt.Before(posts[j].CreatedAt) {
+				posts[i], posts[j] = posts[j], posts[i]
+			}
+		}
+	}
+	if len(posts) > 2 {
+		return posts[:2], nil
+	}
+	//return first two posts
+
+	return posts, nil
+}
+
 func (store *PostMongoDBStore) Get(postId string) (*domain.Post, error) {
 	id, err := primitive.ObjectIDFromHex(postId)
 	if err != nil {

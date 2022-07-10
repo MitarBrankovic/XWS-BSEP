@@ -27,6 +27,7 @@ type PostServiceClient interface {
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	GetLatestPosts(ctx context.Context, in *GetLatestPostRequest, opts ...grpc.CallOption) (*GetLatestPostResponse, error)
 	//########################COMMENTS##################################
 	GetComment(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponseComment, error)
 	GetAllComments(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponseComment, error)
@@ -90,6 +91,15 @@ func (c *postServiceClient) Create(ctx context.Context, in *CreateRequest, opts 
 func (c *postServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
 	out := new(UpdateResponse)
 	err := c.cc.Invoke(ctx, "/post.PostService/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) GetLatestPosts(ctx context.Context, in *GetLatestPostRequest, opts ...grpc.CallOption) (*GetLatestPostResponse, error) {
+	out := new(GetLatestPostResponse)
+	err := c.cc.Invoke(ctx, "/post.PostService/GetLatestPosts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -204,6 +214,7 @@ type PostServiceServer interface {
 	GetAll(context.Context, *GetAllRequest) (*GetAllResponse, error)
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	GetLatestPosts(context.Context, *GetLatestPostRequest) (*GetLatestPostResponse, error)
 	//########################COMMENTS##################################
 	GetComment(context.Context, *GetRequest) (*GetResponseComment, error)
 	GetAllComments(context.Context, *GetAllRequest) (*GetAllResponseComment, error)
@@ -239,6 +250,9 @@ func (UnimplementedPostServiceServer) Create(context.Context, *CreateRequest) (*
 }
 func (UnimplementedPostServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedPostServiceServer) GetLatestPosts(context.Context, *GetLatestPostRequest) (*GetLatestPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLatestPosts not implemented")
 }
 func (UnimplementedPostServiceServer) GetComment(context.Context, *GetRequest) (*GetResponseComment, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetComment not implemented")
@@ -372,6 +386,24 @@ func _PostService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).Update(ctx, req.(*UpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_GetLatestPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLatestPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).GetLatestPosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/GetLatestPosts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).GetLatestPosts(ctx, req.(*GetLatestPostRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -600,6 +632,10 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _PostService_Update_Handler,
+		},
+		{
+			MethodName: "GetLatestPosts",
+			Handler:    _PostService_GetLatestPosts_Handler,
 		},
 		{
 			MethodName: "GetComment",

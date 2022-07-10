@@ -23,6 +23,10 @@ func (service *PostService) GetAll() ([]*domain.Post, error) {
 	return service.store.GetAll()
 }
 
+func (service *PostService) GetLatestPost(username string) ([]*domain.Post, error) {
+	return service.store.GetLatestPost(username)
+}
+
 func (service *PostService) Create(post *domain.Post) error {
 	return service.store.Create(post)
 }

@@ -38,6 +38,12 @@ service PostService{
       body: "post"
     };
   }
+
+  rpc GetLatestPosts(GetLatestPostRequest) returns(GetLatestPostResponse) {
+    option (google.api.http) = {
+      get: "/post/latest/{username}"
+    };
+  }
   //########################COMMENTS##################################
   rpc GetComment(GetRequest) returns(GetResponseComment) {
     option (google.api.http) = {
@@ -121,6 +127,14 @@ message GetRequest {
 
 message GetResponse {
   Post post = 1;
+}
+
+message GetLatestPostRequest{
+  string username = 1;
+}
+
+message GetLatestPostResponse{
+  repeated Post posts = 1;
 }
 
 message GetAllRequest {

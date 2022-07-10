@@ -7,6 +7,7 @@ import (
 type PostStore interface {
 	Get(postId string) (*Post, error)
 	GetAll() ([]*Post, error)
+	GetLatestPost(username string) ([]*Post, error)
 	Create(post *Post) error
 	Update(postId string, post *Post) error
 	DeleteAll() error
