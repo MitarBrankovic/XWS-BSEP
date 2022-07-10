@@ -42,6 +42,9 @@ type UserServiceClient interface {
 	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error)
 	GenerateApiToken(ctx context.Context, in *GenerataApiTokenRequest, opts ...grpc.CallOption) (*GenerateApiTokenResponse, error)
 	CheckApiToken(ctx context.Context, in *CheckApiTokenRequest, opts ...grpc.CallOption) (*CheckApiTokenResponse, error)
+	Block(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*BlockResponse, error)
+	UnBlock(ctx context.Context, in *UnBlockRequest, opts ...grpc.CallOption) (*UnBlockResponse, error)
+	GetAllBlock(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllBlockResponse, error)
 }
 
 type userServiceClient struct {
@@ -223,6 +226,33 @@ func (c *userServiceClient) CheckApiToken(ctx context.Context, in *CheckApiToken
 	return out, nil
 }
 
+func (c *userServiceClient) Block(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*BlockResponse, error) {
+	out := new(BlockResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/Block", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) UnBlock(ctx context.Context, in *UnBlockRequest, opts ...grpc.CallOption) (*UnBlockResponse, error) {
+	out := new(UnBlockResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/UnBlock", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetAllBlock(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllBlockResponse, error) {
+	out := new(GetAllBlockResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetAllBlock", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -247,6 +277,9 @@ type UserServiceServer interface {
 	ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error)
 	GenerateApiToken(context.Context, *GenerataApiTokenRequest) (*GenerateApiTokenResponse, error)
 	CheckApiToken(context.Context, *CheckApiTokenRequest) (*CheckApiTokenResponse, error)
+	Block(context.Context, *BlockRequest) (*BlockResponse, error)
+	UnBlock(context.Context, *UnBlockRequest) (*UnBlockResponse, error)
+	GetAllBlock(context.Context, *GetAllRequest) (*GetAllBlockResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -310,6 +343,15 @@ func (UnimplementedUserServiceServer) GenerateApiToken(context.Context, *Generat
 }
 func (UnimplementedUserServiceServer) CheckApiToken(context.Context, *CheckApiTokenRequest) (*CheckApiTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckApiToken not implemented")
+}
+func (UnimplementedUserServiceServer) Block(context.Context, *BlockRequest) (*BlockResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Block not implemented")
+}
+func (UnimplementedUserServiceServer) UnBlock(context.Context, *UnBlockRequest) (*UnBlockResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnBlock not implemented")
+}
+func (UnimplementedUserServiceServer) GetAllBlock(context.Context, *GetAllRequest) (*GetAllBlockResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllBlock not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -666,6 +708,60 @@ func _UserService_CheckApiToken_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_Block_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BlockRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Block(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/Block",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Block(ctx, req.(*BlockRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_UnBlock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnBlockRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UnBlock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/UnBlock",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UnBlock(ctx, req.(*UnBlockRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetAllBlock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetAllBlock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetAllBlock",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetAllBlock(ctx, req.(*GetAllRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -748,6 +844,18 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckApiToken",
 			Handler:    _UserService_CheckApiToken_Handler,
+		},
+		{
+			MethodName: "Block",
+			Handler:    _UserService_Block_Handler,
+		},
+		{
+			MethodName: "UnBlock",
+			Handler:    _UserService_UnBlock_Handler,
+		},
+		{
+			MethodName: "GetAllBlock",
+			Handler:    _UserService_GetAllBlock_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

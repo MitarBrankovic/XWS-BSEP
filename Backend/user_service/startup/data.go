@@ -73,6 +73,8 @@ var users = []*domain.User{
 	},
 }
 
+var blocks = []*domain.Block{}
+
 func getObjectId(id string) primitive.ObjectID {
 	if objectId, err := primitive.ObjectIDFromHex(id); err == nil {
 		return objectId

@@ -11,19 +11,56 @@ import (
 )
 
 const (
-	DATABASE   = "user_service"
-	COLLECTION = "user"
+	DATABASE        = "user_service"
+	COLLECTION      = "user"
+	BLOCKCOLLECTION = "block"
 )
 
 type UserMongoDBStore struct {
-	users *mongo.Collection
+	users  *mongo.Collection
+	blocks *mongo.Collection
 }
 
 func NewUserMongoDBStore(client *mongo.Client) domain.UserStore {
 	users := client.Database(DATABASE).Collection(COLLECTION)
+	blocks := client.Database(DATABASE).Collection(BLOCKCOLLECTION)
 	return &UserMongoDBStore{
-		users: users,
+		users:  users,
+		blocks: blocks,
 	}
+}
+
+func (store *UserMongoDBStore) Block(block *domain.Block) error {
+	block.Id = primitive.NewObjectID()
+	filter := bson.M{}
+	blocks, err := store.filterBlock(filter)
+	for _, b := range blocks {
+		if b.IssuerUsername == block.IssuerUsername && b.SubjectUsername == block.SubjectUsername {
+			return errors.New("block already exists")
+		}
+	}
+	result, err := store.blocks.InsertOne(context.TODO(), block)
+	if err != nil {
+		return err
+	}
+	block.Id = result.InsertedID.(primitive.ObjectID)
+	return nil
+}
+
+func (store *UserMongoDBStore) UnBlock(block *domain.Block) error {
+	filter := bson.M{"issuerUsername": block.IssuerUsername, "subjectUsername": block.SubjectUsername}
+	block, err := store.filterOneBlock(filter)
+	if err != nil {
+		return err
+	}
+	if block == nil {
+		return errors.New("block not found")
+	}
+	_, err = store.blocks.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (store *UserMongoDBStore) Get(userId string) (*domain.User, error) {
@@ -38,6 +75,11 @@ func (store *UserMongoDBStore) Get(userId string) (*domain.User, error) {
 func (store *UserMongoDBStore) GetAll() ([]*domain.User, error) {
 	filter := bson.M{"role": "user"}
 	return store.filter(filter)
+}
+
+func (store *UserMongoDBStore) GetAllBlock() ([]*domain.Block, error) {
+	filter := bson.M{}
+	return store.filterBlock(filter)
 }
 
 func (store *UserMongoDBStore) Create(user *domain.User) error {
@@ -71,6 +113,14 @@ func (store *UserMongoDBStore) Update(userId string, user *domain.User) error {
 
 func (store *UserMongoDBStore) DeleteAll() error {
 	_, err := store.users.DeleteMany(context.TODO(), bson.D{{}})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (store *UserMongoDBStore) DeleteAllBlocks() error {
+	_, err := store.blocks.DeleteMany(context.TODO(), bson.D{{}})
 	if err != nil {
 		return err
 	}
@@ -220,6 +270,40 @@ func (store *UserMongoDBStore) filter(filter interface{}) ([]*domain.User, error
 func (store *UserMongoDBStore) filterOne(filter interface{}) (user *domain.User, err error) {
 	result := store.users.FindOne(context.TODO(), filter)
 	err = result.Decode(&user)
+	return
+}
+
+func (store *UserMongoDBStore) filterOneBlock(filter interface{}) (block *domain.Block, err error) {
+	result := store.blocks.FindOne(context.TODO(), filter)
+	err = result.Decode(&block)
+	return
+}
+
+func (store *UserMongoDBStore) filterBlock(filter interface{}) ([]*domain.Block, error) {
+	cursor, err := store.blocks.Find(context.TODO(), filter)
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+			return
+		}
+	}(cursor, context.TODO())
+
+	if err != nil {
+		return nil, err
+	}
+	return decodeBlock(cursor)
+}
+
+func decodeBlock(cursor *mongo.Cursor) (blocks []*domain.Block, err error) {
+	for cursor.Next(context.TODO()) {
+		var Block domain.Block
+		err = cursor.Decode(&Block)
+		if err != nil {
+			return
+		}
+		blocks = append(blocks, &Block)
+	}
+	err = cursor.Err()
 	return
 }
 

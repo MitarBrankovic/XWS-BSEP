@@ -143,6 +143,47 @@ func (handler UserHandler) Create(ctx context.Context, request *pb.CreateRequest
 	}, nil
 }
 
+func (handler UserHandler) Block(ctx context.Context, request *pb.BlockRequest) (*pb.BlockResponse, error) {
+	err := handler.service.Block(mapPbBlockToBlock(request.Block))
+	if err != nil {
+		errorLog.Error("Can't block user: %v", err)
+		return &pb.BlockResponse{
+			Success: false,
+		}, err
+	}
+	return &pb.BlockResponse{
+		Success: true,
+	}, nil
+}
+
+func (handler UserHandler) UnBlock(ctx context.Context, request *pb.UnBlockRequest) (*pb.UnBlockResponse, error) {
+	err := handler.service.UnBlock(mapPbBlockToBlock(request.Block))
+	if err != nil {
+		errorLog.Error("Can't unblock user: %v", err)
+		return &pb.UnBlockResponse{
+			Success: false,
+		}, err
+	}
+	return &pb.UnBlockResponse{
+		Success: true,
+	}, nil
+}
+func (handler UserHandler) GetAllBlock(ctx context.Context, request *pb.GetAllRequest) (*pb.GetAllBlockResponse, error) {
+	blocks, err := handler.service.GetAllBlock()
+	if err != nil {
+		errorLog.Error("Can't get all blocks: %v", err)
+		return nil, err
+	}
+	response := &pb.GetAllBlockResponse{
+		Blocks: []*pb.Block{},
+	}
+	for _, block := range blocks {
+		current := mapBlockToPbBlock(block)
+		response.Blocks = append(response.Blocks, current)
+	}
+	return response, nil
+}
+
 func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest) (*pb.UpdateResponse, error) {
 	user := mapPbToUser(request.User)
 	userId := request.Id

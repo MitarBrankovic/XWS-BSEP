@@ -123,8 +123,18 @@ func (server *Server) initUserStore(client *mongo.Client) domain.UserStore {
 	if err != nil {
 		return nil
 	}
+	err = store.DeleteAllBlocks()
+	if err != nil {
+		return nil
+	}
 	for _, User := range users {
 		err := store.Create(User)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	for _, Block := range blocks {
+		err := store.Block(Block)
 		if err != nil {
 			log.Fatal(err)
 		}

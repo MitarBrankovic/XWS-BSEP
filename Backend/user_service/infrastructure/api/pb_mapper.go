@@ -165,6 +165,22 @@ func mapCommonUserToUser(commonUser *commonDomain.User) *domain.User {
 	return user
 }
 
+func mapPbBlockToBlock(pbBlock *pb.Block) *domain.Block {
+	block := &domain.Block{
+		IssuerUsername:  pbBlock.IssuerUsername,
+		SubjectUsername: pbBlock.SubjectUsername,
+	}
+	return block
+}
+
+func mapBlockToPbBlock(block *domain.Block) *pb.Block {
+	pbBlock := &pb.Block{
+		IssuerUsername:  block.IssuerUsername,
+		SubjectUsername: block.SubjectUsername,
+	}
+	return pbBlock
+}
+
 func getObjectId(id string) primitive.ObjectID {
 	if objectId, err := primitive.ObjectIDFromHex(id); err == nil {
 		return objectId

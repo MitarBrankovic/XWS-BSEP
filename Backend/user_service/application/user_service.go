@@ -41,6 +41,18 @@ func (service *UserService) Create(user *domain.User) error {
 	return service.store.Create(user)
 }
 
+func (service *UserService) Block(block *domain.Block) error {
+	return service.store.Block(block)
+}
+
+func (service *UserService) UnBlock(block *domain.Block) error {
+	return service.store.UnBlock(block)
+}
+
+func (service *UserService) GetAllBlock() ([]*domain.Block, error) {
+	return service.store.GetAllBlock()
+}
+
 func (service *UserService) Update(userId string, user *domain.User) error {
 	oldUser, err := service.store.Get(userId)
 	if err != nil {

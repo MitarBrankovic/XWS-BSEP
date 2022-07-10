@@ -3,9 +3,11 @@ package domain
 type UserStore interface {
 	Get(userId string) (*User, error)
 	GetAll() ([]*User, error)
+	GetAllBlock() ([]*Block, error)
 	Create(user *User) error
 	Update(userId string, user *User) error
 	DeleteAll() error
+	DeleteAllBlocks() error
 	Find(username string) (*User, error)
 	FindByEmail(email string) (*User, error)
 	ActivateAccount(token string) *User
@@ -19,4 +21,6 @@ type UserStore interface {
 	FindByRecoveryToken(token string) (*User, error)
 	FindByPasswordlessToken(token string) (*User, error)
 	FindByTwoFactorToken(token string) (*User, error)
+	Block(block *Block) error
+	UnBlock(block *Block) error
 }

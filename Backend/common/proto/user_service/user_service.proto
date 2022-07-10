@@ -129,6 +129,26 @@ service UserService{
       get : "/checkApiToken/{token}"
     };
   };
+
+  rpc Block(BlockRequest) returns(BlockResponse) {
+    option (google.api.http) = {
+      post: "/block"
+      body: "block"
+    };
+  }
+
+  rpc UnBlock(UnBlockRequest) returns(UnBlockResponse) {
+    option (google.api.http) = {
+      post: "/unblock"
+      body: "block"
+    };
+  }
+
+  rpc GetAllBlock(GetAllRequest) returns(GetAllBlockResponse) {
+    option (google.api.http) = {
+      get: "/block"
+    };
+  }
 }
 
 message FindByUsernameRequest {
@@ -154,6 +174,10 @@ message GetAllResponse {
   repeated User users = 1;
 }
 
+message GetAllBlockResponse {
+  repeated Block blocks = 1;
+}
+
 message GetAllUsernamesResponse {
   repeated string usernames = 1;
 }
@@ -164,6 +188,22 @@ message CreateRequest {
 
 message CreateResponse {
   User user = 1;
+}
+
+message BlockRequest {
+  Block block = 1;
+}
+
+message BlockResponse {
+  bool success = 1;
+}
+
+message UnBlockRequest {
+  Block block = 1;
+}
+
+message UnBlockResponse {
+  bool success = 1;
 }
 
 message UpdateRequest {
@@ -295,4 +335,9 @@ message WorkExperience{
   string location = 4;
   google.protobuf.Timestamp startDate = 5;
   google.protobuf.Timestamp endDate = 6;
+}
+
+message Block{
+  string issuerUsername = 1;
+  string subjectUsername = 2;
 }

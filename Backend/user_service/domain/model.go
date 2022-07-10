@@ -51,6 +51,12 @@ type WorkExperience struct {
 	EndDate        time.Time `bson:"endDate"`
 }
 
+type Block struct {
+	Id              primitive.ObjectID `bson:"_id"`
+	IssuerUsername  string             `bson:"issuerUsername"`
+	SubjectUsername string             `bson:"subjectUsername"`
+}
+
 func (user *User) IsCorrectPassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(password))
 	return err == nil
