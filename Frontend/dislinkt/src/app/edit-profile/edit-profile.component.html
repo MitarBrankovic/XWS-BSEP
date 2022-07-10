@@ -127,14 +127,28 @@
               <button [attr.disabled]="!isEdit? true : null" class="button is-primary" data-backdrop="false" (click)="open(contentWork)">Add employment</button>
 
         </div>
-        <br><br><hr>
+        <br><br>
+        <h3>Privacy</h3>
         <label class="checkbox">
           <input [attr.disabled]="!isEdit? true : null" type="checkbox" [(ngModel)]="user.twoFactorEnabled">
           Two Factor Authentication
-        </label> <br><hr>
+        </label> <br>
         <label class="checkbox">
           <input [attr.disabled]="!isEdit? true : null" type="checkbox" [(ngModel)]="user.private">
           Private
+        </label> <br><hr>
+        <h3>Notifications</h3>
+        <label class="checkbox">
+          <input [attr.disabled]="!isEdit? true : null" type="checkbox" [(ngModel)]="user.postNotification">
+          Posts
+        </label> <br>
+        <label class="checkbox">
+          <input [attr.disabled]="!isEdit? true : null" type="checkbox" [(ngModel)]="user.messageNotification">
+          Messages
+        </label> <br>
+        <label class="checkbox">
+          <input [attr.disabled]="!isEdit? true : null" type="checkbox" [(ngModel)]="user.followNotification">
+          Follows
         </label> <br><hr>
     </div>
 

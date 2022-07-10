@@ -14,6 +14,10 @@ export class User {
     role:any;
     twoFactorEnabled: boolean;
 
+    followNotification: boolean;
+    postNotification: boolean;
+    messageNotification: boolean;
+
     constructor(){
         this.username = "";
         this.password = ""; 
@@ -29,5 +33,9 @@ export class User {
         this.activated = false;
         this.role = "";
         this.twoFactorEnabled = false;
+        this.followNotification = false;
+        this.postNotification = false;
+        this.messageNotification = false;
+
     }
 }
