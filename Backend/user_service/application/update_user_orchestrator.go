@@ -24,12 +24,13 @@ func NewUpdateUserOrchestrator(publisher saga.Publisher, subscriber saga.Subscri
 }
 
 func (o *UpdateUserOrchestrator) Start(user *domain.User, oldUsername string,
-	oldFirstName string, oldLastName string) error {
+	oldFirstName string, oldLastName string, oldPrivate bool) error {
 	event := &events.UpdateUserCommand{
 		User:         *user,
 		OldUsername:  oldUsername,
 		OldFirstName: oldFirstName,
 		OldLastName:  oldLastName,
+		OldPrivate:   oldPrivate,
 		Type:         events.UpdateUser,
 	}
 	return o.commandPublisher.Publish(event)
@@ -41,6 +42,7 @@ func (o *UpdateUserOrchestrator) handle(reply *events.UpdateUserReply) {
 		OldUsername:  reply.OldUsername,
 		OldFirstName: reply.OldFirstName,
 		OldLastName:  reply.OldLastName,
+		OldPrivate:   reply.OldPrivate,
 	}
 	command.Type = o.nextCommandType(reply.Type)
 	if command.Type != events.UnknownCommand {

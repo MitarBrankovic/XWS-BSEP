@@ -2,6 +2,8 @@ package startup
 
 import (
 	connection "dislinkt/common/proto/connection_service"
+	saga "dislinkt/common/saga/messaging"
+	"dislinkt/common/saga/messaging/nats"
 	"dislinkt/connection_service/application"
 	"dislinkt/connection_service/domain"
 	"dislinkt/connection_service/infrastructure/api"
@@ -49,9 +51,40 @@ func (server *Server) Start() {
 
 	connectionService := server.initConnectionService(connectionStore)
 
+	commandSubscriber := server.initSubscriber(server.config.UpdateUserCommandSubject, QueueGroup)
+	replyPublisher := server.initPublisher(server.config.UpdateUserReplySubject)
+	server.initUpdateUserHandler(connectionService, replyPublisher, commandSubscriber)
+
 	connectionHandler := server.initConnectionHandler(connectionService)
 
 	server.startGrpcServer(connectionHandler, jwtManager)
+}
+
+func (server *Server) initPublisher(subject string) saga.Publisher {
+	publisher, err := nats.NewNATSPublisher(
+		server.config.NatsHost, server.config.NatsPort,
+		server.config.NatsUser, server.config.NatsPass, subject)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return publisher
+}
+
+func (server *Server) initSubscriber(subject, queueGroup string) saga.Subscriber {
+	subscriber, err := nats.NewNATSSubscriber(
+		server.config.NatsHost, server.config.NatsPort,
+		server.config.NatsUser, server.config.NatsPass, subject, queueGroup)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return subscriber
+}
+
+func (server *Server) initUpdateUserHandler(service *application.ConnectionService, publisher saga.Publisher, subscriber saga.Subscriber) {
+	_, err := api.NewUpdateUserCommandHandler(service, publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (server *Server) initMongoClient() *mongo.Client {

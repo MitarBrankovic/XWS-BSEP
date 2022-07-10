@@ -15,6 +15,7 @@ type UpdateUserCommand struct {
 	OldUsername  string
 	OldFirstName string
 	OldLastName  string
+	OldPrivate   bool
 	Type         UpdateUserCommandType
 }
 
@@ -32,5 +33,6 @@ type UpdateUserReply struct {
 	OldUsername  string
 	OldFirstName string
 	OldLastName  string
+	OldPrivate   bool
 	Type         UpdateUserReplyType
 }

@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	pb "dislinkt/common/proto/connection_service"
 	"dislinkt/connection_service/domain"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -94,6 +95,39 @@ func (store *ConnectionMongoDBStore) Update(id string) (*domain.Connection, erro
 		return nil, err
 	}
 	return connection, nil
+}
+
+func (store *ConnectionMongoDBStore) UpdateUser(username string, user *pb.User) (*domain.User, error) {
+	filter := bson.D{{}}
+	connections, _ := store.filter(filter)
+	changedUser := domain.User{}
+	for _, connection := range connections {
+		if connection.SubjectUser.Username == username {
+			connection.SubjectUser.Private = user.Private
+			changedUser = connection.SubjectUser
+			_, err := store.connections.ReplaceOne(
+				context.TODO(),
+				bson.M{"_id": connection.Id},
+				connection,
+			)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if connection.IssuerUser.Username == username {
+			connection.IssuerUser.Private = user.Private
+			changedUser = connection.SubjectUser
+			_, err := store.connections.ReplaceOne(
+				context.TODO(),
+				bson.M{"_id": connection.Id},
+				connection,
+			)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+	return &changedUser, nil
 }
 
 func (store *ConnectionMongoDBStore) filter(filter interface{}) ([]*domain.Connection, error) {

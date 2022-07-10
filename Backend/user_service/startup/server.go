@@ -2,8 +2,6 @@ package startup
 
 import (
 	"context"
-	"dislinkt/common/clients"
-	pbPost "dislinkt/common/proto/post_service"
 	pbUser "dislinkt/common/proto/user_service"
 	saga "dislinkt/common/saga/messaging"
 	"dislinkt/common/saga/messaging/nats"
@@ -58,16 +56,6 @@ func (server *Server) Start() {
 
 	jwtManager := auth.NewJWTManager("secretKey", 15*time.Minute)
 
-	userClient, err := clients.NewUserClient(fmt.Sprintf("%s:%s", server.config.Host, server.config.Port))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	postClient, err := clients.NewPostClient(fmt.Sprintf("%s:%s", server.config.PostHost, server.config.PostPort))
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	mongoClient := server.initMongoClient()
 	userStore := server.initUserStore(mongoClient)
 
@@ -82,7 +70,7 @@ func (server *Server) Start() {
 	replyPublisher := server.initPublisher(server.config.UpdateUserReplySubject)
 	server.initUpdateUserHandler(userService, replyPublisher, commandSubscriber)
 
-	userHandler := server.initUserHandler(userService, mailService, jwtManager, userClient, postClient)
+	userHandler := server.initUserHandler(userService, mailService, jwtManager)
 	server.startGrpcServer(userHandler, jwtManager)
 }
 
@@ -115,7 +103,7 @@ func (server *Server) initUpdateUserOrchestrator(publisher saga.Publisher, subsc
 }
 
 func (server *Server) initUpdateUserHandler(service *application.UserService, publisher saga.Publisher, subscriber saga.Subscriber) {
-	_, err := api.NewUpdateProfileCommandHandler(service, publisher, subscriber)
+	_, err := api.NewUpdateUserCommandHandler(service, publisher, subscriber)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -152,9 +140,8 @@ func (server *Server) initMailService() *application.MailService {
 	return application.NewMailService()
 }
 
-func (server *Server) initUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager,
-	userClient pbUser.UserServiceClient, postClient pbPost.PostServiceClient) *api.UserHandler {
-	return api.NewUserHandler(service, mailService, jwtManager, userClient, postClient)
+func (server *Server) initUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager) *api.UserHandler {
+	return api.NewUserHandler(service, mailService, jwtManager)
 }
 
 func (server *Server) Login(ctx context.Context, req *pbUser.LoginRequest) (*pbUser.LoginResponse, error) {

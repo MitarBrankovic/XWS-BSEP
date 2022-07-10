@@ -41,6 +41,22 @@ func mapUserToPbUser(user *domain.User) *pb.User {
 	}
 }
 
+func mapSagaUserToPb(user *domain.User) *pb.User {
+	pbUser := &pb.User{
+		Username: user.Username,
+		Private:  user.Private,
+	}
+	return pbUser
+}
+
+func mapPbToSagaUser(pbUser *pb.User) domain.User {
+	user := domain.User{
+		Username: pbUser.Username,
+		Private:  pbUser.Private,
+	}
+	return user
+}
+
 func getObjectId(id string) primitive.ObjectID {
 	if objectId, err := primitive.ObjectIDFromHex(id); err == nil {
 		return objectId

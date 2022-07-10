@@ -12,7 +12,7 @@ type UpdateUserCommandHandler struct {
 	commandSubscriber saga.Subscriber
 }
 
-func NewUpdateProfileCommandHandler(userService *application.UserService, publisher saga.Publisher, subscriber saga.Subscriber) (*UpdateUserCommandHandler, error) {
+func NewUpdateUserCommandHandler(userService *application.UserService, publisher saga.Publisher, subscriber saga.Subscriber) (*UpdateUserCommandHandler, error) {
 	o := &UpdateUserCommandHandler{
 		userService:       userService,
 		replyPublisher:    publisher,
@@ -32,6 +32,7 @@ func (handler *UpdateUserCommandHandler) handle(command *events.UpdateUserComman
 		OldUsername:  command.OldUsername,
 		OldFirstName: command.OldFirstName,
 		OldLastName:  command.OldLastName,
+		OldPrivate:   command.OldPrivate,
 	}
 	switch command.Type {
 	case events.RollbackUpdatedUser:
@@ -39,6 +40,7 @@ func (handler *UpdateUserCommandHandler) handle(command *events.UpdateUserComman
 		oldUser.Username = command.OldUsername
 		oldUser.FirstName = command.OldFirstName
 		oldUser.LastName = command.OldLastName
+		oldUser.Private = command.OldPrivate
 		err := handler.userService.RollbackUpdate(mapCommonUserToUser(&oldUser))
 		if err != nil {
 			return

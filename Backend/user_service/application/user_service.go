@@ -17,8 +17,8 @@ func NewUserService(store domain.UserStore, orchestrator *UpdateUserOrchestrator
 	}
 }
 
-func (service *UserService) RollbackUpdate(profile *domain.User) error {
-	return service.store.Update(profile.Id.Hex(), profile)
+func (service *UserService) RollbackUpdate(user *domain.User) error {
+	return service.store.Update(user.Id.Hex(), user)
 }
 
 func (service *UserService) Find(username string) (*domain.User, error) {
@@ -55,8 +55,9 @@ func (service *UserService) Update(userId string, user *domain.User) error {
 		Username:  user.Username,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
+		Private:   user.Private,
 	}
-	err = service.orchestrator.Start(newUser, oldUser.Username, oldUser.FirstName, oldUser.LastName)
+	err = service.orchestrator.Start(newUser, oldUser.Username, oldUser.FirstName, oldUser.LastName, oldUser.Private)
 	if err != nil {
 		return err
 	}

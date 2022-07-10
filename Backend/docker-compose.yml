@@ -69,6 +69,8 @@ services:
       NATS_PORT: ${NATS_PORT}
       NATS_USER: ${NATS_USER}
       NATS_PASS: ${NATS_PASS}
+      UPDATE_USER_COMMAND_SUBJECT: ${UPDATE_USER_COMMAND_SUBJECT}
+      UPDATE_USER_REPLY_SUBJECT: ${UPDATE_USER_REPLY_SUBJECT}
     depends_on:
       - connection_db
     networks:

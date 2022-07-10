@@ -4,9 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"dislinkt/common/loggers"
-	pbPost "dislinkt/common/proto/post_service"
 	pb "dislinkt/common/proto/user_service"
-	pbUser "dislinkt/common/proto/user_service"
 	"dislinkt/user_service/application"
 	"dislinkt/user_service/auth"
 	"dislinkt/user_service/domain"
@@ -27,19 +25,14 @@ type UserHandler struct {
 	service     *application.UserService
 	mailService *application.MailService
 	jwtManager  *auth.JWTManager
-	userClient  pbUser.UserServiceClient
-	postClient  pbPost.PostServiceClient
 	validate    *validator.Validate
 }
 
-func NewUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager, userClient pbUser.UserServiceClient,
-	postClient pbPost.PostServiceClient) *UserHandler {
+func NewUserHandler(service *application.UserService, mailService *application.MailService, jwtManager *auth.JWTManager) *UserHandler {
 	return &UserHandler{
 		service:     service,
 		mailService: mailService,
 		jwtManager:  jwtManager,
-		userClient:  userClient,
-		postClient:  postClient,
 		validate:    domain.NewUserValidator(),
 	}
 }

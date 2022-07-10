@@ -1,6 +1,9 @@
 package application
 
-import "dislinkt/connection_service/domain"
+import (
+	pb "dislinkt/common/proto/connection_service"
+	"dislinkt/connection_service/domain"
+)
 
 type ConnectionService struct {
 	store domain.ConnectionStore
@@ -30,4 +33,8 @@ func (service *ConnectionService) Delete(id string) error {
 
 func (service *ConnectionService) Update(id string) (*domain.Connection, error) {
 	return service.store.Update(id)
+}
+
+func (service *ConnectionService) UpdateUser(username string, user *pb.User) (*domain.User, error) {
+	return service.store.UpdateUser(username, user)
 }
