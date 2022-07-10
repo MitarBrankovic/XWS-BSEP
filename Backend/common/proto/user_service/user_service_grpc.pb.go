@@ -45,6 +45,9 @@ type UserServiceClient interface {
 	Block(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*BlockResponse, error)
 	UnBlock(ctx context.Context, in *UnBlockRequest, opts ...grpc.CallOption) (*UnBlockResponse, error)
 	GetAllBlock(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllBlockResponse, error)
+	Notification(ctx context.Context, in *NotificationRequest, opts ...grpc.CallOption) (*NotificationResponse, error)
+	DeleteNotification(ctx context.Context, in *NotificationRequest, opts ...grpc.CallOption) (*NotificationResponse, error)
+	GetNotifications(ctx context.Context, in *NotificationsRequest, opts ...grpc.CallOption) (*NotificationsResponse, error)
 }
 
 type userServiceClient struct {
@@ -253,6 +256,33 @@ func (c *userServiceClient) GetAllBlock(ctx context.Context, in *GetAllRequest, 
 	return out, nil
 }
 
+func (c *userServiceClient) Notification(ctx context.Context, in *NotificationRequest, opts ...grpc.CallOption) (*NotificationResponse, error) {
+	out := new(NotificationResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/Notification", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) DeleteNotification(ctx context.Context, in *NotificationRequest, opts ...grpc.CallOption) (*NotificationResponse, error) {
+	out := new(NotificationResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/DeleteNotification", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetNotifications(ctx context.Context, in *NotificationsRequest, opts ...grpc.CallOption) (*NotificationsResponse, error) {
+	out := new(NotificationsResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetNotifications", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -280,6 +310,9 @@ type UserServiceServer interface {
 	Block(context.Context, *BlockRequest) (*BlockResponse, error)
 	UnBlock(context.Context, *UnBlockRequest) (*UnBlockResponse, error)
 	GetAllBlock(context.Context, *GetAllRequest) (*GetAllBlockResponse, error)
+	Notification(context.Context, *NotificationRequest) (*NotificationResponse, error)
+	DeleteNotification(context.Context, *NotificationRequest) (*NotificationResponse, error)
+	GetNotifications(context.Context, *NotificationsRequest) (*NotificationsResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -352,6 +385,15 @@ func (UnimplementedUserServiceServer) UnBlock(context.Context, *UnBlockRequest) 
 }
 func (UnimplementedUserServiceServer) GetAllBlock(context.Context, *GetAllRequest) (*GetAllBlockResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllBlock not implemented")
+}
+func (UnimplementedUserServiceServer) Notification(context.Context, *NotificationRequest) (*NotificationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Notification not implemented")
+}
+func (UnimplementedUserServiceServer) DeleteNotification(context.Context, *NotificationRequest) (*NotificationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteNotification not implemented")
+}
+func (UnimplementedUserServiceServer) GetNotifications(context.Context, *NotificationsRequest) (*NotificationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNotifications not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -762,6 +804,60 @@ func _UserService_GetAllBlock_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_Notification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotificationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Notification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/Notification",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Notification(ctx, req.(*NotificationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_DeleteNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotificationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).DeleteNotification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/DeleteNotification",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).DeleteNotification(ctx, req.(*NotificationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotificationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetNotifications(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetNotifications",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetNotifications(ctx, req.(*NotificationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -856,6 +952,18 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllBlock",
 			Handler:    _UserService_GetAllBlock_Handler,
+		},
+		{
+			MethodName: "Notification",
+			Handler:    _UserService_Notification_Handler,
+		},
+		{
+			MethodName: "DeleteNotification",
+			Handler:    _UserService_DeleteNotification_Handler,
+		},
+		{
+			MethodName: "GetNotifications",
+			Handler:    _UserService_GetNotifications_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

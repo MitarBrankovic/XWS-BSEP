@@ -184,6 +184,48 @@ func (handler UserHandler) GetAllBlock(ctx context.Context, request *pb.GetAllRe
 	return response, nil
 }
 
+func (handler UserHandler) Notification(ctx context.Context, request *pb.NotificationRequest) (*pb.NotificationResponse, error) {
+	err := handler.service.CreateNotification(mapPbNotificationToNotification(request.Notification))
+	if err != nil {
+		errorLog.Error("Can't send notification: %v", err)
+		return &pb.NotificationResponse{
+			Success: false,
+		}, err
+	}
+	return &pb.NotificationResponse{
+		Success: true,
+	}, nil
+}
+
+func (handler UserHandler) DeleteNotification(ctx context.Context, request *pb.NotificationRequest) (*pb.NotificationResponse, error) {
+	err := handler.service.DeleteNotification(mapPbNotificationToNotification(request.Notification))
+	if err != nil {
+		errorLog.Error("Can't delete notification: %v", err)
+		return &pb.NotificationResponse{
+			Success: false,
+		}, err
+	}
+	return &pb.NotificationResponse{
+		Success: true,
+	}, nil
+}
+
+func (handler UserHandler) GetNotifications(ctx context.Context, request *pb.NotificationsRequest) (*pb.NotificationsResponse, error) {
+	notifications, err := handler.service.GetNotifications(request.Username, domain.NotificationType(request.Type))
+	if err != nil {
+		errorLog.Error("Can't get all blocks: %v", err)
+		return nil, err
+	}
+	response := &pb.NotificationsResponse{
+		Notification: []*pb.Notification{},
+	}
+	for _, notification := range notifications {
+		current := mapNotificationToPbNotification(notification)
+		response.Notification = append(response.Notification, current)
+	}
+	return response, nil
+}
+
 func (handler UserHandler) Update(ctx context.Context, request *pb.UpdateRequest) (*pb.UpdateResponse, error) {
 	user := mapPbToUser(request.User)
 	userId := request.Id
@@ -319,6 +361,9 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	user.HashedPassword = string(hashedPassword)
 	user.Token = GenerateSecureToken(32)
 	user.TokenDate = time.Now()
+	user.FollowNotification = false
+	user.PostNotification = false
+	user.MessageNotification = false
 	handler.mailService.SendActivationEmail(user.Token, "https://localhost:8000/activate/", "Activate account")
 	if err := handler.validate.Struct(user); err != nil {
 		errorLog.Error("Validation failed: %v", err)

@@ -149,6 +149,43 @@ service UserService{
       get: "/block"
     };
   }
+
+  rpc Notification(NotificationRequest) returns(NotificationResponse) {
+    option (google.api.http) = {
+      post: "/notification"
+      body: "notification"
+    };
+  }
+
+  rpc DeleteNotification(NotificationRequest) returns(NotificationResponse) {
+    option (google.api.http) = {
+      post: "/notification/delete"
+      body: "notification"
+    };
+  }
+
+  rpc GetNotifications(NotificationsRequest) returns(NotificationsResponse) {
+    option (google.api.http) = {
+      get: "/notification/{username}/{type}"
+    };
+  }
+}
+
+message NotificationRequest{
+  Notification notification = 1;
+}
+
+message NotificationResponse{
+  bool success = 1;
+}
+
+message NotificationsRequest{
+  string username = 1;
+  int64 type = 2;
+}
+
+message NotificationsResponse{
+  repeated Notification notification = 1;
 }
 
 message FindByUsernameRequest {
@@ -313,6 +350,9 @@ message User {
   bool activated = 12;
   bool private = 13;
   bool twoFactorEnabled = 14;
+  bool followNotification = 15;
+  bool postNotification = 16;
+  bool messageNotification = 17;
 }
 
 message Education{
@@ -340,4 +380,11 @@ message WorkExperience{
 message Block{
   string issuerUsername = 1;
   string subjectUsername = 2;
+}
+
+message Notification{
+  string id = 1;
+  int64 type = 2;
+  string message = 3;
+  string username = 4;
 }

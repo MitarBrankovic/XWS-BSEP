@@ -23,4 +23,7 @@ type UserStore interface {
 	FindByTwoFactorToken(token string) (*User, error)
 	Block(block *Block) error
 	UnBlock(block *Block) error
+	CreateNotification(notification *Notification) error
+	DeleteNotification(notification *Notification) error
+	GetNotifications(username string, notificationType NotificationType) ([]*Notification, error)
 }

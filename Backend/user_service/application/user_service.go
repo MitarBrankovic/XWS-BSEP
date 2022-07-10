@@ -53,6 +53,18 @@ func (service *UserService) GetAllBlock() ([]*domain.Block, error) {
 	return service.store.GetAllBlock()
 }
 
+func (service *UserService) CreateNotification(notification *domain.Notification) error {
+	return service.store.CreateNotification(notification)
+}
+
+func (service *UserService) DeleteNotification(notification *domain.Notification) error {
+	return service.store.DeleteNotification(notification)
+}
+
+func (service *UserService) GetNotifications(username string, notificationType domain.NotificationType) ([]*domain.Notification, error) {
+	return service.store.GetNotifications(username, notificationType)
+}
+
 func (service *UserService) Update(userId string, user *domain.User) error {
 	oldUser, err := service.store.Get(userId)
 	if err != nil {

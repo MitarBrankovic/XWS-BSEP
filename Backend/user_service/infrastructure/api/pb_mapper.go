@@ -11,19 +11,22 @@ import (
 
 func mapUserToPb(user *domain.User) *pb.User {
 	pbUser := &pb.User{
-		Id:               user.Id.Hex(),
-		Username:         user.Username,
-		FirstName:        user.FirstName,
-		LastName:         user.LastName,
-		DateOfBirth:      timestamppb.New(user.DateOfBirth),
-		Email:            user.Email,
-		Education:        make([]*pb.Education, 0),
-		WorkExperience:   make([]*pb.WorkExperience, 0),
-		Skills:           make([]string, 0),
-		Interests:        make([]string, 0),
-		Activated:        user.Activated,
-		Private:          user.Private,
-		TwoFactorEnabled: user.TwoFactorEnabled,
+		Id:                  user.Id.Hex(),
+		Username:            user.Username,
+		FirstName:           user.FirstName,
+		LastName:            user.LastName,
+		DateOfBirth:         timestamppb.New(user.DateOfBirth),
+		Email:               user.Email,
+		Education:           make([]*pb.Education, 0),
+		WorkExperience:      make([]*pb.WorkExperience, 0),
+		Skills:              make([]string, 0),
+		Interests:           make([]string, 0),
+		Activated:           user.Activated,
+		Private:             user.Private,
+		TwoFactorEnabled:    user.TwoFactorEnabled,
+		FollowNotification:  user.FollowNotification,
+		PostNotification:    user.PostNotification,
+		MessageNotification: user.MessageNotification,
 	}
 
 	for _, education := range user.Education {
@@ -63,22 +66,25 @@ func mapUserToPb(user *domain.User) *pb.User {
 func mapPbToUser(pbUser *pb.User) *domain.User {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(pbUser.Password), bcrypt.DefaultCost)
 	user := &domain.User{
-		Id:               getObjectId(pbUser.Id),
-		Username:         pbUser.Username,
-		HashedPassword:   string(hashedPassword),
-		FirstName:        pbUser.FirstName,
-		LastName:         pbUser.LastName,
-		FullName:         pbUser.FirstName + " " + pbUser.LastName,
-		DateOfBirth:      pbUser.DateOfBirth.AsTime(),
-		Email:            pbUser.Email,
-		Role:             "unverified",
-		Private:          pbUser.Private,
-		Activated:        pbUser.Activated,
-		TwoFactorEnabled: pbUser.TwoFactorEnabled,
-		Education:        make([]domain.Education, 0),
-		WorkExperience:   make([]domain.WorkExperience, 0),
-		Skills:           make([]string, 0),
-		Interests:        make([]string, 0),
+		Id:                  getObjectId(pbUser.Id),
+		Username:            pbUser.Username,
+		HashedPassword:      string(hashedPassword),
+		FirstName:           pbUser.FirstName,
+		LastName:            pbUser.LastName,
+		FullName:            pbUser.FirstName + " " + pbUser.LastName,
+		DateOfBirth:         pbUser.DateOfBirth.AsTime(),
+		Email:               pbUser.Email,
+		Role:                "unverified",
+		Private:             pbUser.Private,
+		Activated:           pbUser.Activated,
+		TwoFactorEnabled:    pbUser.TwoFactorEnabled,
+		Education:           make([]domain.Education, 0),
+		WorkExperience:      make([]domain.WorkExperience, 0),
+		Skills:              make([]string, 0),
+		Interests:           make([]string, 0),
+		FollowNotification:  pbUser.FollowNotification,
+		PostNotification:    pbUser.PostNotification,
+		MessageNotification: pbUser.MessageNotification,
 	}
 	for _, education := range pbUser.Education {
 		education := &domain.Education{
@@ -179,6 +185,26 @@ func mapBlockToPbBlock(block *domain.Block) *pb.Block {
 		SubjectUsername: block.SubjectUsername,
 	}
 	return pbBlock
+}
+
+func mapPbNotificationToNotification(pbNotification *pb.Notification) *domain.Notification {
+	notification := &domain.Notification{
+		Id:       getObjectId(pbNotification.Id),
+		Message:  pbNotification.Message,
+		Username: pbNotification.Username,
+		Type:     domain.NotificationType(pbNotification.Type),
+	}
+	return notification
+}
+
+func mapNotificationToPbNotification(notification *domain.Notification) *pb.Notification {
+	pbNotification := &pb.Notification{
+		Id:       notification.Id.Hex(),
+		Message:  notification.Message,
+		Username: notification.Username,
+		Type:     int64(notification.Type),
+	}
+	return pbNotification
 }
 
 func getObjectId(id string) primitive.ObjectID {

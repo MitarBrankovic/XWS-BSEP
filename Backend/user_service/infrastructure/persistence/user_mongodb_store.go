@@ -11,22 +11,26 @@ import (
 )
 
 const (
-	DATABASE        = "user_service"
-	COLLECTION      = "user"
-	BLOCKCOLLECTION = "block"
+	DATABASE               = "user_service"
+	COLLECTION             = "user"
+	BLOCKCOLLECTION        = "block"
+	NOTIFICATIONCOLLECTION = "notification"
 )
 
 type UserMongoDBStore struct {
-	users  *mongo.Collection
-	blocks *mongo.Collection
+	users         *mongo.Collection
+	blocks        *mongo.Collection
+	notifications *mongo.Collection
 }
 
 func NewUserMongoDBStore(client *mongo.Client) domain.UserStore {
 	users := client.Database(DATABASE).Collection(COLLECTION)
 	blocks := client.Database(DATABASE).Collection(BLOCKCOLLECTION)
+	notifications := client.Database(DATABASE).Collection(NOTIFICATIONCOLLECTION)
 	return &UserMongoDBStore{
-		users:  users,
-		blocks: blocks,
+		users:         users,
+		blocks:        blocks,
+		notifications: notifications,
 	}
 }
 
@@ -61,6 +65,30 @@ func (store *UserMongoDBStore) UnBlock(block *domain.Block) error {
 		return err
 	}
 	return nil
+}
+
+func (store *UserMongoDBStore) CreateNotification(notification *domain.Notification) error {
+	notification.Id = primitive.NewObjectID()
+	result, err := store.notifications.InsertOne(context.TODO(), notification)
+	if err != nil {
+		return err
+	}
+	notification.Id = result.InsertedID.(primitive.ObjectID)
+	return nil
+}
+
+func (store *UserMongoDBStore) DeleteNotification(notification *domain.Notification) error {
+	filter := bson.M{"_id": notification.Id}
+	_, err := store.notifications.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (store *UserMongoDBStore) GetNotifications(username string, notificationType domain.NotificationType) ([]*domain.Notification, error) {
+	filter := bson.M{"username": username, "type": notificationType}
+	return store.filterNotifications(filter)
 }
 
 func (store *UserMongoDBStore) Get(userId string) (*domain.User, error) {
@@ -279,6 +307,12 @@ func (store *UserMongoDBStore) filterOneBlock(filter interface{}) (block *domain
 	return
 }
 
+func (store *UserMongoDBStore) filterOneNotification(filter interface{}) (notification *domain.Notification, err error) {
+	result := store.notifications.FindOne(context.TODO(), filter)
+	err = result.Decode(&notification)
+	return
+}
+
 func (store *UserMongoDBStore) filterBlock(filter interface{}) ([]*domain.Block, error) {
 	cursor, err := store.blocks.Find(context.TODO(), filter)
 	defer func(cursor *mongo.Cursor, ctx context.Context) {
@@ -292,6 +326,34 @@ func (store *UserMongoDBStore) filterBlock(filter interface{}) ([]*domain.Block,
 		return nil, err
 	}
 	return decodeBlock(cursor)
+}
+
+func (store *UserMongoDBStore) filterNotifications(filter interface{}) ([]*domain.Notification, error) {
+	cursor, err := store.notifications.Find(context.TODO(), filter)
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+			return
+		}
+	}(cursor, context.TODO())
+
+	if err != nil {
+		return nil, err
+	}
+	return decodeNotification(cursor)
+}
+
+func decodeNotification(cursor *mongo.Cursor) (notifications []*domain.Notification, err error) {
+	for cursor.Next(context.TODO()) {
+		var Notification domain.Notification
+		err = cursor.Decode(&Notification)
+		if err != nil {
+			return
+		}
+		notifications = append(notifications, &Notification)
+	}
+	err = cursor.Err()
+	return
 }
 
 func decodeBlock(cursor *mongo.Cursor) (blocks []*domain.Block, err error) {
