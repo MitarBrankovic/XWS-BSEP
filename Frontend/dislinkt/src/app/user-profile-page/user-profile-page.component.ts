@@ -42,6 +42,7 @@ export class UserProfilePageComponent implements OnInit {
   roomname = ""
   isBlocked: boolean = false;
   blocked: any;
+  amIBlocked: boolean = false;
 
   user: User = new User();
   posts: Array<any> = [];
@@ -345,15 +346,16 @@ export class UserProfilePageComponent implements OnInit {
     this.userService.getBlocked().subscribe(f => {
       this.blocked = f;
       this.isBlocked = this.blocked.blocks.some((block:any) => block.issuerUsername == this.loggedUser.username && block.subjectUsername == this.user.username);
+      this.amIBlocked = this.blocked.blocks.some((block:any) => block.issuerUsername == this.user.username && block.subjectUsername == this.loggedUser.username);
     });
   }
 
   blockUser(){
-    this.userService.blockUser(this.loggedUser.username, this.user.username).subscribe();
+    this.userService.blockUser(this.loggedUser.username, this.user.username).subscribe(f => { this.isBlocked = true; });
   }
 
   unblockUser(){
-    this.userService.unblockUser(this.loggedUser.username, this.user.username).subscribe();
+    this.userService.unblockUser(this.loggedUser.username, this.user.username).subscribe(f => { this.isBlocked = false; });
   }
 
 

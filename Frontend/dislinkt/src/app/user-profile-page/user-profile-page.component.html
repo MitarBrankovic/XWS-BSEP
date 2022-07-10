@@ -9,7 +9,7 @@
                 Interests:
                 <label *ngFor="let i of user.interests" class="mr-1"><i>{{i}}</i></label>
             </p>
-            <button [disabled]="this.loggedUser.role !== 'user'" *ngIf="loggedUser.username !== user.username && !isConnected" class="button is-info is-outlined is-fullwidth mt-5" (click)="requestConnect()">Follow</button>
+            <button [disabled]="this.loggedUser.role !== 'user' || amIBlocked" *ngIf="loggedUser.username !== user.username && !isConnected" class="button is-info is-outlined is-fullwidth mt-5" (click)="requestConnect()">Follow</button>
             <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && isApproved">FOLLOWING</h2>
             <h2 style="color:cornflowerblue; text-align: center;" *ngIf="isConnected && !isApproved">FOLLOW REQUEST IS SENT</h2>
             <button *ngIf="loggedUser.username !== user.username && isApproved" class="button is-danger is-outlined is-fullwidth mt-5" (click)="unFollow()">Unfollow</button>
@@ -20,7 +20,7 @@
             <button *ngIf="loggedUser.username !== user.username && !isBlocked"  class="button is-danger is-fullwidth mt-5" (click)="blockUser()">Block 🚫</button>
             <button *ngIf="loggedUser.username !== user.username && isBlocked"  class="button is-danger is-fullwidth mt-5" (click)="unblockUser()">Unblock ⭕</button>
         </div>
-        <div class="tile is-child box">
+        <div class="tile is-child box" *ngIf="!amIBlocked">
             <p class="title">Work experience</p>
             <label *ngIf="user.workExperience.length == 0"><i>No work experience</i></label>
             <label *ngFor="let w of user.workExperience">
@@ -34,9 +34,13 @@
             </label>
         </div>
     </div>
-    <div class="tile is-parent">
+    <div class="tile is-parent" *ngIf="amIBlocked">
+        <div class="tile is-child box" style="text-align: center;">
+            <h1 class="title"> {{this.user.username}} blocked you 😥</h1>    
+        </div>
+    </div>
+    <div class="tile is-parent" *ngIf="!amIBlocked">
         <div class="tile is-child box">
-
             <div class="card mb-5">
                 <div class="card-content" *ngIf="checkOwnership()">
                     <div class="content">
