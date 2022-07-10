@@ -5,6 +5,7 @@ import firebase from 'firebase/compat/app';
 import { DatePipe } from '@angular/common';
 import { UserService } from '../services/user.service';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { LoggedUser } from '../model/logged-user';
 
 
 /*export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -78,7 +79,22 @@ export class MessagesComponent implements OnInit {
       this.chatForm = this.formBuilder.group({
         'message' : [null, Validators.required]
       });
+
+      this.createNotification(`${this.nickname}: ${form.message}`, 2);
     }
   }
 
+  createNotification(message: string, type: number){
+    
+    let tempUser = "";
+    if(this.users[0].nickname == this.userService.loggedUser.username)
+      tempUser = this.users[1].nickname;
+    else
+      tempUser = this.users[0].nickname;
+
+    this.userService.getByUsername(tempUser).subscribe((user:any) => {
+      if ((type == 0 && user.user.followNotification) || (type==1 && user.user.postNotification) || (type == 2 && user.user.messageNotification)) 
+      this.userService.createNotification(user.user.username, message, type).subscribe();
+  })
+  }
 }
