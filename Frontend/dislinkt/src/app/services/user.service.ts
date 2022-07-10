@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { Connection } from "../model/connection";
 import { LoggedUser } from "../model/logged-user";
 import { User } from "../model/user.model";
@@ -110,6 +110,26 @@ export class UserService {
 
   public isExpired(): boolean{
       return this.loggedUser.exp < Date.now() / 1000
+  }
+
+  public blockUser(issuerUsername: string, subjectUsername: string){
+    let body = {
+      issuerUsername: issuerUsername,
+      subjectUsername: subjectUsername
+    }
+    return this.http.post(this._url + '/block', body, { headers: this.header})
+  } 
+
+  public unblockUser(issuerUsername: string, subjectUsername: string){
+    let body = {
+      issuerUsername: issuerUsername,
+      subjectUsername: subjectUsername
+    }
+    return this.http.post(this._url + '/unblock', body, { headers: this.header})
+  } 
+
+  public getBlocked(){
+    return this.http.get(this._url + '/block', {headers: this.header})
   }
 
 }

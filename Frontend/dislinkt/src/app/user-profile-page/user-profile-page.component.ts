@@ -40,6 +40,8 @@ export class UserProfilePageComponent implements OnInit {
   isClickedOnCommentButton: Array<boolean> = [];
   commentContent: any = "";
   roomname = ""
+  isBlocked: any;
+  blocked: any;
 
   user: User = new User();
   posts: Array<any> = [];
@@ -62,6 +64,7 @@ export class UserProfilePageComponent implements OnInit {
       this.user = JSON.parse(checkUser);
     this.getPosts()
     this.getAllConnections();
+    this.getBlocked();
 
     firebase.database().ref('roomusers/').on('value', (resp: any) => {
       let roomname = this.user.username + this.loggedUser.username;
@@ -336,6 +339,22 @@ export class UserProfilePageComponent implements OnInit {
 
   messageRouter(){
     window.location.href = '/messages/'+ this.roomname;
+  }
+
+  getBlocked(){
+    this.userService.getBlocked().subscribe(f => {
+      this.blocked = f;
+      this.isBlocked = this.blocked.some((block:any) => block.issuerUsername == this.loggedUser.username && block.subjectUsername == this.user.username);
+      this.isBlocked = !!this.isBlocked
+    });
+  }
+
+  blockUser(){
+    this.userService.blockUser(this.loggedUser.username, this.user.username).subscribe();
+  }
+
+  unblockUser(){
+    this.userService.unblockUser(this.loggedUser.username, this.user.username).subscribe();
   }
 
 
