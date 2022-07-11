@@ -147,4 +147,8 @@ export class UserService {
   public removeNotification(notification: any){
     return this.http.post(this._url + '/notification/delete', notification, {headers: this.header})
   }
+
+  public getRecommendedUsers(){
+    return this.http.get(this._url + '/recommendFriend/' + this.loggedUser.username, {headers: this.header})
+  }
 }

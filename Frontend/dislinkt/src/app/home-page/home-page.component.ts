@@ -25,6 +25,7 @@ export class HomePageComponent implements OnInit {
   isClickedOnCommentButton: Array<boolean> = [];
   commentContent: any = "";
   connections: any;
+  recommendedUsers: Array<any> = [];
 
   constructor(private userService: UserService, private postService: PostService, private connectionService: ConnectionService, private router: Router) { }
 
@@ -32,6 +33,7 @@ export class HomePageComponent implements OnInit {
     this.loggedUser = this.userService.loggedUser;
     this.getAllPublicUsers()
     this.getConnections();
+    this.getRecommendedUsers();
   }
 
   getAllPublicUsers() {
@@ -170,6 +172,16 @@ export class HomePageComponent implements OnInit {
       this.userService.createNotification(user.user.username, message, type).subscribe();
   })
     
+}
+
+getRecommendedUsers(){
+  this.userService.getRecommendedUsers().subscribe((data:any) => {
+    data.username.forEach((username:any) => {
+      this.userService.getByUsername(username).subscribe((u:any) => {
+      this.recommendedUsers.push(u.user)
+      })
+    }
+  )})
 }
 
 }

@@ -12,8 +12,6 @@
             <button class="button is-info" (click)="searchUsers(searchValue)">Search</button>
           </div>
         </div>
-      
-      
         <table class="table">
           <thead>
             <th>Name</th>
@@ -22,6 +20,30 @@
             <th>Status</th>
           </thead>
           <tr *ngFor="let u of filteredUsers" (click)="redirectToUserProfile(u)">
+            <td>{{u.firstName}}</td>
+            <td>{{u.lastName}}</td>
+            <td>{{u.username}}</td>
+            <td><i>{{privateOrPublic(u)}}</i></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="tile is-child box" *ngIf="loggedUser.username != '' && recommendedUsers.length > 0">
+      <div class="container">
+
+        <div class="field has-addons">
+          <div class="control">
+            <h2> Recommended for you! </h2>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <th>Name</th>
+            <th>Last name</th>
+            <th>Username</th>
+            <th>Status</th>
+          </thead>
+          <tr *ngFor="let u of recommendedUsers" (click)="redirectToUserProfile(u)">
             <td>{{u.firstName}}</td>
             <td>{{u.lastName}}</td>
             <td>{{u.username}}</td>
