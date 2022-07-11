@@ -27,6 +27,7 @@ type ConnectionServiceClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	RecommendFriend(ctx context.Context, in *RecommendFriendRequest, opts ...grpc.CallOption) (*RecommendFriendResponse, error)
 }
 
 type connectionServiceClient struct {
@@ -82,6 +83,15 @@ func (c *connectionServiceClient) Update(ctx context.Context, in *UpdateRequest,
 	return out, nil
 }
 
+func (c *connectionServiceClient) RecommendFriend(ctx context.Context, in *RecommendFriendRequest, opts ...grpc.CallOption) (*RecommendFriendResponse, error) {
+	out := new(RecommendFriendResponse)
+	err := c.cc.Invoke(ctx, "/connection.ConnectionService/RecommendFriend", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConnectionServiceServer is the server API for ConnectionService service.
 // All implementations must embed UnimplementedConnectionServiceServer
 // for forward compatibility
@@ -91,6 +101,7 @@ type ConnectionServiceServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	RecommendFriend(context.Context, *RecommendFriendRequest) (*RecommendFriendResponse, error)
 	mustEmbedUnimplementedConnectionServiceServer()
 }
 
@@ -112,6 +123,9 @@ func (UnimplementedConnectionServiceServer) Delete(context.Context, *DeleteReque
 }
 func (UnimplementedConnectionServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedConnectionServiceServer) RecommendFriend(context.Context, *RecommendFriendRequest) (*RecommendFriendResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecommendFriend not implemented")
 }
 func (UnimplementedConnectionServiceServer) mustEmbedUnimplementedConnectionServiceServer() {}
 
@@ -216,6 +230,24 @@ func _ConnectionService_Update_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConnectionService_RecommendFriend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecommendFriendRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConnectionServiceServer).RecommendFriend(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/connection.ConnectionService/RecommendFriend",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConnectionServiceServer).RecommendFriend(ctx, req.(*RecommendFriendRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConnectionService_ServiceDesc is the grpc.ServiceDesc for ConnectionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -242,6 +274,10 @@ var ConnectionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _ConnectionService_Update_Handler,
+		},
+		{
+			MethodName: "RecommendFriend",
+			Handler:    _ConnectionService_RecommendFriend_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

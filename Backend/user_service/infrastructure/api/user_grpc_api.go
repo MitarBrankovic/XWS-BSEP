@@ -364,7 +364,7 @@ func (handler UserHandler) Register(ctx context.Context, request *pb.RegisterReq
 	user.FollowNotification = false
 	user.PostNotification = false
 	user.MessageNotification = false
-	handler.mailService.SendActivationEmail(user.Token, "https://localhost:8000/activate/", "Activate account")
+	handler.mailService.SendActivationEmail(user.Token, "http://localhost:8000/activate/", "Activate account")
 	if err := handler.validate.Struct(user); err != nil {
 		errorLog.Error("Validation failed: %v", err)
 		return nil, status.Errorf(codes.InvalidArgument, "validation failed: %v", err)
@@ -401,7 +401,7 @@ func (handler UserHandler) PasswordlessLoginDemand(ctx context.Context, request 
 	user.PasswordToken = GenerateSecureToken(32)
 	user.PasswordTokenDate = time.Now()
 	handler.service.Update(user.Id.Hex(), user)
-	handler.mailService.SendActivationEmail(user.PasswordToken, "https://localhost:4200/redirect/", "Passwordless login")
+	handler.mailService.SendActivationEmail(user.PasswordToken, "http://localhost:4200/redirect/", "Passwordless login")
 	successLog.Info("Successfuly passworldess login demand")
 	return &pb.PasswordlessLoginDemandResponse{
 		Email: user.Email,
@@ -447,7 +447,7 @@ func (handler UserHandler) RecoverAccountDemand(ctx context.Context, request *pb
 	//TODO
 	//front da se pogodi
 	successLog.Info("Successfuly recover account demand")
-	handler.mailService.SendActivationEmail(user.RecoveryToken, "https://localhost:4200/recover/", "Recover account")
+	handler.mailService.SendActivationEmail(user.RecoveryToken, "http://localhost:4200/recover/", "Recover account")
 	return &pb.RecoverAccountDemandResponse{}, nil
 }
 

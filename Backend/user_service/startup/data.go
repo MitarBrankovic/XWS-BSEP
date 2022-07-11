@@ -74,6 +74,26 @@ var users = []*domain.User{
 		Activated:      true,
 		Private:        false,
 	},
+	{
+		Id:                  getObjectId("61196r4u645d4db787e61fe4"),
+		Username:            "milan",
+		HashedPassword:      "$2a$10$KKYBMMbKxl4lSzDVbOxULOszwcSWZGW03O4A5gDhQlxadshhfiAc.",
+		FirstName:           "Milan",
+		LastName:            "Milic",
+		FullName:            "Milan Milic",
+		DateOfBirth:         time.Time{},
+		Email:               "milan@gmail.com",
+		Role:                "user",
+		Activated:           true,
+		Private:             false,
+		PostNotification:    true,
+		MessageNotification: true,
+		FollowNotification:  true,
+		Skills:              []string{"aaa", "bab", "cac"},
+		Interests:           []string{"ada", "bsb", "cce"},
+		Education:           []domain.Education{{School: "osnovna", Degree: "6", FieldOfStudy: "stolar", StartDate: time.Time{}, EndDate: time.Time{}}},
+		WorkExperience:      []domain.WorkExperience{{Title: "Pomocnik stolara", Company: "Stolarske carolije", EmploymentType: "INTERNSHIP", Location: "Tutin", StartDate: time.Time{}, EndDate: time.Time{}}},
+	},
 }
 
 var notifications = []*domain.Notification{}

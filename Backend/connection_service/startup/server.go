@@ -97,10 +97,10 @@ func (server *Server) initMongoClient() *mongo.Client {
 
 func (server *Server) initConnectionStore(client *mongo.Client) domain.ConnectionStore {
 	store := persistence.NewConnectionMongoDBStore(client)
-	err := store.DeleteAll()
+	/*err := store.DeleteAll()
 	if err != nil {
 		return nil
-	}
+	}*/
 	for _, Connection := range connections {
 		_, err := store.Create(Connection)
 		if err != nil {

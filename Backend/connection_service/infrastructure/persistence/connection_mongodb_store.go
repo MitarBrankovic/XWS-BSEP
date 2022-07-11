@@ -7,8 +7,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"strings"
 )
 
 const (
@@ -25,6 +27,68 @@ func NewConnectionMongoDBStore(client *mongo.Client) domain.ConnectionStore {
 	return &ConnectionMongoDBStore{
 		connections: connections,
 	}
+}
+
+func (store *ConnectionMongoDBStore) RecommendFriend(username string) ([]string, error) {
+	pipeline := `
+	[{
+		"$graphLookup": {
+			"from": "connection",
+			"startWith": "$subjectUser.username",
+			"connectFromField": "issuerUser.username",
+			"connectToField": "issuerUser.username",
+			"maxDepth": 1,
+			"as": "recommendations"
+		}
+	}]
+	`
+	filter := bson.M{"issuerUser.username": username}
+	usersIFollow, err := store.filter(filter)
+	if err != nil {
+		return nil, err
+	}
+	opts := options.Aggregate()
+	if cur, err := store.connections.Aggregate(context.Background(), MongoPipeline(pipeline), opts); err != nil {
+		return nil, err
+	} else {
+		defer cur.Close(context.Background())
+		var result []string
+		for cur.Next(context.Background()) {
+			var r bson.M
+			err := cur.Decode(&r)
+			if err != nil {
+				return nil, err
+			}
+			pomoc := r["issuerUser"].(bson.M)["username"]
+			if pomoc == username {
+				for _, value := range r["recommendations"].(bson.A) {
+					isFollowed := false
+					for _, usernameValue := range usersIFollow {
+						if usernameValue.SubjectUser.Username == value.(bson.M)["subjectUser"].(bson.M)["username"].(string) {
+							isFollowed = true
+						}
+					}
+					if !isFollowed && value.(bson.M)["subjectUser"].(bson.M)["username"] != username {
+						result = append(result, value.(bson.M)["subjectUser"].(bson.M)["username"].(string))
+					}
+				}
+			}
+		}
+		return result, nil
+	}
+}
+
+func MongoPipeline(str string) mongo.Pipeline {
+	var pipeline = []bson.D{}
+	str = strings.TrimSpace(str)
+	if strings.Index(str, "[") != 0 {
+		var doc bson.D
+		bson.UnmarshalExtJSON([]byte(str), false, &doc)
+		pipeline = append(pipeline, doc)
+	} else {
+		bson.UnmarshalExtJSON([]byte(str), false, &pipeline)
+	}
+	return pipeline
 }
 
 func (store *ConnectionMongoDBStore) Get(userId string) ([]*domain.Connection, error) {

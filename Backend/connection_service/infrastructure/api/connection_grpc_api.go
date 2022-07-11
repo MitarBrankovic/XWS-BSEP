@@ -86,3 +86,13 @@ func (handler *ConnectionHandler) Update(ctx context.Context, request *pb.Update
 		Connection: mapConnectionToPb(connection),
 	}, nil
 }
+
+func (handler *ConnectionHandler) RecommendFriend(ctx context.Context, request *pb.RecommendFriendRequest) (*pb.RecommendFriendResponse, error) {
+	recommendation, err := handler.service.RecommendFriend(request.Username)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.RecommendFriendResponse{
+		Username: recommendation,
+	}, nil
+}

@@ -10,4 +10,5 @@ type ConnectionStore interface {
 	DeleteAll() error
 	Update(id string) (*Connection, error)
 	UpdateUser(username string, user *pb.User) (*User, error)
+	RecommendFriend(username string) ([]string, error)
 }

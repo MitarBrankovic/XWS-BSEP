@@ -38,3 +38,7 @@ func (service *ConnectionService) Update(id string) (*domain.Connection, error) 
 func (service *ConnectionService) UpdateUser(username string, user *pb.User) (*domain.User, error) {
 	return service.store.UpdateUser(username, user)
 }
+
+func (service *ConnectionService) RecommendFriend(username string) ([]string, error) {
+	return service.store.RecommendFriend(username)
+}

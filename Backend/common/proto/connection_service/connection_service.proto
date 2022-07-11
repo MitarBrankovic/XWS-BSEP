@@ -35,6 +35,20 @@ service ConnectionService{
       put: "/connection/{id}"
     };
   }
+
+  rpc RecommendFriend(RecommendFriendRequest) returns(RecommendFriendResponse) {
+    option (google.api.http) = {
+      get: "/recommendFriend/{username}"
+    };
+  }
+}
+
+message RecommendFriendRequest {
+  string username = 1;
+}
+
+message RecommendFriendResponse {
+  repeated string username = 1;
 }
 
 message GetRequest {
